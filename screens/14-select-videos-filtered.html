@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#faf8ff;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'surface': '#faf8ff', 'on-secondary': '#ffffff', 'on-surface': '#131b2e', 'tertiary-fixed-dim': '#ffb95f', 'secondary-fixed-dim': '#4ae176', 'on-tertiary-fixed': '#2a1700', 'primary-fixed': '#dbe1ff', 'tertiary-container': '#996100', 'surface-dim': '#d2d9f4', 'surface-bright': '#faf8ff', 'surface-container-highest': '#dae2fd', 'surface-container': '#eaedff', 'primary-container': '#2563eb', 'on-tertiary-container': '#ffeedd', 'surface-container-high': '#e2e7ff', 'outline': '#737686', 'on-secondary-fixed-variant': '#005321', 'on-tertiary-fixed-variant': '#653e00', 'error-container': '#ffdad6', 'on-primary': '#ffffff', 'surface-container-lowest': '#ffffff', 'inverse-primary': '#b4c5ff', 'error': '#ba1a1a', 'on-primary-container': '#eeefff', 'secondary-fixed': '#6bff8f', 'secondary': '#006e2f', 'on-primary-fixed-variant': '#003ea8', 'background': '#faf8ff', 'on-secondary-fixed': '#002109', 'secondary-container': '#6bff8f', 'on-surface-variant': '#434655', 'on-error': '#ffffff', 'outline-variant': '#c3c6d7', 'on-primary-fixed': '#00174b', 'on-error-container': '#93000a', 'on-background': '#131b2e', 'primary': '#004ac6', 'inverse-on-surface': '#eef0ff', 'tertiary-fixed': '#ffddb8', 'on-tertiary': '#ffffff', 'on-secondary-container': '#007432', 'primary-fixed-dim': '#b4c5ff', 'tertiary': '#784b00', 'surface-tint': '#0053db', 'surface-container-low': '#f2f3ff', 'surface-variant': '#dae2fd', 'inverse-surface': '#283044' }, borderRadius: { 'DEFAULT': '0.25rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' }, spacing: { 'gutter': '1rem', 'margin': '1rem', 'gutter-sm': '0.5rem', 'space-sm': '0.5rem', 'space-md': '1rem', 'space-xs': '0.25rem', 'margin-tablet': '1.5rem', 'space-xl': '2rem', 'space-lg': '1.5rem' }, fontFamily: { 'label-lg': ['Inter'], 'stat-numeric-lg': ['Plus Jakarta Sans'], 'headline-sm': ['Plus Jakarta Sans'], 'display-lg': ['Plus Jakarta Sans'], 'headline-lg': ['Plus Jakarta Sans'], 'display-md': ['Plus Jakarta Sans'], 'label-sm': ['Inter'], 'stat-numeric-md': ['Plus Jakarta Sans'], 'body-md': ['Inter'], 'body-lg': ['Inter'], 'label-md': ['Inter'], 'body-sm': ['Inter'], 'headline-md': ['Plus Jakarta Sans'] }, fontSize: { 'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.01em', fontWeight: '600' }], 'stat-numeric-lg': ['30px', { lineHeight: '34px', letterSpacing: '-0.02em', fontWeight: '800' }], 'headline-sm': ['18px', { lineHeight: '24px', fontWeight: '600' }], 'display-lg': ['40px', { lineHeight: '48px', letterSpacing: '-0.02em', fontWeight: '700' }], 'headline-lg': ['28px', { lineHeight: '36px', letterSpacing: '-0.01em', fontWeight: '600' }], 'display-md': ['32px', { lineHeight: '40px', letterSpacing: '-0.015em', fontWeight: '700' }], 'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.04em', fontWeight: '600' }], 'stat-numeric-md': ['20px', { lineHeight: '24px', letterSpacing: '-0.01em', fontWeight: '700' }], 'body-md': ['14px', { lineHeight: '20px', fontWeight: '400' }], 'body-lg': ['16px', { lineHeight: '24px', fontWeight: '400' }], 'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.02em', fontWeight: '500' }], 'body-sm': ['12px', { lineHeight: '16px', fontWeight: '400' }], 'headline-md': ['22px', { lineHeight: '28px', fontWeight: '600' }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"><div class="h-16 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0 flex-1"><button aria-label="Navigate Back" class="w-11 h-11 -ml-space-xs rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors" onclick="history.back()"><span class="material-symbols-outlined text-[24px]">arrow_back</span></button><div class="flex flex-col min-w-0"><h1 class="font-headline-sm text-headline-sm text-on-surface truncate leading-tight">Select Videos</h1><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Choose videos to batch optimize</span></div></div><div class="flex items-center gap-space-xs"><button aria-label="Search Media" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[22px]">search</span></button><button aria-label="Toggle Grid or List View" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[22px]">grid_view</span></button><button aria-label="Filter and Sort" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[22px]">tune</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-space-xs shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 bg-surface flex-1"><div class="flex flex-col w-full pb-32">
+<!-- Privacy & Local Processing Assurance Banner -->
+<section class="px-margin pt-space-sm pb-space-xs">
+<div class="flex items-center justify-between bg-surface-container-low px-space-md py-space-xs rounded-full">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase font-semibold">100% Device-Local Engine</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[15px]">cloud_off</span>
+<span class="font-label-sm text-label-sm">Zero Cloud Upload</span>
+</div>
+</div>
+</section>
+<!-- Search and Dynamic Filter Bar -->
+<section class="px-margin pt-space-xs flex flex-col gap-space-sm">
+<!-- Active Search Bar -->
+<div class="relative flex items-center bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden px-space-md py-2.5">
+<span class="material-symbols-outlined text-primary text-[20px] mr-space-xs">travel_explore</span>
+<input aria-label="Filter archive video files" class="bg-transparent w-full text-on-surface font-body-md text-body-md outline-none placeholder:text-outline" id="archiveSearchInput" type="text" value="Jul 8–23 archive..."/>
+<button aria-label="Clear search input" class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors" onclick="document.getElementById('archiveSearchInput').value='';">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Filter Chips Row -->
+<div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar py-1">
+<!-- Active Date Badge (High Emphasis) -->
+<button class="shrink-0 flex items-center gap-1.5 bg-primary-container text-on-primary px-3 py-1.5 rounded-full shadow-sm hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[16px]">calendar_month</span>
+<span class="font-label-md text-label-md font-semibold">Jul 8 – 23 (11)</span>
+<span class="material-symbols-outlined text-[14px]">cancel</span>
+</button>
+<!-- Resolution Filters -->
+<button class="shrink-0 flex items-center gap-1 bg-surface-container-lowest text-on-surface px-3 py-1.5 rounded-full shadow-sm hover:bg-surface-container transition-colors">
+<span class="font-label-md text-label-md font-medium">4K UHD</span>
+<span class="bg-surface-container text-primary text-[11px] font-bold px-1.5 py-0.2 rounded-full">6</span>
+</button>
+<button class="shrink-0 flex items-center gap-1 bg-surface-container-lowest text-on-surface px-3 py-1.5 rounded-full shadow-sm hover:bg-surface-container transition-colors">
+<span class="font-label-md text-label-md font-medium">1080p</span>
+<span class="bg-surface-container text-on-surface-variant text-[11px] font-bold px-1.5 py-0.2 rounded-full">5</span>
+</button>
+<!-- Codec Specs -->
+<button class="shrink-0 flex items-center gap-1 bg-surface-container-lowest text-on-surface px-3 py-1.5 rounded-full shadow-sm hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">tune</span>
+<span class="font-label-md text-label-md font-medium">Codecs</span>
+</button>
+<!-- Sort Filter -->
+<button class="shrink-0 flex items-center gap-1 bg-surface-container-lowest text-on-surface px-3 py-1.5 rounded-full shadow-sm hover:bg-surface-container transition-colors">
+<span class="font-label-md text-label-md font-medium">Largest First</span>
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+</button>
+</div>
+</section>
+<!-- Compression Telemetry & Savings Delta Visualizer -->
+<section class="px-margin pt-space-sm">
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm">
+<!-- Card Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface">11 Filtered</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-label-lg text-label-lg text-primary font-bold" id="selectedCountBadge">8 Selected</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="text-primary font-label-md text-label-md hover:underline font-semibold" id="toggleSelectAllBtn">
+            Select All
+          </button>
+</div>
+</div>
+<!-- Storage Reclamation Matrix -->
+<div class="grid grid-cols-3 gap-space-xs bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Original Weight</span>
+<span class="font-stat-numeric-md text-stat-numeric-md text-on-surface mt-0.5">4.10 <span class="text-xs font-normal">GB</span></span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary font-medium">Space Savable</span>
+<span class="font-stat-numeric-md text-stat-numeric-md text-secondary mt-0.5">+3.12 <span class="text-xs font-normal">GB</span></span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Estimated Post</span>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="font-stat-numeric-md text-stat-numeric-md text-primary font-bold">~980</span>
+<span class="text-xs font-normal text-on-surface">MB</span>
+</div>
+</div>
+</div>
+<!-- Storage Ratio Bar -->
+<div class="flex flex-col gap-1.5 pt-1">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Target Encoding: HEVC / AV1 Engine</span>
+<span class="font-semibold text-secondary">76.1% Reclaimed</span>
+</div>
+<div class="w-full h-2.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 23.9%;" title="Encoded Footprint: 980 MB"></div>
+<div class="h-full bg-secondary-fixed-dim" style="width: 76.1%;" title="Savable Storage: 3.12 GB"></div>
+</div>
+<div class="flex justify-between items-center text-[10px] text-on-surface-variant font-medium pt-0.5">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm bg-primary"></span> 980 MB Target Output</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm bg-secondary-fixed-dim"></span> 3.12 GB Reclaimed Storage</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Timeline Groups -->
+<section class="flex flex-col gap-space-md px-margin pt-space-md">
+<!-- GROUP 1: Sunday, Jul 23, 2023 -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between pb-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-primary">event</span>
+<h2 class="font-label-lg text-label-lg text-on-surface font-semibold">Sunday, Jul 23, 2023</h2>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2 Clips • 680 MB</span>
+</div>
+<!-- Card 1 (Checked) -->
+<div class="video-card group relative flex gap-space-sm p-space-sm bg-surface-container-lowest rounded-xl shadow-sm transition-all" data-bytes="410" data-savings="310" data-selected="true">
+<div class="relative w-28 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Drone aerial shot overlooking golden hour sunset coastline with gentle azure ocean waves colliding into warm sand, cinematic lighting, sharp clarity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvHVXlOMNv8Pj5QfqpmjeEv8mUdSzn25lpmtW91H4McPtpKv5V2RcUGkXAgUddRmWudZsNcOsk9B0-pzA4hVPXvddx3oHmwnPOKIFFN_k2XM3xk6rmfdgQ2qDhL5LKzynRXetjrExuW8CE68ggLhg5m_byh_ifsRVYLKfFJ_8saIDqkfUqgaYI-bDTOOKFGU2JoFX5YuSOLNSUDQjBYL2ZRHQPOmNZJm7hJhHRvVcBKwt7nxhfOOu4Mg"/>
+<div class="absolute top-1 left-1 bg-surface-tint/90 text-on-primary text-[9px] font-bold px-1.5 py-0.5 rounded">
+            4K 60
+          </div>
+<div class="absolute bottom-1 right-1 bg-inverse-surface/85 text-inverse-on-surface font-label-sm text-[10px] px-1 py-0.2 rounded font-mono">
+            02:14
+          </div>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div class="flex items-start justify-between gap-1">
+<div class="min-w-0">
+<div class="flex items-center gap-1.5">
+<p class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Coastal_Drive_Drone.mp4</p>
+<span class="bg-error-container text-on-error-container font-label-sm text-[9px] px-1.5 py-0.2 rounded font-bold uppercase">HEAVY</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Original: 410 MB</p>
+</div>
+<button class="checkbox-indicator w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary shrink-0 transition-transform active:scale-90">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-1">
+<span class="font-label-sm text-label-sm text-secondary font-semibold bg-secondary-container/40 px-2 py-0.5 rounded">
+              -310 MB est.
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">~100 MB post</span>
+</div>
+</div>
+</div>
+<!-- Card 2 (Checked) -->
+<div class="video-card group relative flex gap-space-sm p-space-sm bg-surface-container-lowest rounded-xl shadow-sm transition-all" data-bytes="270" data-savings="200" data-selected="true">
+<div class="relative w-28 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Sunlit Mediterranean cafe terrace brunch scene with colorful fruit beverages, warm ambient summer midday light, crisp detailed depth of field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBachY8tN8sVwpfCwVQIXR_Kr1RMnuuFQ0K_bLRuUJR_S06jZv0gUcOa85zSC4lV8wlBcjW6G9QfCi4TAWd7VBDOG7wVrrsnjZ2vJ4NR0UNRc9CC654FJ8HvUPnGjeBgNDYvh_nnG1Lm-V6YN29MUfzR_L813qI3awojDd5aUlvJxrxqlA3jHPtNwAwFUzgS72ZlXKUulxz5YbInTd9ACa7szwEBv2Yeiwg4AuYB_iO6uPqOk9pfg3tlg"/>
+<div class="absolute top-1 left-1 bg-surface-container-highest text-on-surface text-[9px] font-bold px-1.5 py-0.5 rounded">
+            1080p 60
+          </div>
+<div class="absolute bottom-1 right-1 bg-inverse-surface/85 text-inverse-on-surface font-label-sm text-[10px] px-1 py-0.2 rounded font-mono">
+            01:30
+          </div>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div class="flex items-start justify-between gap-1">
+<div class="min-w-0">
+<p class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Family_Lunch_July23.mp4</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Original: 270 MB</p>
+</div>
+<button class="checkbox-indicator w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary shrink-0 transition-transform active:scale-90">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-1">
+<span class="font-label-sm text-label-sm text-secondary font-semibold bg-secondary-container/40 px-2 py-0.5 rounded">
+              -200 MB est.
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">~70 MB post</span>
+</div>
+</div>
+</div>
+</div>
+<!-- GROUP 2: Saturday, Jul 15, 2023 -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between pb-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-tertiary">star</span>
+<h2 class="font-label-lg text-label-lg text-on-surface font-semibold">Saturday, Jul 15, 2023</h2>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-[10px] px-1.5 py-0.2 rounded-full font-bold">Peak Day</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">4 Clips • 1.62 GB</span>
+</div>
+<!-- Card 3 (Checked) -->
+<div class="video-card group relative flex gap-space-sm p-space-sm bg-surface-container-lowest rounded-xl shadow-sm transition-all" data-bytes="720" data-savings="550" data-selected="true">
+<div class="relative w-28 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Spectacular high-altitude mountain peak summit with hikers trekking ridge trail against dramatic cloud cover and alpine panorama, crisp 4k detail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9Yf__lS93TLsQ-yXQppkiSBCptSW4J1nDQztlIdYUc1WZf1pCTWHU-I2UCCJYjPfbOK-JvuEL08m-T-yUMmZD_xN_22Bm1ZBVzAPC28ssz6jZA05dAaQZDegz0Lafx-b25a9lG17eR1wiELwjoKEOPGg5YGa5LqhmcU_2ykP5zLqfg_-B0fMQmbltMTm5Dvp2rttA2BZ9KtUradxP4eCb49Rtx6tek7YeZl42y0WzN7-BnKV8pYa-2w"/>
+<div class="absolute top-1 left-1 bg-surface-tint/90 text-on-primary text-[9px] font-bold px-1.5 py-0.5 rounded">
+            4K ProRes
+          </div>
+<div class="absolute bottom-1 right-1 bg-inverse-surface/85 text-inverse-on-surface font-label-sm text-[10px] px-1 py-0.2 rounded font-mono">
+            03:45
+          </div>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div class="flex items-start justify-between gap-1">
+<div class="min-w-0">
+<div class="flex items-center gap-1.5">
+<p class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Trail_Hike_Summit_4K.mov</p>
+<span class="bg-error-container text-on-error-container font-label-sm text-[9px] px-1.5 py-0.2 rounded font-bold uppercase">HEAVY</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Original: 720 MB</p>
+</div>
+<button class="checkbox-indicator w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary shrink-0 transition-transform active:scale-90">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-1">
+<span class="font-label-sm text-label-sm text-secondary font-semibold bg-secondary-container/40 px-2 py-0.5 rounded">
+              -550 MB est.
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">~170 MB post</span>
+</div>
+</div>
+</div>
+<!-- Card 4 (Checked) -->
+<div class="video-card group relative flex gap-space-sm p-space-sm bg-surface-container-lowest rounded-xl shadow-sm transition-all" data-bytes="510" data-savings="390" data-selected="true">
+<div class="relative w-28 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Vibrant yellow kayak paddling across crystal clear turquoise alpine lake waters, water splashing in sharp slow-motion focus, pristine reflections" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhYrnG3Mhi5oWMY_O777qf66BfuqSyt1oXFKINzjwKcahpdQvpkz1HOBG5-KnJI2hdxsysyxsXpGUC3PccSGlpyFSJcC-2HbLACj8k1MStz3msgFc62YZgs0aiIiZ8WNPggXoRtB-0W26GDEBBchMbirCOiK2rPtpPd7bypk7Lv-6W0XeeFAtsllM1R7xojwL3PSlaw7oImrCUEq6zIATyr6ie9WY93h2BbMKT6jxobnskIG7h6Eo1Cw"/>
+<div class="absolute top-1 left-1 bg-surface-tint/90 text-on-primary text-[9px] font-bold px-1.5 py-0.5 rounded">
+            4K 120fps
+          </div>
+<div class="absolute bottom-1 right-1 bg-inverse-surface/85 text-inverse-on-surface font-label-sm text-[10px] px-1 py-0.2 rounded font-mono">
+            01:10
+          </div>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div class="flex items-start justify-between gap-1">
+<div class="min-w-0">
+<div class="flex items-center gap-1.5">
+<p class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Lake_Kayak_Action.mp4</p>
+<span class="bg-error-container text-on-error-container font-label-sm text-[9px] px-1.5 py-0.2 rounded font-bold uppercase">HEAVY</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Original: 510 MB</p>
+</div>
+<button class="checkbox-indicator w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary shrink-0 transition-transform active:scale-90">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-1">
+<span class="font-label-sm text-label-sm text-secondary font-semibold bg-secondary-container/40 px-2 py-0.5 rounded">
+              -390 MB est.
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">~120 MB post</span>
+</div>
+</div>
+</div>
+<!-- Card 5 (Unchecked) -->
+<div class="video-card group relative flex gap-space-sm p-space-sm bg-surface-container-lowest opacity-75 rounded-xl shadow-sm transition-all" data-bytes="220" data-savings="160" data-selected="false">
+<div class="relative w-28 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Evening wilderness campfire sparks flying upward into dusk starry twilight sky with silhouettes of campers gathered around warm glowing flames" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAF62dAUMpn7CqqKJGubPNG71MpEtXQl28hKUxO5zDVZmtaTN1XGhuYwYFwj7a1xwStaHujOCK9rTiAOGhjJbHFXY53WQl29rqV7FceEJRA74NOm2uTxLIf-wRn5worXjRQPvi0oyi0XIJYjeOY8EkY308w3HonanMivL_Inxnb_dyRO9x_XB3Pzack6AV-_rlIw4ytFrZE7Yr_AZ9EPkkxl4F6MeB5yNH6zsWmWGLMBoYN3KkAKodkGQ"/>
+<div class="absolute top-1 left-1 bg-surface-container-highest text-on-surface text-[9px] font-bold px-1.5 py-0.5 rounded">
+            1080p 30
+          </div>
+<div class="absolute bottom-1 right-1 bg-inverse-surface/85 text-inverse-on-surface font-label-sm text-[10px] px-1 py-0.2 rounded font-mono">
+            02:10
+          </div>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div class="flex items-start justify-between gap-1">
+<div class="min-w-0">
+<p class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Campfire_Night.mp4</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Original: 220 MB</p>
+</div>
+<button class="checkbox-indicator w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant shrink-0 transition-transform active:scale-90">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">
+              Tap to add (+160MB cut)
+            </span>
+<span class="font-label-sm text-label-sm text-outline">Excluded</span>
+</div>
+</div>
+</div>
+<!-- Card 6 (Checked) -->
+<div class="video-card group relative flex gap-space-sm p-space-sm bg-surface-container-lowest rounded-xl shadow-sm transition-all" data-bytes="170" data-savings="120" data-selected="true">
+<div class="relative w-28 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Lush green pine forest canopy seen from wooden observation tower with morning mist rolling between evergreen trees, serene natural mood" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH3Pj6x7BJ8FzyK01K3SeqaNlzd8SP3cV-vizpNCeAisiDHfLHRpZA06jR7J8Bu__-ql7wZgw9KdJNED-4cC6vEL8sH6BWYYWi7esg1dyEWY69dcTlgbvVaQSIteldewtOVJn21fskkqqLo67hShOGCRwwvnhPYzcc5ec-3zEmWjs1WYXGhvrYhWkjUc06zWQe5OSu3hFcm5Y9kKUienfE4VP1CuSZv0IG7Pxqe_4o1yVFkR21NVC-mw"/>
+<div class="absolute top-1 left-1 bg-surface-container-highest text-on-surface text-[9px] font-bold px-1.5 py-0.5 rounded">
+            1080p 60
+          </div>
+<div class="absolute bottom-1 right-1 bg-inverse-surface/85 text-inverse-on-surface font-label-sm text-[10px] px-1 py-0.2 rounded font-mono">
+            01:05
+          </div>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div class="flex items-start justify-between gap-1">
+<div class="min-w-0">
+<p class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Pine_Ridge_View.mp4</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Original: 170 MB</p>
+</div>
+<button class="checkbox-indicator w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary shrink-0 transition-transform active:scale-90">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-1">
+<span class="font-label-sm text-label-sm text-secondary font-semibold bg-secondary-container/40 px-2 py-0.5 rounded">
+              -120 MB est.
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">~50 MB post</span>
+</div>
+</div>
+</div>
+</div>
+<!-- GROUP 3: Wednesday, Jul 12, 2023 -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between pb-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-primary">event</span>
+<h2 class="font-label-lg text-label-lg text-on-surface font-semibold">Wednesday, Jul 12, 2023</h2>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">3 Clips • 1.15 GB</span>
+</div>
+<!-- Card 7 (Checked) -->
+<div class="video-card group relative flex gap-space-sm p-space-sm bg-surface-container-lowest rounded-xl shadow-sm transition-all" data-bytes="620" data-savings="470" data-selected="true">
+<div class="relative w-28 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Speedboat harbor tour gliding past historic coastal stone lighthouses with white water wake spraying behind under bright crisp blue sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOAxe8-rU_t4COsr2Pc458XC3EqeT3yigTplkSDcf-b0tr7i8q6Rt31iykFsvRqLCvWovxdfaNc8LQ0ZzjIXId8hU7gk-1CwHS0vIGgEdtlZZIzG0DHWLi8_SYONaPoiAm-ZnxcEF66GciHe8mBQY9mq8BCNZjPeIBD5miSoOJlyMUjTW3msFqIKnuYgNr5S1U01jt9Hw9A0iJnqY4rAAeTj69KgcZ-_spSShpf3no2y6GCvw9UqtFrg"/>
+<div class="absolute top-1 left-1 bg-surface-tint/90 text-on-primary text-[9px] font-bold px-1.5 py-0.5 rounded">
+            4K 30
+          </div>
+<div class="absolute bottom-1 right-1 bg-inverse-surface/85 text-inverse-on-surface font-label-sm text-[10px] px-1 py-0.2 rounded font-mono">
+            02:30
+          </div>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div class="flex items-start justify-between gap-1">
+<div class="min-w-0">
+<div class="flex items-center gap-1.5">
+<p class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Boat_Harbor_Tour.mp4</p>
+<span class="bg-error-container text-on-error-container font-label-sm text-[9px] px-1.5 py-0.2 rounded font-bold uppercase">HEAVY</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Original: 620 MB</p>
+</div>
+<button class="checkbox-indicator w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary shrink-0 transition-transform active:scale-90">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-1">
+<span class="font-label-sm text-label-sm text-secondary font-semibold bg-secondary-container/40 px-2 py-0.5 rounded">
+              -470 MB est.
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">~150 MB post</span>
+</div>
+</div>
+</div>
+<!-- Card 8 (Checked) -->
+<div class="video-card group relative flex gap-space-sm p-space-sm bg-surface-container-lowest rounded-xl shadow-sm transition-all" data-bytes="310" data-savings="230" data-selected="true">
+<div class="relative w-28 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Bustling outdoor food artisan market with local vendors preparing fresh delicacies under striped fabric awnings, lively authentic summer colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAieR_3bMC2mdkXKOr3w3RwspmQaDF8yHA4ea3Vpm6bnbu6ta340MBF0Mup3VWE1J5Bjf_7FyeO-hwchUY5XgG7ZR3F6tkjX2gRT6HGNmV71g43Rtmx7lDTC3qeM_6P9UWygBsEK-stnWDe2bJD0eiW9h_LZXWNdwTw5rAgHv425Uhi_lGGNUjx5UK1a3HrgAXOyB9nwH-3Hu0gfKY0qMLdaYg3kE6H9BbLIyQf-Fi6cY-fI6EBlw_Xnw"/>
+<div class="absolute top-1 left-1 bg-surface-container-highest text-on-surface text-[9px] font-bold px-1.5 py-0.5 rounded">
+            1080p 30
+          </div>
+<div class="absolute bottom-1 right-1 bg-inverse-surface/85 text-inverse-on-surface font-label-sm text-[10px] px-1 py-0.2 rounded font-mono">
+            01:50
+          </div>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div class="flex items-start justify-between gap-1">
+<div class="min-w-0">
+<p class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Market_Walkthrough.mp4</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Original: 310 MB</p>
+</div>
+<button class="checkbox-indicator w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary shrink-0 transition-transform active:scale-90">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-1">
+<span class="font-label-sm text-label-sm text-secondary font-semibold bg-secondary-container/40 px-2 py-0.5 rounded">
+              -230 MB est.
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">~80 MB post</span>
+</div>
+</div>
+</div>
+<!-- Card 9 (Unchecked) -->
+<div class="video-card group relative flex gap-space-sm p-space-sm bg-surface-container-lowest opacity-75 rounded-xl shadow-sm transition-all" data-bytes="220" data-savings="170" data-selected="false">
+<div class="relative w-28 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Interior luxury resort suite bedroom with open suitcases neatly packed on luggage bench, afternoon sun beams casting gentle geometric shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWxmpmaqL4tecr8QQKfaJ3dRMM2tZEs24BW2pZopTZZ4qWUOKt48l6Nu36hD9qgUR_og_DioZminI9cfoM7vBPWvzOMhJjTYjdQEdLGac7zxbTnvPhchxaxTQ_cxGYDBsZUVwXQCk7hOdWAQxuq6htGLJydWvfbeCCzinVzZkUKSXHyYkNP42WQZ6kvFBzjth3QOAG5tchwLSuJY2O8PdMAlowRUC6VjcFK3yLN-KyDJTy8MxE3tUANA"/>
+<div class="absolute top-1 left-1 bg-surface-container-highest text-on-surface text-[9px] font-bold px-1.5 py-0.5 rounded">
+            1080p 30
+          </div>
+<div class="absolute bottom-1 right-1 bg-inverse-surface/85 text-inverse-on-surface font-label-sm text-[10px] px-1 py-0.2 rounded font-mono">
+            01:15
+          </div>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div class="flex items-start justify-between gap-1">
+<div class="min-w-0">
+<p class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Hotel_Checkin_Luggage.mp4</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Original: 220 MB</p>
+</div>
+<button class="checkbox-indicator w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant shrink-0 transition-transform active:scale-90">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">
+              Tap to add (+170MB cut)
+            </span>
+<span class="font-label-sm text-label-sm text-outline">Excluded</span>
+</div>
+</div>
+</div>
+</div>
+<!-- GROUP 4: Saturday, Jul 8, 2023 -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between pb-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-primary">flight_takeoff</span>
+<h2 class="font-label-lg text-label-lg text-on-surface font-semibold">Saturday, Jul 8, 2023</h2>
+<span class="bg-surface-container-high text-on-surface font-label-sm text-[10px] px-1.5 py-0.2 rounded font-medium">Trip Departure</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2 Clips • 650 MB</span>
+</div>
+<!-- Card 10 (Checked) -->
+<div class="video-card group relative flex gap-space-sm p-space-sm bg-surface-container-lowest rounded-xl shadow-sm transition-all" data-bytes="450" data-savings="340" data-selected="true">
+<div class="relative w-28 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Passenger window view of commercial airplane wing climbing through puffy white clouds over landscape below during bright morning departure" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChLttV3ek7uXSs86PxfOT8qy66mCUKJVne-gGvDvAqHeWGGsHDIkByVz83s8rHsZcVXMs_3vHYuta8_ak59R5ZmrD0TRENb7XEob9GEX79tw9Uz7rXBS6-qDVsuoIc64GaynfHFTfhe9mdxjNDyTKEa2-EhnvZc3SiXziPg0MWu32j-uSEfYNAjJYePmeifGfMbjUfk3QF_SjvrFRr4uhHWCxJ4mruoRhMFb4qgO18lu5xyLBC4gsAfA"/>
+<div class="absolute top-1 left-1 bg-surface-tint/90 text-on-primary text-[9px] font-bold px-1.5 py-0.5 rounded">
+            4K 60
+          </div>
+<div class="absolute bottom-1 right-1 bg-inverse-surface/85 text-inverse-on-surface font-label-sm text-[10px] px-1 py-0.2 rounded font-mono">
+            01:45
+          </div>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div class="flex items-start justify-between gap-1">
+<div class="min-w-0">
+<div class="flex items-center gap-1.5">
+<p class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Flight_Departure_Takeoff.mp4</p>
+<span class="bg-error-container text-on-error-container font-label-sm text-[9px] px-1.5 py-0.2 rounded font-bold uppercase">HEAVY</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Original: 450 MB</p>
+</div>
+<button class="checkbox-indicator w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary shrink-0 transition-transform active:scale-90">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-1">
+<span class="font-label-sm text-label-sm text-secondary font-semibold bg-secondary-container/40 px-2 py-0.5 rounded">
+              -340 MB est.
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">~110 MB post</span>
+</div>
+</div>
+</div>
+<!-- Card 11 (Unchecked) -->
+<div class="video-card group relative flex gap-space-sm p-space-sm bg-surface-container-lowest opacity-75 rounded-xl shadow-sm transition-all" data-bytes="200" data-savings="150" data-selected="false">
+<div class="relative w-28 h-20 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Luggage cart loaded with traveler backpacks and suitcases inside glass-walled modern airport departure terminal concourse" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQvmeO55XIfSWua-uIVTNKtSV6JPmeHpFVdFl315zqR0Di9m9FcLskjQIbIyEB1g6BfMgtpwPehze3-Cx-P8GkN0d_-AF9B_GS5T5eYOiZAhZhLPlx-yS8y_wovQQ-3dH3vDBGcT1k2RNvrAM5zLHWWv8K0da4S1wUJphskyqSHeToJ9iaKhkZHHhqLwz6furkwQIPm24SsY1UMX1udb3zNnEvYU6Uesmlv78AkKLhGul2VrjnDrDYHg"/>
+<div class="absolute top-1 left-1 bg-surface-container-highest text-on-surface text-[9px] font-bold px-1.5 py-0.5 rounded">
+            1080p 30
+          </div>
+<div class="absolute bottom-1 right-1 bg-inverse-surface/85 text-inverse-on-surface font-label-sm text-[10px] px-1 py-0.2 rounded font-mono">
+            01:00
+          </div>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div class="flex items-start justify-between gap-1">
+<div class="min-w-0">
+<p class="font-label-lg text-label-lg text-on-surface truncate font-semibold">Packing_RoadTrip_Start.mp4</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Original: 200 MB</p>
+</div>
+<button class="checkbox-indicator w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant shrink-0 transition-transform active:scale-90">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">
+              Tap to add (+150MB cut)
+            </span>
+<span class="font-label-sm text-label-sm text-outline">Excluded</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Sticky Bottom Floating CTA Dock -->
+<aside class="fixed bottom-0 left-0 right-0 z-40 px-margin pb-safe pt-2">
+<div class="bg-surface-container-lowest/95 backdrop-blur-md rounded-2xl p-3 shadow-xl flex flex-col gap-2.5 mb-2">
+<!-- Summary Bar Inside Dock -->
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-on-surface font-bold" id="dockSelectedCount">8 videos selected</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant" id="dockTotalSize">3.48 GB total</span>
+</div>
+<!-- Preset Selector Pill -->
+<button class="flex items-center gap-1 bg-surface-container px-2.5 py-1 rounded-full text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[15px] text-primary">auto_fix_high</span>
+<span class="font-label-sm text-label-sm font-semibold">Preset: Balanced</span>
+<span class="material-symbols-outlined text-[14px]">expand_more</span>
+</button>
+</div>
+<!-- Primary Action CTA Button -->
+<button class="w-full bg-primary-container text-on-primary h-12 rounded-xl flex items-center justify-between px-4 shadow-md hover:bg-primary transition-all active:scale-[0.98]">
+<div class="flex items-center gap-2 font-label-lg text-label-lg font-bold">
+<span class="material-symbols-outlined text-[22px]">bolt</span>
+<span>Continue to Batch Compress</span>
+</div>
+<div class="flex items-center gap-1 bg-on-primary/20 backdrop-blur-sm text-on-primary px-2.5 py-1 rounded-lg text-xs font-bold tracking-wide" id="dockSavingsBadge">
+<span>Save ~2.65 GB</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</div>
+</button>
+</div>
+</aside>
+</div>
+<script>
+  (function initMediaPicker() {
+    const cards = document.querySelectorAll('.video-card');
+    const selectedBadge = document.getElementById('selectedCountBadge');
+    const dockSelectedCount = document.getElementById('dockSelectedCount');
+    const dockTotalSize = document.getElementById('dockTotalSize');
+    const dockSavingsBadge = document.getElementById('dockSavingsBadge');
+    const selectAllBtn = document.getElementById('toggleSelectAllBtn');
+
+    function updateMetrics() {
+      let count = 0;
+      let totalBytesMB = 0;
+      let totalSavingsMB = 0;
+
+      cards.forEach(card => {
+        const isSelected = card.getAttribute('data-selected') === 'true';
+        const bytes = parseInt(card.getAttribute('data-bytes') || '0', 10);
+        const savings = parseInt(card.getAttribute('data-savings') || '0', 10);
+
+        if (isSelected) {
+          count++;
+          totalBytesMB += bytes;
+          totalSavingsMB += savings;
+        }
+      });
+
+      selectedBadge.textContent = `${count} Selected`;
+      dockSelectedCount.textContent = `${count} videos selected`;
+      dockTotalSize.textContent = `${(totalBytesMB / 1000).toFixed(2)} GB total`;
+      dockSavingsBadge.innerHTML = `<span>Save ~${(totalSavingsMB / 1000).toFixed(2)} GB</span><span class="material-symbols-outlined text-[14px]">arrow_forward</span>`;
+      
+      selectAllBtn.textContent = count === cards.length ? 'Deselect All' : 'Select All';
+    }
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const current = card.getAttribute('data-selected') === 'true';
+        const next = !current;
+        card.setAttribute('data-selected', next ? 'true' : 'false');
+
+        const indicator = card.querySelector('.checkbox-indicator');
+        if (next) {
+          card.classList.remove('opacity-75');
+          indicator.className = 'checkbox-indicator w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary shrink-0 transition-transform active:scale-90';
+          indicator.innerHTML = '<span class="material-symbols-outlined text-[18px]">check</span>';
+        } else {
+          card.classList.add('opacity-75');
+          indicator.className = 'checkbox-indicator w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant shrink-0 transition-transform active:scale-90';
+          indicator.innerHTML = '<span class="material-symbols-outlined text-[16px]">add</span>';
+        }
+        updateMetrics();
+      });
+    });
+
+    selectAllBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const allSelected = selectAllBtn.textContent === 'Deselect All';
+      cards.forEach(card => {
+        card.setAttribute('data-selected', allSelected ? 'false' : 'true');
+        const indicator = card.querySelector('.checkbox-indicator');
+        if (!allSelected) {
+          card.classList.remove('opacity-75');
+          indicator.className = 'checkbox-indicator w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary shrink-0 transition-transform active:scale-90';
+          indicator.innerHTML = '<span class="material-symbols-outlined text-[18px]">check</span>';
+        } else {
+          card.classList.add('opacity-75');
+          indicator.className = 'checkbox-indicator w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant shrink-0 transition-transform active:scale-90';
+          indicator.innerHTML = '<span class="material-symbols-outlined text-[16px]">add</span>';
+        }
+      });
+      updateMetrics();
+    });
+  })();
+</script></main></body></html>

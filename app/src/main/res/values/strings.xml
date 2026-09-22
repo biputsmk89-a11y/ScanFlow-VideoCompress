@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CompressFlow</string>
+    <string name="app_tagline">Make videos smaller.\nKeep them better.</string>
+    <string name="app_subtitle">Video Compressor \u0026 Size Optimizer</string>
+    <string name="privacy_badge">100%% Local</string>
+    <string name="privacy_description">Offline \u0026 Private • On-device engine</string>
+    <string name="hardware_description">Hardware-accelerated processing entirely on this phone.</string>
+
+    <!-- Home -->
+    <string name="select_video">Select Video</string>
+    <string name="browse_videos">Browse Videos</string>
+    <string name="quick_presets">Quick Presets</string>
+    <string name="one_tap_profiles">One-tap profiles</string>
+    <string name="recent_compressions">Recent</string>
+    <string name="quick_tools">Quick Tools</string>
+
+    <!-- Presets -->
+    <string name="preset_whatsapp">WhatsApp</string>
+    <string name="preset_social">Social Media</string>
+    <string name="preset_storage">Storage Saver</string>
+    <string name="preset_email">Email Friendly</string>
+    <string name="preset_telegram">Telegram</string>
+    <string name="preset_upload">Upload</string>
+    <string name="preset_custom">Custom</string>
+    <string name="preset_target_size">Target Size</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_history">History</string>
+    <string name="nav_tools">Tools</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Actions -->
+    <string name="compress_now">Compress Now</string>
+    <string name="save">Save</string>
+    <string name="share">Share</string>
+    <string name="cancel">Cancel</string>
+    <string name="retry">Retry</string>
+    <string name="delete">Delete</string>
+    <string name="compress_again">Compress Again</string>
+
+    <!-- Video Detail -->
+    <string name="choose_your_goal">Choose Your Goal</string>
+    <string name="original">Original</string>
+    <string name="compressed">Compressed</string>
+    <string name="saved">Saved</string>
+    <string name="estimated">Estimated</string>
+    <string name="advanced_settings">Advanced Settings</string>
+    <string name="advanced_details">Advanced Details</string>
+
+    <!-- Compression -->
+    <string name="compressing">Compressing video…</string>
+    <string name="compression_complete">Compression Complete</string>
+    <string name="compression_failed">Compression Failed</string>
+
+    <!-- Tools -->
+    <string name="batch_compress">Batch Compress</string>
+    <string name="trim_video">Trim Video</string>
+    <string name="extract_audio">Extract Audio</string>
+    <string name="remove_audio">Remove Audio</string>
+    <string name="video_converter">Video Converter</string>
+    <string name="storage_analyzer">Storage Analyzer</string>
+    <string name="remove_metadata">Remove Metadata</string>
+
+    <!-- Formats -->
+    <string name="supported_formats">MP4, MOV, MKV up to 4K</string>
+</resources>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {"darkMode":"class","theme":{"extend":{"colors":{"on-secondary-container":"#00311f","on-secondary":"#003824","surface-dim":"#0f131c","tertiary-fixed-dim":"#7bd0ff","tertiary-fixed":"#c4e7ff","surface-variant":"#31353e","on-primary-container":"#00285d","on-error-container":"#ffdad6","on-tertiary-fixed-variant":"#004c69","on-surface":"#dfe2ee","surface-tint":"#adc6ff","on-tertiary":"#00354a","outline-variant":"#424754","on-secondary-fixed":"#002113","primary-container":"#4d8eff","primary-fixed":"#d8e2ff","error":"#ffb4ab","on-background":"#dfe2ee","tertiary-container":"#009bd1","surface-container-low":"#181c24","primary-fixed-dim":"#adc6ff","on-primary-fixed":"#001a42","inverse-surface":"#dfe2ee","background":"#0f131c","on-error":"#690005","primary":"#adc6ff","error-container":"#93000a","secondary-fixed":"#6ffbbe","surface-container":"#1c2028","secondary-fixed-dim":"#4edea3","surface-bright":"#353942","tertiary":"#7bd0ff","surface-container-high":"#262a33","surface-container-lowest":"#0a0e16","on-surface-variant":"#c2c6d6","secondary-container":"#00a572","on-secondary-fixed-variant":"#005236","on-tertiary-fixed":"#001e2c","on-primary-fixed-variant":"#004395","outline":"#8c909f","surface":"#0f131c","on-primary":"#002e6a","on-tertiary-container":"#002d40","inverse-primary":"#005ac2","surface-container-highest":"#31353e","inverse-on-surface":"#2c3039","secondary":"#4edea3"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-xs":"0.25rem","gutter-tablet":"1.5rem","space-lg":"1.5rem","space-xl":"2rem","space-sm":"0.5rem","margin":"1rem","gutter":"1rem","margin-tablet":"1.5rem","space-md":"1rem","margin-desktop":"2rem","gutter-desktop":"1.5rem"},"fontFamily":{"body-md":["Inter"],"body-sm":["Inter"],"headline-md":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"],"label-lg":["Inter"],"headline-sm":["Plus Jakarta Sans"],"label-sm":["Inter"],"body-lg":["Inter"],"label-md":["Inter"],"display-lg":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"]},"fontSize":{"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"headline-md":["22px",{"lineHeight":"28px","fontWeight":"600"}],"headline-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"-0.01em","fontWeight":"700"}],"label-lg":["14px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"600"}],"headline-sm":["18px",{"lineHeight":"24px","fontWeight":"600"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"600"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"500"}],"display-lg":["44px",{"lineHeight":"52px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.01em","fontWeight":"700"}]}}}</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.25)]"><div class="h-6 px-margin flex items-center justify-between text-on-surface-variant text-[12px] font-medium tracking-tight select-none"><span>09:41</span><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px]">wifi</span><span class="material-symbols-outlined text-[15px]">signal_cellular_4_bar</span><span class="material-symbols-outlined text-[16px]">battery_full</span></div></div><div class="h-16 px-space-sm flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm min-w-0"><button class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors shrink-0" onclick="history.back()"><span class="material-symbols-outlined text-[24px]">arrow_back</span></button><img alt="CompressFlow modern geometric minimalist Android app icon: two converging clean arrows or folding compression wave forming a streamlined play/flow symbol, vibrant primary blue (#2563EB) and emerald accent.. Brand logo. - Primary color: #2563eb - Font: plusJakartaSans - Mode: light - Roundness: rounded-md" class="h-7 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VjtNbX1-t8y_uQSdLTyqx97wlZT870FTR840swZiqMU_iAnP3xkdzJAYKTXar0OT-cKFTqmP2i6mLBCXzgZxepwBfZQvvDoKefxnlHnEZFigV9v9kjzKQ-WdusGG410vvKjS1QKEzRzON0Gz_w98TBnneRrm0fWxLGLaSEdElcOiCfXJUZwIDvXro-VbNbNVZfFCYDZMZ4Y_4mfxT8VVcnnpDRsFF0yM7t90Akw_YuF7LxnGFrJMqXDWyI"/><div class="flex flex-col min-w-0"><h1 class="font-headline-sm text-headline-sm text-on-surface truncate leading-tight">File Inspector</h1><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Encoding &amp; Hardware Stream</span></div></div><div class="flex items-center gap-space-xs shrink-0 pr-space-xs"><button class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[22px]">info</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-22 pb-safe px-margin bg-surface"><div class="flex flex-col w-full pb-32 space-y-space-md">
+<!-- Notice Banner: Power User Advisory -->
+<div class="w-full bg-surface-container-high rounded-xl p-space-md shadow-sm">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">terminal</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-space-xs mb-1">
+<span class="font-label-md text-label-md text-primary font-semibold tracking-wide uppercase">Engine Mode: Manual Override</span>
+<button class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" id="reset-defaults-btn">
+<span class="material-symbols-outlined text-[14px]">restart_alt</span>
+<span>Reset</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          For video creators &amp; power users. Master compression presets are overridden once low-level parameters are adjusted.
+        </p>
+</div>
+</div>
+</div>
+<!-- Section 1: Video Container & Codec -->
+<section class="w-full bg-surface-container rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">tune</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Target Container &amp; Codec</h2>
+</div>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/20 text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider">HW Accel Active</span>
+</div>
+</div>
+<!-- Output Container Format Chips -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-on-surface-variant">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Container Format</label>
+<span class="font-body-sm text-body-sm text-outline">MIME: video/mp4</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<button class="format-chip active flex items-center justify-between px-3 py-2.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md transition-all shadow-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">folder_zip</span>
+<span class="font-semibold">MP4</span>
+</div>
+<span class="font-label-sm text-label-sm opacity-90">Most Compatible</span>
+</button>
+<button class="format-chip flex items-center justify-between px-3 py-2.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright font-label-md text-label-md transition-all">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-outline">movie</span>
+<span>MKV</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">Flexible</span>
+</button>
+<button class="format-chip flex items-center justify-between px-3 py-2.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright font-label-md text-label-md transition-all">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-outline">videocam</span>
+<span>MOV</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">Apple QuickTime</span>
+</button>
+<button class="format-chip flex items-center justify-between px-3 py-2.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright font-label-md text-label-md transition-all">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-outline">public</span>
+<span>WebM</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">VP9 / AV1</span>
+</button>
+</div>
+</div>
+<!-- Video Codec Selector -->
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Compression Pipeline &amp; Codec</label>
+<div class="flex flex-col gap-2">
+<label class="flex items-center justify-between p-3 rounded-lg bg-surface-container-high hover:bg-surface-bright cursor-pointer transition-colors">
+<div class="flex items-center gap-3">
+<input checked="" class="w-4 h-4 accent-primary text-primary" name="video_codec" type="radio"/>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">H.265 / HEVC Main10</span>
+<span class="px-1.5 py-0.5 rounded bg-primary-container text-on-primary-container font-label-sm text-[10px] font-bold">OPTIMAL</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">High efficiency with 10-bit Rec.709 HDR support. Snapdragon Adreno GPU accelerated.</p>
+</div>
+</div>
+</label>
+<label class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low hover:bg-surface-bright cursor-pointer transition-colors">
+<div class="flex items-center gap-3">
+<input class="w-4 h-4 accent-primary text-primary" name="video_codec" type="radio"/>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">H.264 / AVC High Profile</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Legacy maximum compatibility for older smart TVs and car infotainment dashboards.</p>
+</div>
+</div>
+</label>
+<label class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low hover:bg-surface-bright cursor-pointer transition-colors">
+<div class="flex items-center gap-3">
+<input class="w-4 h-4 accent-primary text-primary" name="video_codec" type="radio"/>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">AV1 (AOMedia SVT-AV1)</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-tertiary font-label-sm text-[10px]">NEXT-GEN</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Extreme compression ratio at equivalent visual fidelity. Heavy CPU pipeline.</p>
+</div>
+</div>
+</label>
+<label class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low hover:bg-surface-bright cursor-pointer transition-colors">
+<div class="flex items-center gap-3">
+<input class="w-4 h-4 accent-primary text-primary" name="video_codec" type="radio"/>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Apple ProRes 422 Proxy</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Intra-frame smooth editing scrub speed for NLE apps (DaVinci, Premiere Pro).</p>
+</div>
+</div>
+</label>
+</div>
+</div>
+</section>
+<!-- Section 2: Spatial & Temporal (Resolution & Framerate) -->
+<section class="w-full bg-surface-container rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">aspect_ratio</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Spatial &amp; Temporal Matrix</h2>
+</div>
+<span class="font-label-sm text-label-sm text-outline">Scale &amp; Timing</span>
+</div>
+<!-- Target Resolution Pills -->
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Output Target Resolution</label>
+<div class="grid grid-cols-3 gap-2">
+<button class="res-btn py-2 px-1 rounded-lg bg-surface-container-high text-on-surface text-center hover:bg-surface-bright transition-all">
+<span class="block font-label-md text-label-md font-semibold">Original</span>
+<span class="block font-label-sm text-[10px] text-outline">3840×2160</span>
+</button>
+<button class="res-btn py-2 px-1 rounded-lg bg-surface-container-high text-on-surface text-center hover:bg-surface-bright transition-all">
+<span class="block font-label-md text-label-md font-semibold">1440p QHD</span>
+<span class="block font-label-sm text-[10px] text-outline">2560×1440</span>
+</button>
+<button class="res-btn active py-2 px-1 rounded-lg bg-primary text-on-primary text-center transition-all shadow-sm">
+<span class="block font-label-md text-label-md font-semibold">1080p FHD</span>
+<span class="block font-label-sm text-[10px] opacity-90">1920×1080</span>
+</button>
+<button class="res-btn py-2 px-1 rounded-lg bg-surface-container-high text-on-surface text-center hover:bg-surface-bright transition-all">
+<span class="block font-label-md text-label-md font-semibold">720p HD</span>
+<span class="block font-label-sm text-[10px] text-outline">1280×720</span>
+</button>
+<button class="res-btn py-2 px-1 rounded-lg bg-surface-container-high text-on-surface text-center hover:bg-surface-bright transition-all">
+<span class="block font-label-md text-label-md font-semibold">540p qHD</span>
+<span class="block font-label-sm text-[10px] text-outline">960×540</span>
+</button>
+<button class="res-btn py-2 px-1 rounded-lg bg-surface-container-high text-on-surface text-center hover:bg-surface-bright transition-all flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]">settings</span>
+<span class="font-label-md text-label-md font-semibold">Custom</span>
+</button>
+</div>
+</div>
+<!-- Resampling Filter -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Downscale Resampling Filter</label>
+<span class="font-label-sm text-label-sm text-secondary font-medium">Sharp detail retention</span>
+</div>
+<div class="grid grid-cols-3 gap-2 bg-surface-container-lowest p-1 rounded-lg">
+<button class="py-1.5 rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all">Bicubic</button>
+<button class="py-1.5 rounded-md font-label-md text-label-md bg-surface-bright text-on-surface font-semibold shadow-sm transition-all">Lanczos (Sharp)</button>
+<button class="py-1.5 rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all">Bilinear</button>
+</div>
+</div>
+<!-- Framerate Selection -->
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Target Framerate</label>
+<div class="grid grid-cols-4 gap-2">
+<button class="fps-btn py-2 rounded-lg bg-surface-container-high text-on-surface text-center hover:bg-surface-bright transition-all">
+<span class="block font-label-md text-label-md font-semibold">Preserve</span>
+<span class="block font-label-sm text-[10px] text-outline">Native 60</span>
+</button>
+<button class="fps-btn active py-2 rounded-lg bg-primary text-on-primary text-center transition-all shadow-sm">
+<span class="block font-label-md text-label-md font-semibold">30 FPS</span>
+<span class="block font-label-sm text-[10px] opacity-90">Web Standard</span>
+</button>
+<button class="fps-btn py-2 rounded-lg bg-surface-container-high text-on-surface text-center hover:bg-surface-bright transition-all">
+<span class="block font-label-md text-label-md font-semibold">24 FPS</span>
+<span class="block font-label-sm text-[10px] text-outline">Cinematic</span>
+</button>
+<button class="fps-btn py-2 rounded-lg bg-surface-container-high text-on-surface text-center hover:bg-surface-bright transition-all">
+<span class="block font-label-md text-label-md font-semibold">15 FPS</span>
+<span class="block font-label-sm text-[10px] text-outline">Ultra Small</span>
+</button>
+</div>
+</div>
+<!-- Frame Rate Mode (CFR vs VFR) -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+<div>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Constant Frame Rate (CFR)</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Strict timestamp pacing prevents audio desync in premiere &amp; player apps</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</section>
+<!-- Section 3: Rate Control & Bitrate Pipeline -->
+<section class="w-full bg-surface-container rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">speed</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Rate Control &amp; Quality Curve</h2>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">CRF Engine</span>
+</div>
+<!-- Rate Control Mode -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-lowest p-1 rounded-lg">
+<button class="py-2 rounded-md font-label-md text-label-md bg-surface-bright text-on-surface font-semibold shadow-sm text-center">CRF (Constant)</button>
+<button class="py-2 rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface text-center">2-Pass VBR</button>
+<button class="py-2 rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface text-center">Strict CBR</button>
+</div>
+<!-- Interactive CRF Slider Component -->
+<div class="bg-surface-container-low rounded-lg p-space-md space-y-3">
+<div class="flex justify-between items-baseline">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Constant Rate Factor (CRF)</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-sm text-headline-sm text-primary font-bold" id="crf-val">24</span>
+<span class="font-label-sm text-label-sm text-secondary font-medium">(Visually Lossless)</span>
+</div>
+</div>
+<!-- Slider input with custom visual accent track -->
+<div class="relative flex items-center w-full">
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary focus:outline-none" id="crf-slider" max="38" min="14" step="1" type="range" value="24"/>
+</div>
+<div class="flex justify-between text-on-surface-variant font-label-sm text-[11px]">
+<span>CRF 14 (Near Uncompressed)</span>
+<span>CRF 28 (Aggressive Save)</span>
+<span>CRF 38 (Small)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant pt-1">
+        Lower CRF results in higher perceptual visual fidelity and increased payload. Recommended creator sweetspot: 20 – 26.
+      </p>
+</div>
+<!-- Target Video Bitrate Stepper -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+<div>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Video Peak Bitrate Cap</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Auto-capped against target resolution</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 rounded-md bg-surface-container-high hover:bg-surface-bright flex items-center justify-center text-on-surface font-bold text-lg active:scale-95 transition-transform" id="bitrate-dec">-</button>
+<span class="font-label-lg text-label-lg font-semibold text-primary min-w-[76px] text-center" id="bitrate-display">3,400 kbps</span>
+<button class="w-8 h-8 rounded-md bg-surface-container-high hover:bg-surface-bright flex items-center justify-center text-on-surface font-bold text-lg active:scale-95 transition-transform" id="bitrate-inc">+</button>
+</div>
+</div>
+<!-- Color Depth -->
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Chroma &amp; Color Depth Precision</label>
+<div class="grid grid-cols-2 gap-2">
+<button class="py-2.5 px-3 rounded-lg bg-surface-container-high text-on-surface text-left hover:bg-surface-bright transition-all">
+<span class="block font-label-md text-label-md font-semibold">8-bit Standard SDR</span>
+<span class="block font-label-sm text-label-sm text-outline">Rec. 709 Standard Gamut</span>
+</button>
+<button class="py-2.5 px-3 rounded-lg bg-primary text-on-primary text-left transition-all shadow-sm">
+<span class="block font-label-md text-label-md font-semibold">10-bit HDR (BT.2020)</span>
+<span class="block font-label-sm text-label-sm opacity-90">Banding Prevention Active</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Section 4: Audio Engine Stream -->
+<section class="w-full bg-surface-container rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">graphic_eq</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Audio Subsystem &amp; Channels</h2>
+</div>
+<span class="font-label-sm text-label-sm text-outline">Pass 1 Stream</span>
+</div>
+<!-- Audio Action Segmented Switch -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-lowest p-1 rounded-lg">
+<button class="py-2 rounded-md font-label-md text-label-md bg-surface-bright text-on-surface font-semibold shadow-sm text-center">Encode Audio</button>
+<button class="py-2 rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface text-center">Passthrough</button>
+<button class="py-2 rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface text-center">Mute / Strip</button>
+</div>
+<!-- Audio Codec + Channels Grid -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Codec Format</label>
+<div class="p-2.5 rounded-lg bg-surface-container-high flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-medium">AAC-LC</span>
+<span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Channels</label>
+<div class="p-2.5 rounded-lg bg-surface-container-high flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-medium">Stereo (2.0)</span>
+<span class="material-symbols-outlined text-outline text-[18px]">unfold_more</span>
+</div>
+</div>
+</div>
+<!-- Audio Bitrate Pills -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Audio Bitrate</label>
+<span class="font-label-sm text-label-sm text-outline">48.0 kHz Native</span>
+</div>
+<div class="grid grid-cols-4 gap-2">
+<button class="py-2 rounded-lg bg-surface-container-high text-on-surface text-center hover:bg-surface-bright font-label-md text-label-md transition-all">96k</button>
+<button class="py-2 rounded-lg bg-surface-container-high text-on-surface text-center hover:bg-surface-bright font-label-md text-label-md transition-all">128k</button>
+<button class="py-2 rounded-lg bg-primary text-on-primary font-semibold text-center shadow-sm font-label-md text-label-md transition-all">192k</button>
+<button class="py-2 rounded-lg bg-surface-container-high text-on-surface text-center hover:bg-surface-bright font-label-md text-label-md transition-all">320k</button>
+</div>
+</div>
+</section>
+<!-- Section 5: Advanced Pipeline & Optimization Flags -->
+<section class="w-full bg-surface-container rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">precision_manufacturing</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Pipeline &amp; Container Multiplexing</h2>
+</div>
+<div class="space-y-3">
+<!-- Two Pass Encoding -->
+<div class="flex items-start justify-between p-3 rounded-lg bg-surface-container-low gap-3">
+<div class="flex-1">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Two-Pass Global Analysis</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-highest text-on-surface-variant font-label-sm text-[10px]">+30s</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Scans temporal motion first for accurate macroblock bitrate distribution.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Fast Start (moov atom) -->
+<div class="flex items-start justify-between p-3 rounded-lg bg-surface-container-low gap-3">
+<div class="flex-1">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Fast Start (Front moov atom)</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Relocates file metadata index header to offset 0 for immediate playback in social &amp; web feeds.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Strip Video Metadata Privacy -->
+<div class="flex items-start justify-between p-3 rounded-lg bg-surface-container-low gap-3">
+<div class="flex-1">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Scrub Metadata &amp; Location Tags</span>
+<span class="px-1.5 py-0.2 rounded bg-secondary-container/25 text-secondary font-label-sm text-[10px] font-bold">PRIVACY</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Strips camera serial, EXIF timestamps, GPS coordinates, and gyro metadata.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<!-- Hardware Pipeline Info Pill -->
+<div class="flex items-center justify-between px-3 py-2 rounded-lg bg-surface-container-lowest">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[16px]">memory</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">Vulkan Color Matrix Shader Pipeline</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-bold">0ms COPY</span>
+</div>
+</div>
+</section>
+<!-- Sticky Bottom Controls Deck -->
+<div class="fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-xl pb-safe shadow-[0_-8px_24px_rgba(0,0,0,0.5)]">
+<div class="max-w-lg mx-auto p-margin space-y-2.5">
+<!-- Live Calculation Feedback Bar -->
+<div class="flex items-center justify-between px-3 py-2 rounded-lg bg-surface-container-highest text-on-surface shadow-inner">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">calculate</span>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md font-bold text-secondary">~210 MB</span>
+<span class="font-label-sm text-[11px] text-on-surface-variant line-through">1.4 GB</span>
+<span class="px-1.5 py-0.2 rounded-full bg-secondary-container/30 text-secondary font-label-sm text-[10px] font-bold">-85%</span>
+</div>
+<span class="font-label-sm text-[11px] text-on-surface-variant truncate">1080p30 • H.265 Main10 • 192k AAC</span>
+</div>
+</div>
+<button class="px-2.5 py-1.5 rounded bg-surface-bright hover:bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center gap-1 transition-all" id="save-preset-btn">
+<span class="material-symbols-outlined text-[14px]">bookmark_add</span>
+<span>Save Preset</span>
+</button>
+</div>
+<!-- Main Action Callout Button -->
+<div class="flex gap-2">
+<button class="w-full h-12 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg font-semibold flex items-center justify-center gap-2 active:scale-[0.98] transition-all shadow-md" id="apply-btn">
+<span>Apply Parameters &amp; Queue</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Local micro-interactions for advanced encoding parameters
+  const slider = document.getElementById('crf-slider');
+  const crfVal = document.getElementById('crf-val');
+  if (slider && crfVal) {
+    slider.addEventListener('input', (e) => {
+      crfVal.textContent = e.target.value;
+    });
+  }
+
+  // Bitrate Stepper
+  let currentBitrate = 3400;
+  const bitrateDisplay = document.getElementById('bitrate-display');
+  const incBtn = document.getElementById('bitrate-inc');
+  const decBtn = document.getElementById('bitrate-dec');
+
+  if (bitrateDisplay && incBtn && decBtn) {
+    incBtn.addEventListener('click', () => {
+      currentBitrate = Math.min(15000, currentBitrate + 200);
+      bitrateDisplay.textContent = currentBitrate.toLocaleString() + ' kbps';
+    });
+    decBtn.addEventListener('click', () => {
+      currentBitrate = Math.max(800, currentBitrate - 200);
+      bitrateDisplay.textContent = currentBitrate.toLocaleString() + ' kbps';
+    });
+  }
+
+  // Segmented interactive toggle state handlers
+  document.querySelectorAll('.format-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.format-chip').forEach(b => {
+        b.classList.remove('bg-primary', 'text-on-primary', 'active');
+        b.classList.add('bg-surface-container-high', 'text-on-surface');
+      });
+      btn.classList.add('bg-primary', 'text-on-primary', 'active');
+      btn.classList.remove('bg-surface-container-high', 'text-on-surface');
+    });
+  });
+
+  document.querySelectorAll('.res-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.res-btn').forEach(b => {
+        b.classList.remove('bg-primary', 'text-on-primary', 'active');
+        b.classList.add('bg-surface-container-high', 'text-on-surface');
+      });
+      btn.classList.add('bg-primary', 'text-on-primary', 'active');
+      btn.classList.remove('bg-surface-container-high', 'text-on-surface');
+    });
+  });
+
+  document.querySelectorAll('.fps-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.fps-btn').forEach(b => {
+        b.classList.remove('bg-primary', 'text-on-primary', 'active');
+        b.classList.add('bg-surface-container-high', 'text-on-surface');
+      });
+      btn.classList.add('bg-primary', 'text-on-primary', 'active');
+      btn.classList.remove('bg-surface-container-high', 'text-on-surface');
+    });
+  });
+
+  // Save preset micro feedback
+  const savePresetBtn = document.getElementById('save-preset-btn');
+  if (savePresetBtn) {
+    savePresetBtn.addEventListener('click', () => {
+      const originalText = savePresetBtn.innerHTML;
+      savePresetBtn.innerHTML = '<span class="material-symbols-outlined text-[14px] text-secondary">check</span><span class="text-secondary font-semibold">Saved</span>';
+      setTimeout(() => {
+        savePresetBtn.innerHTML = originalText;
+      }, 1800);
+    });
+  }
+
+  // Reset defaults micro-interaction
+  const resetBtn = document.getElementById('reset-defaults-btn');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      if (slider && crfVal) {
+        slider.value = 24;
+        crfVal.textContent = '24';
+      }
+      currentBitrate = 3400;
+      if (bitrateDisplay) {
+        bitrateDisplay.textContent = '3,400 kbps';
+      }
+    });
+  }
+</script></main></body></html>

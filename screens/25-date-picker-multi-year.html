@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_blank" name="shell-type"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'surface-container-lowest': '#ffffff', 'tertiary': '#784b00', 'surface-container-high': '#e2e7ff', 'on-secondary': '#ffffff', 'on-primary': '#ffffff', 'secondary': '#006e2f', 'surface-tint': '#0053db', 'surface-container-low': '#f2f3ff', 'primary-container': '#2563eb', 'on-secondary-fixed-variant': '#005321', 'primary': '#004ac6', 'surface-dim': '#d2d9f4', 'on-tertiary-container': '#ffeedd', 'secondary-container': '#6bff8f', 'on-background': '#131b2e', 'tertiary-fixed': '#ffddb8', 'inverse-surface': '#283044', 'background': '#faf8ff', 'on-primary-container': '#eeefff', 'on-secondary-fixed': '#002109', 'on-surface-variant': '#434655', 'tertiary-container': '#996100', 'on-secondary-container': '#007432', 'primary-fixed': '#dbe1ff', 'on-error-container': '#93000a', 'secondary-fixed': '#6bff8f', 'on-surface': '#131b2e', 'error': '#ba1a1a', 'surface-container': '#eaedff', 'outline': '#737686', 'surface': '#faf8ff', 'primary-fixed-dim': '#b4c5ff', 'on-primary-fixed': '#00174b', 'tertiary-fixed-dim': '#ffb95f', 'inverse-primary': '#b4c5ff', 'on-tertiary': '#ffffff', 'secondary-fixed-dim': '#4ae176', 'error-container': '#ffdad6', 'on-primary-fixed-variant': '#003ea8', 'on-error': '#ffffff', 'outline-variant': '#c3c6d7', 'on-tertiary-fixed': '#2a1700', 'surface-container-highest': '#dae2fd', 'inverse-on-surface': '#eef0ff', 'on-tertiary-fixed-variant': '#653e00', 'surface-bright': '#faf8ff', 'surface-variant': '#dae2fd' }, borderRadius: { DEFAULT: '0.25rem', lg: '0.5rem', xl: '0.75rem', full: '9999px' }, spacing: { 'space-md': '1rem', 'space-xs': '0.25rem', 'space-sm': '0.5rem', 'space-xl': '2rem', 'margin': '1rem', 'space-lg': '1.5rem', 'gutter': '1rem', 'gutter-sm': '0.5rem', 'margin-tablet': '1.5rem' }, fontFamily: { 'display-lg': ['Plus Jakarta Sans'], 'headline-md': ['Plus Jakarta Sans'], 'headline-lg': ['Plus Jakarta Sans'], 'label-sm': ['Inter'], 'body-sm': ['Inter'], 'display-md': ['Plus Jakarta Sans'], 'stat-numeric-md': ['Plus Jakarta Sans'], 'headline-sm': ['Plus Jakarta Sans'], 'body-md': ['Inter'], 'label-lg': ['Inter'], 'body-lg': ['Inter'], 'stat-numeric-lg': ['Plus Jakarta Sans'], 'label-md': ['Inter'] }, fontSize: { 'display-lg': ['40px', { lineHeight: '48px', letterSpacing: '-0.02em', fontWeight: '700' }], 'headline-md': ['22px', { lineHeight: '28px', fontWeight: '600' }], 'headline-lg': ['28px', { lineHeight: '36px', letterSpacing: '-0.01em', fontWeight: '600' }], 'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.04em', fontWeight: '600' }], 'body-sm': ['12px', { lineHeight: '16px', fontWeight: '400' }], 'display-md': ['32px', { lineHeight: '40px', letterSpacing: '-0.015em', fontWeight: '700' }], 'stat-numeric-md': ['20px', { lineHeight: '24px', letterSpacing: '-0.01em', fontWeight: '700' }], 'headline-sm': ['18px', { lineHeight: '24px', fontWeight: '600' }], 'body-md': ['14px', { lineHeight: '20px', fontWeight: '400' }], 'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.01em', fontWeight: '600' }], 'body-lg': ['16px', { lineHeight: '24px', fontWeight: '400' }], 'stat-numeric-lg': ['30px', { lineHeight: '34px', letterSpacing: '-0.02em', fontWeight: '800' }], 'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.02em', fontWeight: '500' }] } } } }</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-on-surface/30 font-body-md text-body-md text-on-surface flex flex-col min-h-screen"><div class="fixed inset-0 bg-[#0f172a]/30 backdrop-blur-[2px] z-40 transition-opacity" onclick="history.back()"></div><section class="fixed inset-x-0 bottom-0 z-50 max-h-[751px] flex flex-col bg-surface-container-lowest rounded-t-[28px] shadow-[0_4px_20px_rgba(15,23,42,0.08)] pb-safe"><div class="w-full flex items-center justify-center pt-3 pb-2"><div class="w-9 h-1 rounded-full bg-outline-variant/60"></div></div><div class="h-14 px-margin flex items-center justify-between shrink-0"><h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">Select Year</h2><button aria-label="Close dialog" class="w-11 h-11 -mr-2 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-low transition-colors" onclick="history.back()"><span class="material-symbols-outlined text-[20px]">close</span></button></div><main class="flex-1 overflow-y-auto px-margin py-space-sm bg-surface-container-lowest"><div class="flex flex-col w-full pb-4 space-y-4">
+<!-- Offline Engine Micro Banner -->
+<div class="flex items-center justify-between px-3 py-2 rounded-xl bg-surface-container-low text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm font-semibold tracking-wide">100% DEVICE-LOCAL ENGINE</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">speed</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">GPU ACCELERATED</span>
+</div>
+</div>
+<!-- Timeline Summary Card (Bento Style) -->
+<div class="p-3.5 rounded-2xl bg-surface-container shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">history_toggle_off</span>
+</div>
+<div>
+<h3 class="font-label-lg text-label-lg font-bold text-on-surface">Device Archive Timeline</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">5 Years Indexed (2020 – 2024)</p>
+</div>
+</div>
+<div class="px-2 py-1 rounded-full bg-surface-container-lowest shadow-sm flex items-center gap-1">
+<span class="font-label-sm text-label-sm text-secondary font-bold">98.4 GB Total</span>
+</div>
+</div>
+<!-- Storage Distribution Bar -->
+<div class="space-y-1.5 pt-1">
+<div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden flex">
+<div class="h-full bg-primary-container" style="width: 42.8%;" title="2024 (42.1 GB)"></div>
+<div class="h-full bg-primary" style="width: 28.8%;" title="2023 (28.4 GB)"></div>
+<div class="h-full bg-primary-fixed-dim" style="width: 15.8%;" title="2022 (15.6 GB)"></div>
+<div class="h-full bg-surface-dim" style="width: 8.3%;" title="2021 (8.2 GB)"></div>
+<div class="h-full bg-outline-variant" style="width: 4.3%;" title="2020 (4.1 GB)"></div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span>312 Vault Clips</span>
+<span class="text-secondary font-semibold">~68.2 GB Reclaim Potential (69%)</span>
+</div>
+</div>
+</div>
+<!-- Filter & Shortcut Chips -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 -mx-margin px-margin no-scrollbar">
+<button class="year-filter-chip shrink-0 px-3 py-1.5 rounded-full bg-primary-container text-on-primary font-label-md text-label-md flex items-center gap-1.5 shadow-sm transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">all_inclusive</span>
+<span>All Years (312)</span>
+</button>
+<button class="year-filter-chip shrink-0 px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-1.5 hover:bg-surface-container transition-all" type="button">
+<span class="material-symbols-outlined text-[16px] text-tertiary">local_fire_department</span>
+<span>Heaviest (2024 • 42.1 GB)</span>
+</button>
+<button class="year-filter-chip shrink-0 px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-1.5 hover:bg-surface-container transition-all" type="button">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">folder_zip</span>
+<span>Archived (&gt; 2 yrs)</span>
+</button>
+</div>
+<!-- Multi-Year Scrollable Card List -->
+<div class="flex flex-col space-y-3" id="yearListContainer">
+<!-- 2024 (Active / Selected Card) -->
+<div class="year-card active relative p-4 rounded-2xl bg-surface-container-lowest shadow-md transition-all cursor-pointer" data-clips="124" data-size="42.1" data-year="2024">
+<div class="flex items-start justify-between">
+<div class="flex items-baseline gap-2">
+<span class="font-stat-numeric-lg text-stat-numeric-lg text-primary tracking-tight">2024</span>
+<span class="px-2 py-0.5 rounded-md bg-primary-fixed text-primary font-label-sm text-label-sm font-bold">Current Year</span>
+</div>
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+</div>
+<div class="mt-2 grid grid-cols-2 gap-2">
+<div class="p-2 rounded-xl bg-surface-container-low">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Indexed Media</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">124 <span class="font-body-sm text-body-sm font-normal text-on-surface-variant">videos</span></span>
+</div>
+<div class="p-2 rounded-xl bg-surface-container-low">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Footprint</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">42.1 <span class="font-body-sm text-body-sm font-normal text-on-surface-variant">GB</span></span>
+</div>
+</div>
+<!-- Savable Optimization Delta -->
+<div class="mt-3 p-2.5 rounded-xl bg-secondary-fixed/40 flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-secondary">compress</span>
+<span class="font-label-md text-label-md text-on-secondary-fixed-variant font-semibold">Savable with AV1/HEVC:</span>
+</div>
+<span class="font-stat-numeric-md text-stat-numeric-md text-secondary font-bold">~29.5 GB (70%)</span>
+</div>
+<!-- Relative Visual Gauge -->
+<div class="mt-2.5 space-y-1">
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>Relative Storage Allocation</span>
+<span>43% of total library</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full rounded-full bg-primary-container" style="width: 43%;"></div>
+</div>
+</div>
+</div>
+<!-- 2023 Card -->
+<div class="year-card relative p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all cursor-pointer" data-clips="86" data-size="28.4" data-year="2023">
+<div class="flex items-start justify-between">
+<div class="flex items-baseline gap-2">
+<span class="font-stat-numeric-lg text-stat-numeric-lg text-on-surface tracking-tight">2023</span>
+<span class="px-2 py-0.5 rounded-md bg-tertiary-fixed text-tertiary font-label-sm text-label-sm font-bold">34 4K HDR Clips</span>
+</div>
+<div class="text-on-surface-variant flex items-center gap-0.5 font-label-md text-label-md">
+<span>Select</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+<div class="mt-2 flex items-center justify-between text-on-surface-variant">
+<div class="flex items-center gap-4">
+<div>
+<span class="font-stat-numeric-md text-stat-numeric-md font-bold text-on-surface">86</span>
+<span class="font-body-sm text-body-sm"> clips</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-outline-variant"></div>
+<div>
+<span class="font-stat-numeric-md text-stat-numeric-md font-bold text-on-surface">28.4</span>
+<span class="font-body-sm text-body-sm"> GB</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm font-bold text-secondary bg-secondary-container/40 px-2 py-0.5 rounded">~19.8 GB Savable</span>
+</div>
+<div class="mt-3 w-full h-1.5 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 29%;"></div>
+</div>
+</div>
+<!-- 2022 Card -->
+<div class="year-card relative p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all cursor-pointer" data-clips="54" data-size="15.6" data-year="2022">
+<div class="flex items-start justify-between">
+<div class="flex items-baseline gap-2">
+<span class="font-stat-numeric-lg text-stat-numeric-lg text-on-surface tracking-tight">2022</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-medium">1080p Archive</span>
+</div>
+<div class="text-on-surface-variant flex items-center gap-0.5 font-label-md text-label-md">
+<span>Select</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+<div class="mt-2 flex items-center justify-between text-on-surface-variant">
+<div class="flex items-center gap-4">
+<div>
+<span class="font-stat-numeric-md text-stat-numeric-md font-bold text-on-surface">54</span>
+<span class="font-body-sm text-body-sm"> clips</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-outline-variant"></div>
+<div>
+<span class="font-stat-numeric-md text-stat-numeric-md font-bold text-on-surface">15.6</span>
+<span class="font-body-sm text-body-sm"> GB</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm font-bold text-secondary bg-secondary-container/40 px-2 py-0.5 rounded">~10.5 GB Savable</span>
+</div>
+<div class="mt-3 w-full h-1.5 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full rounded-full bg-primary-fixed-dim" style="width: 16%;"></div>
+</div>
+</div>
+<!-- 2021 Card -->
+<div class="year-card relative p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all cursor-pointer" data-clips="31" data-size="8.2" data-year="2021">
+<div class="flex items-start justify-between">
+<div class="flex items-baseline gap-2">
+<span class="font-stat-numeric-lg text-stat-numeric-lg text-on-surface tracking-tight">2021</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm font-medium">Standard Bitrate</span>
+</div>
+<div class="text-on-surface-variant flex items-center gap-0.5 font-label-md text-label-md">
+<span>Select</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+<div class="mt-2 flex items-center justify-between text-on-surface-variant">
+<div class="flex items-center gap-4">
+<div>
+<span class="font-stat-numeric-md text-stat-numeric-md font-bold text-on-surface">31</span>
+<span class="font-body-sm text-body-sm"> clips</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-outline-variant"></div>
+<div>
+<span class="font-stat-numeric-md text-stat-numeric-md font-bold text-on-surface">8.2</span>
+<span class="font-body-sm text-body-sm"> GB</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm font-bold text-secondary bg-secondary-container/40 px-2 py-0.5 rounded">~5.4 GB Savable</span>
+</div>
+<div class="mt-3 w-full h-1.5 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full rounded-full bg-surface-dim" style="width: 8%;"></div>
+</div>
+</div>
+<!-- 2020 Card -->
+<div class="year-card relative p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all cursor-pointer" data-clips="17" data-size="4.1" data-year="2020">
+<div class="flex items-start justify-between">
+<div class="flex items-baseline gap-2">
+<span class="font-stat-numeric-lg text-stat-numeric-lg text-on-surface tracking-tight">2020</span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-semibold">Legacy Media Vault</span>
+</div>
+<div class="text-on-surface-variant flex items-center gap-0.5 font-label-md text-label-md">
+<span>Select</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</div>
+</div>
+<div class="mt-2 flex items-center justify-between text-on-surface-variant">
+<div class="flex items-center gap-4">
+<div>
+<span class="font-stat-numeric-md text-stat-numeric-md font-bold text-on-surface">17</span>
+<span class="font-body-sm text-body-sm"> clips</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-outline-variant"></div>
+<div>
+<span class="font-stat-numeric-md text-stat-numeric-md font-bold text-on-surface">4.1</span>
+<span class="font-body-sm text-body-sm"> GB</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm font-bold text-secondary bg-secondary-container/40 px-2 py-0.5 rounded">~2.7 GB Savable</span>
+</div>
+<div class="mt-3 w-full h-1.5 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full rounded-full bg-outline-variant" style="width: 4%;"></div>
+</div>
+</div>
+<!-- Older / 2019 & Before Jump Tile -->
+<div class="p-3.5 rounded-2xl bg-surface-container-low flex items-center justify-between cursor-pointer hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-surface-container-highest flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">folder_special</span>
+</div>
+<div>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold block">Older (2019 &amp; Earlier)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Scan deeply nested external SD card directories</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">arrow_forward</span>
+</div>
+</div>
+<!-- Dynamic Active Confirmation Banner -->
+<div class="p-3 rounded-xl bg-primary-fixed/50 flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[20px]">info</span>
+<p class="font-body-sm text-body-sm text-on-surface font-medium">
+      Selecting a year filters your batch compression picker into chronological month segments.
+    </p>
+</div>
+</div>
+<script>
+  (function initYearSelector() {
+    const cards = document.querySelectorAll('.year-card');
+    const footerConfirmBtn = document.querySelector('footer button:last-child');
+
+    function setSelectedYear(card) {
+      cards.forEach(c => {
+        c.classList.remove('active', 'bg-surface-container-lowest', 'shadow-md');
+        c.classList.add('bg-surface-container-lowest', 'shadow-sm');
+        
+        // Reset year text color
+        const yearNum = c.querySelector('.font-stat-numeric-lg');
+        if (yearNum) {
+          yearNum.classList.remove('text-primary');
+          yearNum.classList.add('text-on-surface');
+        }
+
+        // Reset checkmark / chevron
+        const indicator = c.querySelector('.material-symbols-outlined');
+        if (indicator && (indicator.innerText === 'check' || indicator.innerText === 'chevron_right')) {
+          const parentIndicator = indicator.parentElement;
+          parentIndicator.className = "text-on-surface-variant flex items-center gap-0.5 font-label-md text-label-md";
+          parentIndicator.innerHTML = `<span>Select</span><span class="material-symbols-outlined text-[16px]">chevron_right</span>`;
+        }
+      });
+
+      // Activate current
+      card.classList.add('active', 'shadow-md');
+      const yearNum = card.querySelector('.font-stat-numeric-lg');
+      if (yearNum) {
+        yearNum.classList.remove('text-on-surface');
+        yearNum.classList.add('text-primary');
+      }
+
+      const topCorner = card.children[0].children[1];
+      if (topCorner) {
+        topCorner.className = "w-6 h-6 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-sm";
+        topCorner.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span>';
+      }
+
+      const year = card.getAttribute('data-year');
+      if (footerConfirmBtn) {
+        footerConfirmBtn.textContent = `Confirm Year (${year}) →`;
+      }
+    }
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => setSelectedYear(card));
+    });
+
+    // Chip click interactions
+    const chips = document.querySelectorAll('.year-filter-chip');
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => {
+          c.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-sm');
+          c.classList.add('bg-surface-container-low', 'text-on-surface');
+        });
+        chip.classList.remove('bg-surface-container-low', 'text-on-surface');
+        chip.classList.add('bg-primary-container', 'text-on-primary', 'shadow-sm');
+      });
+    });
+  })();
+</script></main><footer class="shrink-0 px-margin py-space-md bg-surface-container-lowest shadow-[0_-1px_10px_rgba(0,0,0,0.03)] flex items-center gap-space-sm"><button class="flex-1 h-12 px-space-md rounded-xl font-label-lg text-label-lg text-primary bg-primary-fixed hover:bg-primary-fixed-dim transition-colors flex items-center justify-center" onclick="history.back()" type="button">Cancel</button><button class="flex-1 h-12 px-space-md rounded-xl font-label-lg text-label-lg text-on-primary bg-primary-container hover:bg-primary transition-colors flex items-center justify-center font-bold" type="button">Jump to Date</button></footer></section></body></html>

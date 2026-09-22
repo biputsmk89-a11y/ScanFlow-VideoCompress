@@ -1,0 +1,43 @@
+*.iml
+.gradle
+/local.properties
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+.kotlin
+
+# Built application files
+*.apk
+*.aar
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+app/build/
+build/
+
+# Android Studio Navigation editor temp files
+.navigation/
+
+# Google Services (Firebase)
+# google-services.json
+
+# Signing files
+*.jks
+*.keystore
+
+# Keystore credentials
+keystore.properties
+signing.properties

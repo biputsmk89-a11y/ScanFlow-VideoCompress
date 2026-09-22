@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-container": "#eaedff", "on-background": "#131b2e", "on-error": "#ffffff", "primary": "#004ac6", "surface-dim": "#d2d9f4", "surface-container-low": "#f2f3ff", "secondary": "#006e2f", "surface-container-lowest": "#ffffff", "on-primary-fixed": "#00174b", "surface-tint": "#0053db", "primary-fixed": "#dbe1ff", "surface-bright": "#faf8ff", "on-tertiary-fixed-variant": "#653e00", "inverse-primary": "#b4c5ff", "primary-container": "#2563eb", "primary-fixed-dim": "#b4c5ff", "tertiary-container": "#996100", "on-secondary-fixed": "#002109", "on-primary-fixed-variant": "#003ea8", "inverse-on-surface": "#eef0ff", "tertiary": "#784b00", "tertiary-fixed-dim": "#ffb95f", "surface-container-highest": "#dae2fd", "background": "#faf8ff", "on-surface-variant": "#434655", "on-secondary": "#ffffff", "error-container": "#ffdad6", "inverse-surface": "#283044", "outline-variant": "#c3c6d7", "surface": "#faf8ff", "outline": "#737686", "secondary-container": "#6bff8f", "on-secondary-container": "#007432", "error": "#ba1a1a", "on-secondary-fixed-variant": "#005321", "surface-variant": "#dae2fd", "on-primary-container": "#eeefff", "on-tertiary-container": "#ffeedd", "on-primary": "#ffffff", "tertiary-fixed": "#ffddb8", "on-tertiary-fixed": "#2a1700", "on-surface": "#131b2e", "on-tertiary": "#ffffff", "on-error-container": "#93000a", "secondary-fixed": "#6bff8f", "surface-container-high": "#e2e7ff", "secondary-fixed-dim": "#4ae176" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-sm": "0.5rem", "space-xs": "0.25rem", "space-lg": "1.5rem", "space-xl": "2rem", "gutter": "1rem", "gutter-sm": "0.5rem", "margin": "1rem", "space-md": "1rem", "margin-tablet": "1.5rem" }, fontFamily: { "label-lg": ["Inter"], "label-sm": ["Inter"], "display-lg": ["Plus Jakarta Sans"], "stat-numeric-md": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-lg": ["Inter"], "label-md": ["Inter"], "headline-lg": ["Plus Jakarta Sans"], "body-md": ["Inter"], "body-sm": ["Inter"], "stat-numeric-lg": ["Plus Jakarta Sans"], "display-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"] }, fontSize: { "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "stat-numeric-md": ["20px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }], "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "stat-numeric-lg": ["30px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "display-md": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }] } } } }</script><style>@layer base { html, body { width: 100vw; margin: 0; padding: 0; } body { overscroll-behavior: none; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } } ::-webkit-scrollbar { display: none; }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-gutter flex items-center justify-between"><div class="flex items-center gap-space-sm"><button aria-label="Dismiss" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors" onclick="history.back()" type="button"><span class="material-symbols-outlined text-[24px]">close</span></button><h1 class="font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">Quality Comparison</h1></div><div class="flex items-center gap-space-sm"><button aria-label="Clip Info" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container active:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">info</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0 shadow-sm"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface"><div class="flex flex-col w-full pb-6">
+<!-- Top Context Bar: Clip Switcher & VMAF Hero Status -->
+<div class="px-gutter pt-3 pb-2 flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<button class="flex items-center gap-space-xs px-3 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high transition-colors max-w-[260px]" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary" style="font-variation-settings: 'FILL' 1;">movie</span>
+<span class="font-label-lg text-label-lg text-on-surface truncate">Lake_Kayak_Action.mp4</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-lowest px-1.5 py-0.5 rounded">4K</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+</button>
+<div class="flex items-center gap-1.5 bg-surface-container-low px-2.5 py-1 rounded-full">
+<div class="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">100% On-Device</span>
+</div>
+</div>
+<!-- Telemetry Pill & Mode Toggles -->
+<div class="flex items-center justify-between mt-1">
+<div class="flex items-center gap-1.5 bg-secondary-container/40 text-on-secondary-container px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span class="font-label-sm text-label-sm font-semibold tracking-wide">VMAF 96.8 • Visually Lossless</span>
+</div>
+<div class="flex items-center bg-surface-container rounded-lg p-0.5">
+<button class="px-2.5 py-1 rounded-md bg-primary-container text-on-primary font-label-sm text-label-sm shadow-sm transition-all" id="btn-split" type="button">Split</button>
+<button class="px-2.5 py-1 rounded-md text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-all" id="btn-2up" type="button">2-Up</button>
+<button class="px-2 py-1 rounded-md text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-all" id="btn-toggle" type="button">A/B</button>
+</div>
+</div>
+</div>
+<!-- Interactive Comparison Frame -->
+<div class="px-gutter my-2">
+<div class="relative w-full aspect-[16/10] rounded-xl overflow-hidden shadow-md select-none bg-inverse-surface cursor-ew-resize" id="compare-stage">
+<!-- Right Side: COMPRESSED Layer (Underneath base layer) -->
+<div class="absolute inset-0 w-full h-full overflow-hidden">
+<img class="w-full h-full object-cover select-none pointer-events-none" data-alt="Ultra high definition crystal clear 4K alpine glacial lake framed by emerald evergreen pine trees and jagged granite mountain summits, a solo kayaker in a vivid red hard-shell kayak cutting through sparkling aquamarine turquoise water throwing sharp, sun-drenched water spray beads into the crisp mountain air with precise digital compression clarity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEwVLZ6CowonaQybe2mepyEs8B5DxqOBFAqaaNcyatH6YviV_QoWCQndRMFsWDIjiHhjMHodehmwQASvqB2u5-y-8zpicfQqnCfZBL-YjQnwUoQCughdMjeuJZfuzWV0N0pBtxgWDs4F4fO0j6uq5-QphZ0mabP6vqdbWIGiV6ypj7lJPFec-1XvA26143vVrm3aVLP387BI4bTv_1IcayGrCHzvdbOXKHxvrFmry3JNrfiummVqBadg"/>
+<!-- Compressed Meta Badge -->
+<div class="absolute top-2.5 right-2.5 z-10 flex flex-col items-end gap-1">
+<div class="flex items-center gap-1 px-2 py-0.5 rounded bg-inverse-surface/85 backdrop-blur-md text-inverse-on-surface shadow-sm">
+<span class="font-label-sm text-label-sm tracking-wider font-semibold text-secondary-fixed">HEVC 11.2 Mbps</span>
+</div>
+<div class="flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary text-on-secondary shadow-sm">
+<span class="font-label-sm text-label-sm">118 MB (-77%)</span>
+</div>
+</div>
+</div>
+<!-- Left Side: ORIGINAL Layer (Clipped via dynamic width) -->
+<div class="absolute inset-0 h-full overflow-hidden" id="original-clip-wrapper" style="width: 52%;">
+<div class="relative w-full h-full" id="original-inner-stage" style="width: 358px;">
+<img class="absolute top-0 left-0 h-full object-cover max-w-none select-none pointer-events-none" data-alt="Raw uncompressed 4K master camera capture of an adventurous lone kayaker paddling vigorously through deep turquoise pristine glacial lake waters surrounded by steep granite rock faces and dense alpine pine forest, vivid red kayak carving through reflective sunlight ripples and airborne water splashes in natural cinema daylight" id="original-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDK9YgWitGw-Os0xPFHoxrTFOwN-It2gaFPE0mITc4vB4Un7SqCHMGlQiq8DiIRnbvrK7TP8Z-3ZRFUsKaPhpobgpc_vLX5e3z4dnL5fZVOm7TxJ5RpDfweEmR-9ceyFvjnDkdxFS9J7cw_0nWsWbejPPf3PmHpWmrOPErTdGJyKWF19LcsKCLGabQLm88lRFsfkVCzgHX5ZEMlZ7O-SDXSYZiziF4dAsviDIDeqCgf442fU4wrVI6SGw" style="width: 358px;"/>
+</div>
+<!-- Original Meta Badge -->
+<div class="absolute top-2.5 left-2.5 z-10 flex flex-col items-start gap-1 pointer-events-none">
+<div class="flex items-center gap-1 px-2 py-0.5 rounded bg-inverse-surface/85 backdrop-blur-md text-inverse-on-surface shadow-sm">
+<span class="font-label-sm text-label-sm tracking-wider font-semibold text-primary-fixed">ORIGINAL ProRes</span>
+</div>
+<div class="flex items-center gap-1 px-1.5 py-0.5 rounded bg-surface-container-highest/90 text-on-surface shadow-sm">
+<span class="font-label-sm text-label-sm">510 MB • 42.4 Mbps</span>
+</div>
+</div>
+</div>
+<!-- Center Split Drag Line & Handle -->
+<div class="absolute top-0 bottom-0 z-20 flex items-center justify-center -translate-x-1/2 cursor-ew-resize" id="split-handle" style="left: 52%;">
+<div class="w-[2px] h-full bg-white shadow-[0_0_8px_rgba(0,0,0,0.6)]"></div>
+<div class="absolute w-8 h-8 rounded-full bg-primary-container text-on-primary shadow-lg flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px]">code</span>
+</div>
+</div>
+<!-- Live 200% Pixel Inspection Loupe (Corner Callout) -->
+<div class="absolute bottom-2.5 left-2.5 z-10 flex items-center gap-2 bg-inverse-surface/90 backdrop-blur-md text-inverse-on-surface px-2.5 py-1.5 rounded-lg shadow-md">
+<div class="w-8 h-8 rounded-md overflow-hidden relative shadow-inner bg-black flex-shrink-0">
+<img class="w-full h-full object-cover scale-150" data-alt="Extreme macro 200 percent pixel zoom cutout showing hyper-fine water droplets and micro-texture ripples against emerald water, clean edge integrity without pixelation or macroblocking artifacts" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_tyIm2NEO8pyq3pyvBfekrwdJ8wmMohrKNayb00h_76JU47P7qCS8x8Ou1tp_VK6zFyIbidDNw6mdRNGSiOG0HUvp7l4AxHelV9Uq8LJ4iAhGil3VZr-tvNVujPHwXQk7uwaGEnR0BDGBHlB94TLAT1Qc1gWyXJdcd6yjeiVlskcLzhFkphEA1t39plALAOvHG-rsyWUesZFIQ15MMWvkRNeTcLKL4zDfpGo8KL2KuIX4kx7bsG7zqw"/>
+<div class="absolute inset-0 border border-primary-container/60 rounded-md"></div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-semibold flex items-center gap-1 text-primary-fixed">
+<span class="material-symbols-outlined text-[13px]">zoom_in</span> 200% Macro Loupe
+          </span>
+<span class="font-body-sm text-body-sm text-surface-variant text-[10px] leading-tight">No macroblocking in spray</span>
+</div>
+</div>
+<!-- Sync Frame Indicator -->
+<div class="absolute bottom-2.5 right-2.5 z-10 px-2 py-1 rounded bg-inverse-surface/80 backdrop-blur-md flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-inverse-on-surface text-[10px]">60.00 FPS Synced</span>
+</div>
+</div>
+</div>
+<!-- Playback Scrubber & Precision Timeline Control -->
+<div class="px-gutter mt-2 mb-3">
+<div class="bg-surface-container-lowest rounded-xl p-3.5 shadow-sm flex flex-col gap-2.5">
+<!-- Time & Frame Meta -->
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">timer</span>
+<span class="font-bold text-on-surface">00:38.16</span>
+<span>/</span>
+<span>00:58.00</span>
+</div>
+<div class="flex items-center gap-1 px-2 py-0.5 bg-surface-container rounded font-mono text-[11px] text-on-surface">
+<span>Frame 2,289</span>
+<span class="text-on-surface-variant">/ 3,480</span>
+</div>
+</div>
+<!-- Timeline Bar with Keyframe Markers -->
+<div class="relative w-full h-5 flex items-center cursor-pointer" id="scrubber-track">
+<div class="w-full h-2 rounded-full bg-surface-container-high relative overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 65%;"></div>
+<!-- Motion Heatmap highlights inside scrubber track -->
+<div class="absolute top-0 bottom-0 left-[20%] w-3 bg-tertiary/40"></div>
+<div class="absolute top-0 bottom-0 left-[45%] w-4 bg-tertiary/50"></div>
+<div class="absolute top-0 bottom-0 left-[62%] w-6 bg-tertiary-container/60"></div>
+</div>
+<!-- Playhead Handle -->
+<div class="absolute left-[65%] -translate-x-1/2 w-4 h-4 rounded-full bg-primary shadow-md flex items-center justify-center">
+<div class="w-1.5 h-1.5 rounded-full bg-surface-container-lowest"></div>
+</div>
+</div>
+<!-- Keyframe Indicators Legend -->
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-0.5">
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+<span>High-Motion Zone (P-Frame Surge)</span>
+</div>
+<span class="font-mono text-[10px] text-outline">IDR Keyframe @ 00:30</span>
+</div>
+<!-- Transport Controls -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1">
+<button aria-label="Step Back 1 Frame" class="h-8 px-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center gap-1 active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+<span>-1F</span>
+</button>
+<button aria-label="Step Forward 1 Frame" class="h-8 px-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center gap-1 active:scale-95 transition-transform" type="button">
+<span>+1F</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<!-- Central Play / Pause Button -->
+<button class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md active:scale-95 transition-all" id="playback-toggle" type="button">
+<span class="material-symbols-outlined text-[22px]" id="play-icon">play_arrow</span>
+</button>
+<!-- Speed & Loop Switchers -->
+<div class="flex items-center gap-1">
+<button class="h-8 px-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[15px]">slow_motion_video</span>
+<span>0.25x</span>
+</button>
+<button aria-label="Toggle Synced Loop" class="h-8 w-8 rounded-lg bg-primary-fixed text-on-primary-fixed flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Telemetry & Fidelity Metrics Grid -->
+<div class="px-gutter mb-3">
+<div class="flex items-center justify-between mb-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Fidelity Telemetry</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary">memory</span> Hardware Accel (MediaCodec)
+      </span>
+</div>
+<!-- 4-Stat Metric Cards -->
+<div class="grid grid-cols-2 gap-2.5">
+<!-- Metric 1: VMAF -->
+<div class="bg-surface-container-lowest p-3 rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm font-medium">VMAF Score</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
+</div>
+<div class="my-1 flex items-baseline gap-1">
+<span class="font-stat-numeric-lg text-stat-numeric-lg text-secondary">96.8</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">/ 100</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 96.8%;"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px] mt-1">Visually indistinguishable</span>
+</div>
+<!-- Metric 2: PSNR -->
+<div class="bg-surface-container-lowest p-3 rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm font-medium">Peak SNR</span>
+<span class="material-symbols-outlined text-[16px] text-primary">equalizer</span>
+</div>
+<div class="my-1 flex items-baseline gap-1">
+<span class="font-stat-numeric-lg text-stat-numeric-lg text-on-surface">44.2</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">dB</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 88%;"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px] mt-1">Broadcast Studio Grade</span>
+</div>
+<!-- Metric 3: Structural Similarity (SSIM) -->
+<div class="bg-surface-container-lowest p-3 rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm font-medium">SSIM Accuracy</span>
+<span class="material-symbols-outlined text-[16px] text-primary">grid_4x4</span>
+</div>
+<div class="my-1 flex items-baseline gap-1">
+<span class="font-stat-numeric-lg text-stat-numeric-lg text-on-surface">0.989</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">/ 1.0</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 98.9%;"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px] mt-1">High structural consistency</span>
+</div>
+<!-- Metric 4: Bitrate Reduction -->
+<div class="bg-surface-container-lowest p-3 rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm font-medium">Stream Bitrate</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">speed</span>
+</div>
+<div class="my-1 flex items-baseline gap-1">
+<span class="font-stat-numeric-lg text-stat-numeric-lg text-secondary">-73.6%</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 73.6%;"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px] mt-1">42.4 → 11.2 Mbps</span>
+</div>
+</div>
+</div>
+<!-- Comparison Delta Card -->
+<div class="px-gutter mb-3">
+<div class="bg-surface-container-lowest rounded-xl p-3.5 shadow-sm">
+<div class="flex items-center justify-between pb-3">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Estimated Storage Saving</span>
+<span class="font-headline-md text-headline-md text-secondary tracking-tight">Reclaim 392 MB</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-secondary-container/40 flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-[24px]">cloud_done</span>
+</div>
+</div>
+<!-- Comparative Breakdown Rows -->
+<div class="space-y-2 pt-1">
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">videocam</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Original Stream</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px]">ProRes 422 HQ • 10-bit Rec.709</span>
+</div>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface">510 MB</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-secondary-container/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary">tune</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-secondary-container font-semibold">Compressed (Target)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px]">H.265 / HEVC CRF 22 • AAC Passthrough</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-label-lg text-secondary font-bold">118 MB</span>
+<span class="px-1.5 py-0.2 rounded bg-secondary text-on-secondary font-label-sm text-label-sm text-[10px]">-77%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Actions -->
+<div class="sticky bottom-0 left-0 right-0 p-gutter bg-surface/95 backdrop-blur-md shadow-[0_-4px_16px_rgba(0,0,0,0.04)] mt-2">
+<div class="flex flex-col gap-2">
+<!-- Primary Save Action -->
+<button class="w-full h-12 rounded-xl bg-primary-container hover:bg-primary text-on-primary flex items-center justify-center gap-2 font-label-lg text-label-lg shadow-md active:scale-[0.99] transition-all" type="button">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+<span>Accept &amp; Keep Compressed (Save 392 MB)</span>
+</button>
+<!-- Secondary Adjust Parameters -->
+<button class="w-full h-10 rounded-xl bg-surface-container text-primary hover:bg-surface-container-high flex items-center justify-center gap-2 font-label-lg text-label-lg transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+<span>Fine-tune Bitrate &amp; Codec Settings</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+  // Split Slider Touch / Mouse Drag Logic
+  (function initSplitSlider() {
+    const stage = document.getElementById('compare-stage');
+    const clipWrapper = document.getElementById('original-clip-wrapper');
+    const splitHandle = document.getElementById('split-handle');
+    const originalStage = document.getElementById('original-inner-stage');
+    const originalImg = document.getElementById('original-img');
+    const playBtn = document.getElementById('playback-toggle');
+    const playIcon = document.getElementById('play-icon');
+
+    if (!stage || !clipWrapper || !splitHandle) return;
+
+    let isDragging = false;
+
+    function updateSplitWidth(clientX) {
+      const rect = stage.getBoundingClientRect();
+      const rawX = clientX - rect.left;
+      const clampedX = Math.max(0, Math.min(rawX, rect.width));
+      const percentage = (clampedX / rect.width) * 100;
+
+      clipWrapper.style.width = percentage + '%';
+      splitHandle.style.left = percentage + '%';
+      
+      // Keep original image width anchored to stage total width so frames stay aligned
+      if (originalStage) originalStage.style.width = rect.width + 'px';
+      if (originalImg) originalImg.style.width = rect.width + 'px';
+    }
+
+    function syncStageDimensions() {
+      const rect = stage.getBoundingClientRect();
+      if (originalStage) originalStage.style.width = rect.width + 'px';
+      if (originalImg) originalImg.style.width = rect.width + 'px';
+    }
+
+    window.addEventListener('resize', syncStageDimensions);
+    syncStageDimensions();
+
+    stage.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      updateSplitWidth(e.clientX);
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      updateSplitWidth(e.clientX);
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    stage.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      if (e.touches.length > 0) updateSplitWidth(e.touches[0].clientX);
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      if (e.touches.length > 0) updateSplitWidth(e.touches[0].clientX);
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+
+    // View Mode Chip Interactivity
+    const btnSplit = document.getElementById('btn-split');
+    const btn2Up = document.getElementById('btn-2up');
+    const btnToggle = document.getElementById('btn-toggle');
+
+    function setActiveMode(activeBtn) {
+      [btnSplit, btn2Up, btnToggle].forEach(btn => {
+        if (!btn) return;
+        btn.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-sm');
+        btn.classList.add('text-on-surface-variant');
+      });
+      activeBtn.classList.remove('text-on-surface-variant');
+      activeBtn.classList.add('bg-primary-container', 'text-on-primary', 'shadow-sm');
+    }
+
+    if (btnSplit) {
+      btnSplit.addEventListener('click', () => {
+        setActiveMode(btnSplit);
+        clipWrapper.style.width = '52%';
+        splitHandle.style.left = '52%';
+        splitHandle.style.display = 'flex';
+      });
+    }
+
+    if (btn2Up) {
+      btn2Up.addEventListener('click', () => {
+        setActiveMode(btn2Up);
+        clipWrapper.style.width = '50%';
+        splitHandle.style.left = '50%';
+        splitHandle.style.display = 'flex';
+      });
+    }
+
+    let aBState = false;
+    if (btnToggle) {
+      btnToggle.addEventListener('click', () => {
+        setActiveMode(btnToggle);
+        aBState = !aBState;
+        clipWrapper.style.width = aBState ? '100%' : '0%';
+        splitHandle.style.display = 'none';
+      });
+    }
+
+    // Play/Pause Micro-interaction
+    let isPlaying = false;
+    if (playBtn && playIcon) {
+      playBtn.addEventListener('click', () => {
+        isPlaying = !isPlaying;
+        playIcon.textContent = isPlaying ? 'pause' : 'play_arrow';
+      });
+    }
+  })();
+</script></main></body></html>

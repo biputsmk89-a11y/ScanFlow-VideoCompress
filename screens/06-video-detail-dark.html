@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {"darkMode":"class","theme":{"extend":{"colors":{"on-secondary-container":"#00311f","on-secondary":"#003824","surface-dim":"#0f131c","tertiary-fixed-dim":"#7bd0ff","tertiary-fixed":"#c4e7ff","surface-variant":"#31353e","on-primary-container":"#00285d","on-error-container":"#ffdad6","on-tertiary-fixed-variant":"#004c69","on-surface":"#dfe2ee","surface-tint":"#adc6ff","on-tertiary":"#00354a","outline-variant":"#424754","on-secondary-fixed":"#002113","primary-container":"#4d8eff","primary-fixed":"#d8e2ff","error":"#ffb4ab","on-background":"#dfe2ee","tertiary-container":"#009bd1","surface-container-low":"#181c24","primary-fixed-dim":"#adc6ff","on-primary-fixed":"#001a42","inverse-surface":"#dfe2ee","background":"#0f131c","on-error":"#690005","primary":"#adc6ff","error-container":"#93000a","secondary-fixed":"#6ffbbe","surface-container":"#1c2028","secondary-fixed-dim":"#4edea3","surface-bright":"#353942","tertiary":"#7bd0ff","surface-container-high":"#262a33","surface-container-lowest":"#0a0e16","on-surface-variant":"#c2c6d6","secondary-container":"#00a572","on-secondary-fixed-variant":"#005236","on-tertiary-fixed":"#001e2c","on-primary-fixed-variant":"#004395","outline":"#8c909f","surface":"#0f131c","on-primary":"#002e6a","on-tertiary-container":"#002d40","inverse-primary":"#005ac2","surface-container-highest":"#31353e","inverse-on-surface":"#2c3039","secondary":"#4edea3"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-xs":"0.25rem","gutter-tablet":"1.5rem","space-lg":"1.5rem","space-xl":"2rem","space-sm":"0.5rem","margin":"1rem","gutter":"1rem","margin-tablet":"1.5rem","space-md":"1rem","margin-desktop":"2rem","gutter-desktop":"1.5rem"},"fontFamily":{"body-md":["Inter"],"body-sm":["Inter"],"headline-md":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"],"label-lg":["Inter"],"headline-sm":["Plus Jakarta Sans"],"label-sm":["Inter"],"body-lg":["Inter"],"label-md":["Inter"],"display-lg":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"]},"fontSize":{"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"headline-md":["22px",{"lineHeight":"28px","fontWeight":"600"}],"headline-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"-0.01em","fontWeight":"700"}],"label-lg":["14px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"600"}],"headline-sm":["18px",{"lineHeight":"24px","fontWeight":"600"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"600"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"500"}],"display-lg":["44px",{"lineHeight":"52px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.01em","fontWeight":"700"}]}}}</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.25)]"><div class="h-6 px-margin flex items-center justify-between text-on-surface-variant text-[12px] font-medium tracking-tight select-none"><span>09:41</span><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px]">wifi</span><span class="material-symbols-outlined text-[15px]">signal_cellular_4_bar</span><span class="material-symbols-outlined text-[16px]">battery_full</span></div></div><div class="h-16 px-space-sm flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm min-w-0"><button class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container active:bg-surface-container-high transition-colors shrink-0" onclick="history.back()"><span class="material-symbols-outlined text-[24px]">arrow_back</span></button><img alt="CompressFlow modern geometric minimalist Android app icon: two converging clean arrows or folding compression wave forming a streamlined play/flow symbol, vibrant primary blue (#2563EB) and emerald accent.. Brand logo. - Primary color: #2563eb - Font: plusJakartaSans - Mode: light - Roundness: rounded-md" class="h-7 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1VjtNbX1-t8y_uQSdLTyqx97wlZT870FTR840swZiqMU_iAnP3xkdzJAYKTXar0OT-cKFTqmP2i6mLBCXzgZxepwBfZQvvDoKefxnlHnEZFigV9v9kjzKQ-WdusGG410vvKjS1QKEzRzON0Gz_w98TBnneRrm0fWxLGLaSEdElcOiCfXJUZwIDvXro-VbNbNVZfFCYDZMZ4Y_4mfxT8VVcnnpDRsFF0yM7t90Akw_YuF7LxnGFrJMqXDWyI"/><div class="flex flex-col min-w-0"><h1 class="font-headline-sm text-headline-sm text-on-surface truncate leading-tight">File Inspector</h1><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Encoding &amp; Hardware Stream</span></div></div><div class="flex items-center gap-space-xs shrink-0 pr-space-xs"><button class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[22px]">info</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-22 pb-safe px-margin bg-surface"><div class="flex flex-col w-full pb-32">
+<!-- Top Subheader & Guarantee Banner -->
+<div class="flex items-center justify-between py-space-sm mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">tune</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Optimize Video</h2>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm text-label-sm">Hardware Accel Active</span>
+</div>
+</div>
+<!-- Video Preview 16:9 Card -->
+<div class="relative w-full aspect-video rounded-xl overflow-hidden bg-surface-container-lowest shadow-xl mb-space-md group">
+<img class="w-full h-full object-cover brightness-95 group-hover:scale-105 transition-transform duration-500 ease-out" data-alt="Stunning 4K cinematic still shot of rugged ocean coastline during a dramatic purple and golden hour sunset, vivid warm glow reflecting over breaking waves, high dynamic range with deep shadows and luminous teal-blue horizon." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2T7WjuoNCGZHZ7bQK_s6rpyZ3bGASeyuQ0FY1G8KaxMmoramKyn1rIE0teMEhiFhqwrS6MIeUq05AuWGk9_9KWF2r00v5CDR_2HxD6Q7XhrMWWmMWki4Wl0Ojg0lh1nhlNK7sloGsxELTi3BP7L5kJ48BbxDvJZXhWYNTD58Lbu-utTtONDr30N8izmpYYDF9MnHVnTuSFbwriNG2fh5f1DRWalBZBpVDqZm3DtRrP_6fKiE5Rv-exg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim/90 via-transparent to-surface-dim/30"></div>
+<!-- Top-left Privacy Assurance Chip -->
+<div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-dim/80 backdrop-blur-md text-on-surface">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface">100% Device-Local Engine</span>
+</div>
+<!-- Top-right Sound State -->
+<div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-surface-dim/70 backdrop-blur-md flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">volume_up</span>
+</div>
+<!-- Center Interactive Play Button -->
+<div class="absolute inset-0 flex items-center justify-center">
+<button class="w-14 h-14 rounded-full bg-surface-dim/60 backdrop-blur-md flex items-center justify-center text-on-surface hover:scale-110 active:scale-95 transition-transform shadow-lg">
+<span class="material-symbols-outlined text-[32px] translate-x-0.5" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<!-- Bottom Meta Overlay -->
+<div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-surface-dim/85 backdrop-blur-md font-label-sm text-label-sm text-on-surface tracking-wider">
+        02:34
+      </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant/90 drop-shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span> Zero cloud transfer
+      </span>
+</div>
+</div>
+<!-- Video Metadata Details -->
+<div class="bg-surface-container-low rounded-xl p-space-md mb-space-lg shadow-sm">
+<div class="flex items-start justify-between gap-space-sm mb-3">
+<div class="flex items-center gap-2 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">movie</span>
+</div>
+<div class="min-w-0">
+<h3 class="font-headline-sm text-headline-sm text-on-surface truncate">DJI_Cinematic_Sunset_4K.mp4</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Recorded Today • In-Memory Decoder</p>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface p-1">
+<span class="material-symbols-outlined text-[20px]">share</span>
+</button>
+</div>
+<!-- Metadata Spec Chips Row -->
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2.5 py-1 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm">
+        1.24 GB
+      </span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm">
+        4K UHD (3840×2160)
+      </span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm">
+        60 FPS
+      </span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm">
+        H.264 / AAC
+      </span>
+</div>
+</div>
+<!-- Goal Selection Header Section -->
+<div class="flex flex-col gap-1 mb-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md text-on-surface">What is your goal?</h3>
+<span class="px-2 py-0.5 rounded-full bg-primary-container/30 text-primary font-label-sm text-label-sm">
+        Smart Presets
+      </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+      We'll optimize encoding settings tailored to your target use.
+    </p>
+</div>
+<!-- Interactive Goal Cards Stack -->
+<div class="flex flex-col gap-3" id="goal-options-list">
+<!-- Option 1: WhatsApp (Selected by default) -->
+<div class="goal-card cursor-pointer rounded-xl p-space-md bg-surface-container-high shadow-md transition-all relative overflow-hidden" data-selected="true" onclick="selectGoal(this, 'WhatsApp preset (~15.8 MB)', '~4.2 sec')">
+<div class="selection-indicator absolute inset-y-0 left-0 w-1.5 bg-primary"></div>
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-start gap-3 min-w-0">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/20 text-secondary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">chat</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Send on WhatsApp</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">Most Popular</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Optimized for messaging limits without noticeable quality drop.
+            </p>
+<div class="flex flex-wrap items-center gap-2 mt-2.5">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-lowest text-secondary font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">bolt</span> ~15.8 MB • Fast send
+              </span>
+<span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary font-label-sm text-label-sm">
+                98.7% reduced
+              </span>
+</div>
+</div>
+</div>
+<div class="radio-pill w-5 h-5 rounded-full bg-primary flex items-center justify-center shrink-0 mt-1">
+<span class="w-2 h-2 rounded-full bg-on-primary"></span>
+</div>
+</div>
+</div>
+<!-- Option 2: Social Media -->
+<div class="goal-card cursor-pointer rounded-xl p-space-md bg-surface-container-low hover:bg-surface-container shadow-sm transition-all relative overflow-hidden" data-selected="false" onclick="selectGoal(this, 'Social Media preset (~85 MB)', '~9.8 sec')">
+<div class="selection-indicator absolute inset-y-0 left-0 w-1.5 bg-transparent"></div>
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-start gap-3 min-w-0">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest text-tertiary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">auto_awesome</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface">Social Media</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Crisp 1080p 30 FPS tuned for Instagram Reels, TikTok &amp; YouTube.
+            </p>
+<div class="flex flex-wrap items-center gap-2 mt-2.5">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm">
+                ✨ ~85 MB • High clarity
+              </span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/20 text-secondary font-label-sm text-label-sm">
+                93.1% reduced
+              </span>
+</div>
+</div>
+</div>
+<div class="radio-pill w-5 h-5 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0 mt-1">
+<span class="w-2 h-2 rounded-full bg-transparent"></span>
+</div>
+</div>
+</div>
+<!-- Option 3: Storage Saver -->
+<div class="goal-card cursor-pointer rounded-xl p-space-md bg-surface-container-low hover:bg-surface-container shadow-sm transition-all relative overflow-hidden" data-selected="false" onclick="selectGoal(this, 'Storage Saver (~210 MB)', '~18.4 sec')">
+<div class="selection-indicator absolute inset-y-0 left-0 w-1.5 bg-transparent"></div>
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-start gap-3 min-w-0">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest text-primary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">sd_storage</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface">Storage Saver</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Aggressive size reduction to free up internal phone storage.
+            </p>
+<div class="flex flex-wrap items-center gap-2 mt-2.5">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/20 text-secondary font-label-sm text-label-sm">
+                💾 ~210 MB • 83% space saved
+              </span>
+</div>
+</div>
+</div>
+<div class="radio-pill w-5 h-5 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0 mt-1">
+<span class="w-2 h-2 rounded-full bg-transparent"></span>
+</div>
+</div>
+</div>
+<!-- Option 4: Email Attachment -->
+<div class="goal-card cursor-pointer rounded-xl p-space-md bg-surface-container-low hover:bg-surface-container shadow-sm transition-all relative overflow-hidden" data-selected="false" onclick="selectGoal(this, 'Email Attachment (&lt;25 MB)', '~5.1 sec')">
+<div class="selection-indicator absolute inset-y-0 left-0 w-1.5 bg-transparent"></div>
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-start gap-3 min-w-0">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest text-tertiary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">attach_email</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface">Email Attachment</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Keeps file strictly under standard 25 MB inbox limits.
+            </p>
+<div class="flex flex-wrap items-center gap-2 mt-2.5">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm">
+                📎 ~22 MB • Safe to attach
+              </span>
+</div>
+</div>
+</div>
+<div class="radio-pill w-5 h-5 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0 mt-1">
+<span class="w-2 h-2 rounded-full bg-transparent"></span>
+</div>
+</div>
+</div>
+<!-- Option 5: Target Size (Flagship custom input) -->
+<div class="goal-card cursor-pointer rounded-xl p-space-md bg-surface-container-low hover:bg-surface-container shadow-sm transition-all relative overflow-hidden" data-selected="false" onclick="selectGoal(this, 'Target Custom Size', '~7.0 sec')">
+<div class="selection-indicator absolute inset-y-0 left-0 w-1.5 bg-transparent"></div>
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-start gap-3 min-w-0">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 text-primary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">target</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Target Size</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm">Flagship</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Specify the exact desired megabytes (e.g. 50 MB, 100 MB).
+            </p>
+<div class="flex flex-wrap items-center gap-2 mt-2.5">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-primary font-label-sm text-label-sm">
+                Custom target
+              </span>
+</div>
+</div>
+</div>
+<div class="radio-pill w-5 h-5 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0 mt-1">
+<span class="w-2 h-2 rounded-full bg-transparent"></span>
+</div>
+</div>
+</div>
+<!-- Option 6: Advanced Settings -->
+<div class="goal-card cursor-pointer rounded-xl p-space-md bg-surface-container-low hover:bg-surface-container shadow-sm transition-all relative overflow-hidden" data-selected="false" onclick="selectGoal(this, 'Manual Pro Studio', '~14.2 sec')">
+<div class="selection-indicator absolute inset-y-0 left-0 w-1.5 bg-transparent"></div>
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-start gap-3 min-w-0">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest text-on-surface-variant flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[22px]">terminal</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface">Advanced Settings</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              For creators: manual codec (H.265/AV1), bitrate, resolution &amp; FPS.
+            </p>
+<div class="flex flex-wrap items-center gap-2 mt-2.5">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm">
+                Full manual control
+              </span>
+</div>
+</div>
+</div>
+<div class="radio-pill w-5 h-5 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0 mt-1">
+<span class="w-2 h-2 rounded-full bg-transparent"></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Micro Delight Interactive Pill Feature: Codec Turbo Engine Insight -->
+<div class="mt-space-lg p-space-md rounded-xl bg-surface-container-lowest flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-secondary-container/20 text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">memory</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-on-surface">Neural Rate Allocation</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-[10px] text-secondary font-mono">AV1 READY</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+        Dual-pass spatial frame weighting maintains facial textures and sharp gradients.
+      </p>
+</div>
+</div>
+<!-- Bottom Floating Action Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-40 p-margin pb-safe bg-surface-dim/95 backdrop-blur-xl shadow-2xl">
+<div class="max-w-md mx-auto flex flex-col gap-2.5">
+<!-- Live calculation summary row -->
+<div class="flex items-center justify-between text-on-surface-variant px-1">
+<div class="flex items-center gap-1.5 min-w-0">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<span class="font-label-sm text-label-sm text-on-surface truncate" id="selected-summary-text">
+            Selected: WhatsApp preset (~15.8 MB)
+          </span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary whitespace-nowrap" id="selected-time-text">
+          est. ~4.2 sec
+        </span>
+</div>
+<!-- Dominant Electric Blue Primary Action -->
+<button class="w-full h-13 py-3 px-6 rounded-xl bg-primary hover:bg-primary-container active:scale-[0.98] text-on-primary font-headline-sm text-headline-sm flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all">
+<span>Continue to Compress</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+  function selectGoal(element, summaryTitle, timeEst) {
+    const allCards = document.querySelectorAll('.goal-card');
+    allCards.forEach(card => {
+      card.setAttribute('data-selected', 'false');
+      card.classList.remove('bg-surface-container-high', 'shadow-md');
+      card.classList.add('bg-surface-container-low');
+      
+      const indicator = card.querySelector('.selection-indicator');
+      if (indicator) indicator.classList.replace('bg-primary', 'bg-transparent');
+      
+      const radio = card.querySelector('.radio-pill');
+      if (radio) {
+        radio.classList.replace('bg-primary', 'bg-surface-container-highest');
+        const dot = radio.querySelector('span');
+        if (dot) dot.classList.replace('bg-on-primary', 'bg-transparent');
+      }
+    });
+
+    element.setAttribute('data-selected', 'true');
+    element.classList.remove('bg-surface-container-low');
+    element.classList.add('bg-surface-container-high', 'shadow-md');
+
+    const activeIndicator = element.querySelector('.selection-indicator');
+    if (activeIndicator) activeIndicator.classList.replace('bg-transparent', 'bg-primary');
+
+    const activeRadio = element.querySelector('.radio-pill');
+    if (activeRadio) {
+      activeRadio.classList.replace('bg-surface-container-highest', 'bg-primary');
+      const activeDot = activeRadio.querySelector('span');
+      if (activeDot) activeDot.classList.replace('bg-transparent', 'bg-on-primary');
+    }
+
+    const summaryText = document.getElementById('selected-summary-text');
+    const timeText = document.getElementById('selected-time-text');
+    if (summaryText) summaryText.textContent = 'Selected: ' + summaryTitle;
+    if (timeText) timeText.textContent = 'est. ' + timeEst;
+  }
+</script></main></body></html>
