@@ -1,0 +1,4 @@
+# Tell GitHub Linguist to ignore HTML mockup screens from repository language statistics
+screens/** linguist-documentation
+screens/** linguist-vendored
+*.html linguist-detectable=false
