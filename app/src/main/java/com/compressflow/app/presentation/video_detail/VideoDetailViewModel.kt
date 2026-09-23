@@ -58,7 +58,7 @@ class VideoDetailViewModel(application: Application) : AndroidViewModel(applicat
                 CompressionSession.currentMetadata = meta
 
                 val appSettings = settingsRepository.settingsFlow.first()
-                val initialGoal = GoalType.WHATSAPP
+                val initialGoal = GoalType.entries.find { it.preset == CompressionSession.currentPreset } ?: GoalType.WHATSAPP
                 var plan = compressionPlanner.plan(
                     metadata = meta,
                     preset = initialGoal.preset,

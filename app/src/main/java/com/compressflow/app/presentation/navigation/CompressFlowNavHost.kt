@@ -114,6 +114,12 @@ fun CompressFlowNavHost() {
                     },
                     onNavigateToStorageAnalyzer = {
                         navController.navigate(Routes.STORAGE_ANALYZER)
+                    },
+                    onNavigateToHistory = {
+                        navController.navigate(Routes.HISTORY)
+                    },
+                    onNavigateToSettings = {
+                        navController.navigate(Routes.SETTINGS)
                     }
                 )
             }
