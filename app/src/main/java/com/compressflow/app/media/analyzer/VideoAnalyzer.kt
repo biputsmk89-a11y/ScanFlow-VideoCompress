@@ -83,7 +83,13 @@ class VideoAnalyzer(private val context: Context) {
                     orientation = orientation
                 )
 
-                Result.success(metadata)
+                if (width <= 0 || height <= 0 || duration <= 0) {
+                    Result.failure(
+                        IllegalArgumentException("The selected file cannot be parsed as a video stream or is corrupted (Resolution: ${width}×${height}, Duration: ${duration}ms).")
+                    )
+                } else {
+                    Result.success(metadata)
+                }
             } finally {
                 retriever.release()
             }

@@ -11,6 +11,8 @@ import com.compressflow.app.domain.model.VideoMetadata
 import com.compressflow.app.media.analyzer.VideoAnalyzer
 import com.compressflow.app.media.capability.CapabilityDetector
 import com.compressflow.app.media.planner.CompressionPlanner
+import com.compressflow.app.data.preferences.SettingsRepository
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,6 +43,7 @@ class VideoDetailViewModel(application: Application) : AndroidViewModel(applicat
     private val capabilityDetector = CapabilityDetector()
     private val compressionPlanner = CompressionPlanner()
     private val capabilities = capabilityDetector.detect()
+    private val settingsRepository = SettingsRepository(application)
 
     private val _uiState = MutableStateFlow(VideoDetailUiState())
     val uiState: StateFlow<VideoDetailUiState> = _uiState.asStateFlow()
@@ -54,13 +57,18 @@ class VideoDetailViewModel(application: Application) : AndroidViewModel(applicat
                 CompressionSession.currentUri = uri
                 CompressionSession.currentMetadata = meta
 
+                val appSettings = settingsRepository.settingsFlow.first()
                 val initialGoal = GoalType.WHATSAPP
-                val plan = compressionPlanner.plan(
+                var plan = compressionPlanner.plan(
                     metadata = meta,
                     preset = initialGoal.preset,
                     capabilities = capabilities
                 )
+                if (!appSettings.keepAudio) {
+                    plan = plan.copy(removeAudio = true)
+                }
                 CompressionSession.currentPlan = plan
+                CompressionSession.currentPreset = initialGoal.preset
 
                 val estDuration = (meta.duration / 1000f * 0.15f).coerceAtLeast(2f)
 
@@ -98,6 +106,7 @@ class VideoDetailViewModel(application: Application) : AndroidViewModel(applicat
             )
         }
         CompressionSession.currentPlan = plan
+        CompressionSession.currentPreset = goal.preset
 
         val estDuration = (meta.duration / 1000f * 0.15f).coerceAtLeast(2f)
 
@@ -118,6 +127,7 @@ class VideoDetailViewModel(application: Application) : AndroidViewModel(applicat
             targetSizeBytes = targetBytes
         )
         CompressionSession.currentPlan = plan
+        CompressionSession.currentTargetSizeMb = mb
         _uiState.value = _uiState.value.copy(
             targetSizeMb = mb,
             currentPlan = plan

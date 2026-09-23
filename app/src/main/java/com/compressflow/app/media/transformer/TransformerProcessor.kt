@@ -221,4 +221,20 @@ class TransformerProcessor(private val context: Context) {
 
         return File(outputDir, filename)
     }
+
+    /**
+     * Clean up orphaned temporary files in cache older than [maxAgeHours].
+     */
+    fun cleanOrphanedCacheFiles(context: Context, maxAgeHours: Int = 24) {
+        try {
+            val outputDir = File(context.cacheDir, "compressed")
+            if (!outputDir.exists() || !outputDir.isDirectory) return
+            val cutoff = System.currentTimeMillis() - (maxAgeHours * 60 * 60 * 1000L)
+            outputDir.listFiles()?.forEach { file ->
+                if (file.isFile && file.lastModified() < cutoff) {
+                    file.delete()
+                }
+            }
+        } catch (_: Exception) {}
+    }
 }

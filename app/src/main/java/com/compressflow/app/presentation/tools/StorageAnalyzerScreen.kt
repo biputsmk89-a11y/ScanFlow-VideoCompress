@@ -22,7 +22,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.os.Environment
+import android.os.StatFs
+import android.provider.MediaStore
+import androidx.compose.ui.platform.LocalContext
 import com.compressflow.app.core.extensions.formatFileSize
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 data class VideoCandidate(
     val title: String,
@@ -38,15 +44,90 @@ fun StorageAnalyzerScreen(
     onNavigateBack: () -> Unit = {},
     onBatchCompress: () -> Unit = {}
 ) {
-    val sampleCandidates = remember {
-        listOf(
-            VideoCandidate("DJI_Cinematic_Coast_4K.mp4", 1_820_000_000L, "04:12", "4K UHD", "Save ~1.5 GB"),
-            VideoCandidate("Screen_Recording_Game.mp4", 1_250_000_000L, "12:45", "1080p 60fps", "Save ~980 MB"),
-            VideoCandidate("Concert_Live_Raw_02.mov", 950_000_000L, "02:18", "4K HDR", "Save ~780 MB"),
-            VideoCandidate("Family_Trip_Vlog_01.mp4", 780_000_000L, "08:30", "1080p", "Save ~560 MB"),
-            VideoCandidate("WhatsApp_Video_Shared.mp4", 420_000_000L, "06:10", "720p", "Save ~320 MB")
-        )
+    val context = LocalContext.current
+
+    val statInfo = remember {
+        try {
+            val stat = StatFs(Environment.getDataDirectory().path)
+            val total = stat.totalBytes
+            val free = stat.availableBytes
+            val used = (total - free).coerceAtLeast(0L)
+            val pct = if (total > 0) ((used.toFloat() / total) * 100).toInt() else 0
+            listOf(total, free, used, pct.toLong())
+        } catch (_: Exception) {
+            listOf(128_000_000_000L, 32_000_000_000L, 96_000_000_000L, 75L)
+        }
     }
+    val totalStorage = statInfo[0]
+    val freeStorage = statInfo[1]
+    val usedStorage = statInfo[2]
+    val usedPercent = statInfo[3].toInt()
+
+    var videoCandidates by remember { mutableStateOf<List<VideoCandidate>>(emptyList()) }
+    var isScanning by remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.IO) {
+            val list = mutableListOf<VideoCandidate>()
+            try {
+                val projection = arrayOf(
+                    MediaStore.Video.Media._ID,
+                    MediaStore.Video.Media.DISPLAY_NAME,
+                    MediaStore.Video.Media.SIZE,
+                    MediaStore.Video.Media.DURATION,
+                    MediaStore.Video.Media.WIDTH,
+                    MediaStore.Video.Media.HEIGHT
+                )
+                val sortOrder = "${MediaStore.Video.Media.SIZE} DESC"
+                context.contentResolver.query(
+                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                    projection,
+                    null,
+                    null,
+                    sortOrder
+                )?.use { cursor ->
+                    val nameCol = cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME)
+                    val sizeCol = cursor.getColumnIndex(MediaStore.Video.Media.SIZE)
+                    val durCol = cursor.getColumnIndex(MediaStore.Video.Media.DURATION)
+                    val wCol = cursor.getColumnIndex(MediaStore.Video.Media.WIDTH)
+                    val hCol = cursor.getColumnIndex(MediaStore.Video.Media.HEIGHT)
+
+                    var count = 0
+                    while (cursor.moveToNext() && count < 25) {
+                        val name = if (nameCol >= 0) cursor.getString(nameCol) ?: "Video" else "Video"
+                        val size = if (sizeCol >= 0) cursor.getLong(sizeCol) else 0L
+                        val durMs = if (durCol >= 0) cursor.getLong(durCol) else 0L
+                        val w = if (wCol >= 0) cursor.getInt(wCol) else 0
+                        val h = if (hCol >= 0) cursor.getInt(hCol) else 0
+
+                        if (size > 1_000_000L) {
+                            val durMinutes = (durMs / 1000) / 60
+                            val durSeconds = (durMs / 1000) % 60
+                            val durationStr = String.format("%02d:%02d", durMinutes, durSeconds)
+                            val resStr = if (w > 0 && h > 0) "${w}×${h}" else "Video"
+                            val potentialSaved = (size * 0.70f).toLong()
+
+                            list.add(
+                                VideoCandidate(
+                                    title = name,
+                                    size = size,
+                                    duration = durationStr,
+                                    resolution = resStr,
+                                    potentialSavings = "Save ~${potentialSaved.formatFileSize()}"
+                                )
+                            )
+                            count++
+                        }
+                    }
+                }
+            } catch (_: Exception) {}
+            videoCandidates = list
+            isScanning = false
+        }
+    }
+
+    val totalVideoBytes = videoCandidates.sumOf { it.size }
+    val totalReclaimable = (totalVideoBytes * 0.70f).toLong()
 
     Scaffold(
         topBar = {
@@ -209,7 +290,7 @@ fun StorageAnalyzerScreen(
                                 color = MaterialTheme.colorScheme.surfaceContainerHigh
                             ) {
                                 Text(
-                                    text = "72% Full",
+                                    text = "$usedPercent% Full",
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.primary,
                                     fontWeight = FontWeight.Bold,
@@ -223,20 +304,24 @@ fun StorageAnalyzerScreen(
                             horizontalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
                             Text(
-                                text = "184.2 GB",
+                                text = usedStorage.formatFileSize(),
                                 style = MaterialTheme.typography.displayLarge.copy(fontSize = 32.sp),
                                 color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
-                                text = "of 256 GB allocated",
+                                text = "of ${totalStorage.formatFileSize()} allocated",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(bottom = 4.dp)
                             )
                         }
 
-                        // Multi-segment Storage Bar
+                        // Multi-segment Storage Bar (Videos, Other, Free)
+                        val videoWeight = if (totalStorage > 0) (totalVideoBytes.toFloat() / totalStorage).coerceIn(0.02f, 0.45f) else 0.2f
+                        val otherWeight = if (totalStorage > 0) (((usedStorage - totalVideoBytes).coerceAtLeast(0L)).toFloat() / totalStorage).coerceIn(0.05f, 0.65f) else 0.5f
+                        val freeWeight = if (totalStorage > 0) (freeStorage.toFloat() / totalStorage).coerceIn(0.05f, 0.9f) else 0.3f
+
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -245,25 +330,19 @@ fun StorageAnalyzerScreen(
                         ) {
                             Box(
                                 modifier = Modifier
-                                    .weight(0.27f)
+                                    .weight(videoWeight)
                                     .fillMaxHeight()
-                                    .background(MaterialTheme.colorScheme.primaryContainer)
+                                    .background(MaterialTheme.colorScheme.primary)
                             )
                             Box(
                                 modifier = Modifier
-                                    .weight(0.38f)
+                                    .weight(otherWeight)
                                     .fillMaxHeight()
                                     .background(MaterialTheme.colorScheme.outline)
                             )
                             Box(
                                 modifier = Modifier
-                                    .weight(0.08f)
-                                    .fillMaxHeight()
-                                    .background(MaterialTheme.colorScheme.outlineVariant)
-                            )
-                            Box(
-                                modifier = Modifier
-                                    .weight(0.27f)
+                                    .weight(freeWeight)
                                     .fillMaxHeight()
                                     .background(Color(0xFF6BFF8F))
                             )
@@ -274,9 +353,9 @@ fun StorageAnalyzerScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            StorageLegend(Color(0xFF2563EB), "Videos: 68.4 GB")
-                            StorageLegend(Color(0xFF6BFF8F), "Free: 71.8 GB")
-                            StorageLegend(MaterialTheme.colorScheme.outline, "Apps: 96.2 GB")
+                            StorageLegend(MaterialTheme.colorScheme.primary, "Videos: ${totalVideoBytes.formatFileSize()}")
+                            StorageLegend(Color(0xFF6BFF8F), "Free: ${freeStorage.formatFileSize()}")
+                            StorageLegend(MaterialTheme.colorScheme.outline, "Other: ${(usedStorage - totalVideoBytes).coerceAtLeast(0L).formatFileSize()}")
                         }
 
                         // Potential Reclaimable Banner
@@ -306,13 +385,13 @@ fun StorageAnalyzerScreen(
                                 }
                                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                     Text(
-                                        text = "Potential Reclaimable: ~46.2 GB",
+                                        text = "Potential Reclaimable: ~${totalReclaimable.formatFileSize()}",
                                         style = MaterialTheme.typography.labelMedium,
                                         color = MaterialTheme.colorScheme.onSurface,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
-                                        text = "Compressing bloated captures can free up ~67% of video storage without noticeable degradation.",
+                                        text = "Compressing large videos on this device can free up ~70% of their size without noticeable quality degradation.",
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -325,6 +404,9 @@ fun StorageAnalyzerScreen(
 
             // Quick Reclamation Clusters (2x2)
             item {
+                val clipsOver100Mb = videoCandidates.filter { it.size >= 100_000_000L }
+                val otherClips = videoCandidates.filter { it.size < 100_000_000L }
+
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(
                         text = "Quick Reclamation Clusters",
@@ -336,16 +418,16 @@ fun StorageAnalyzerScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         ClusterCard(
-                            title = "Clips Over 1 GB",
-                            count = "18 files • 34.2 GB",
-                            saving = "~24.5 GB Free",
+                            title = "Clips Over 100 MB",
+                            count = "${clipsOver100Mb.size} files • ${clipsOver100Mb.sumOf { it.size }.formatFileSize()}",
+                            saving = "~${(clipsOver100Mb.sumOf { it.size } * 0.7f).toLong().formatFileSize()} Free",
                             icon = Icons.Outlined.Inventory2,
                             modifier = Modifier.weight(1f)
                         )
                         ClusterCard(
-                            title = "Duplicates & Burst",
-                            count = "14 videos • 8.6 GB",
-                            saving = "~6.8 GB Free",
+                            title = "Smaller Clips",
+                            count = "${otherClips.size} files • ${otherClips.sumOf { it.size }.formatFileSize()}",
+                            saving = "~${(otherClips.sumOf { it.size } * 0.7f).toLong().formatFileSize()} Free",
                             icon = Icons.Outlined.BurstMode,
                             modifier = Modifier.weight(1f)
                         )
@@ -362,8 +444,46 @@ fun StorageAnalyzerScreen(
                 )
             }
 
-            items(sampleCandidates) { candidate ->
-                CandidateRow(candidate = candidate)
+            if (isScanning) {
+                item {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(24.dp).fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Text(text = "Scanning device storage for videos...", style = MaterialTheme.typography.bodyMedium)
+                        }
+                    }
+                }
+            } else if (videoCandidates.isEmpty()) {
+                item {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(24.dp).fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(Icons.Outlined.VideoFile, contentDescription = null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(36.dp))
+                            Text(text = "No large videos found on storage", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(text = "Use Batch Compress to select video files directly.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
+                        }
+                    }
+                }
+            } else {
+                items(videoCandidates) { candidate ->
+                    CandidateRow(candidate = candidate)
+                }
             }
         }
     }

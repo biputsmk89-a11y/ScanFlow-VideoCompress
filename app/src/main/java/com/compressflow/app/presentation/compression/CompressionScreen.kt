@@ -262,30 +262,39 @@ fun CompressionScreen(
                             color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
                         )
-                        Surface(
-                            shape = CircleShape,
-                            color = MaterialTheme.colorScheme.surfaceContainer
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Bolt,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.secondary,
-                                    modifier = Modifier.size(14.dp)
-                                )
-                                Text(
-                                    text = "GPU Accelerated",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.secondary,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            }
+                    val isHardware = remember {
+                        val caps = com.compressflow.app.media.capability.CapabilityDetector().detect()
+                        val plan = com.compressflow.app.data.session.CompressionSession.currentPlan
+                        when (plan?.videoCodec) {
+                            com.compressflow.app.domain.model.VideoCodec.H265 -> caps.h265HardwareEncoder
+                            com.compressflow.app.domain.model.VideoCodec.AV1 -> caps.av1HardwareEncoder
+                            else -> caps.h264HardwareEncoder
                         }
                     }
+                    Surface(
+                        shape = CircleShape,
+                        color = MaterialTheme.colorScheme.surfaceContainer
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                        ) {
+                            Icon(
+                                imageVector = if (isHardware) Icons.Outlined.Bolt else Icons.Outlined.Memory,
+                                contentDescription = null,
+                                tint = if (isHardware) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.tertiary,
+                                modifier = Modifier.size(14.dp)
+                            )
+                            Text(
+                                text = if (isHardware) "Hardware Accelerated" else "Software Encoder",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = if (isHardware) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.tertiary,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+                    }
+                }
 
                     // 3-Column Metric Grid
                     Surface(
@@ -410,7 +419,7 @@ fun CompressionScreen(
                 }
             }
 
-            // Background Task Active Card
+            // Foreground Processing Notice Card
             Surface(
                 shape = RoundedCornerShape(14.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerLowest
@@ -428,7 +437,7 @@ fun CompressionScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            imageVector = Icons.Outlined.MotionPhotosOn,
+                            imageVector = Icons.Outlined.Info,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(20.dp)
@@ -440,7 +449,7 @@ fun CompressionScreen(
                             horizontalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
                             Text(
-                                text = "Background Service Active",
+                                text = "Processing in Foreground",
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.Bold
@@ -449,11 +458,11 @@ fun CompressionScreen(
                                 modifier = Modifier
                                     .size(6.dp)
                                     .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.secondary)
+                                    .background(MaterialTheme.colorScheme.primary)
                             )
                         }
                         Text(
-                            text = "You can leave the app or turn off the screen. Compression will reliably finish in the background.",
+                            text = "Please keep CompressFlow open while processing to ensure fast and uninterrupted encoding.",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

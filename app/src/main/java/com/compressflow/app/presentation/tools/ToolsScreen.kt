@@ -12,11 +12,16 @@ import androidx.compose.material.icons.automirrored.outlined.VolumeOff
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -27,6 +32,7 @@ data class ToolGridItem(
     val icon: ImageVector,
     val label: String,
     val description: String,
+    val badge: String? = null,
     val onClick: () -> Unit = {}
 )
 
@@ -37,12 +43,24 @@ fun ToolsScreen(
     onNavigateToQualityCompare: () -> Unit = {},
     onNavigateToVideoDetail: (String) -> Unit = {}
 ) {
-    val videoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia()
-    ) { uri: Uri? ->
-        uri?.let {
-            onNavigateToVideoDetail(it.toString())
-        }
+    val context = androidx.compose.ui.platform.LocalContext.current
+    var comingSoonTool by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf<String?>(null) }
+
+    if (comingSoonTool != null) {
+        AlertDialog(
+            onDismissRequest = { comingSoonTool = null },
+            title = { Text("$comingSoonTool") },
+            text = {
+                Text(
+                    "$comingSoonTool is currently under development for the next CompressFlow release. Enjoy our high-speed compression and storage analyzer features in the meantime!"
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = { comingSoonTool = null }) {
+                    Text("OK")
+                }
+            }
+        )
     }
 
     val tools = listOf(
@@ -68,41 +86,36 @@ fun ToolsScreen(
             icon = Icons.Outlined.ContentCut,
             label = "Trim Video",
             description = "Cut start and end points",
-            onClick = {
-                videoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly))
-            }
+            badge = "Coming Soon",
+            onClick = { comingSoonTool = "Trim Video" }
         ),
         ToolGridItem(
             icon = Icons.Outlined.SwapHoriz,
             label = "Video Converter",
             description = "Change format & codec",
-            onClick = {
-                videoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly))
-            }
+            badge = "Coming Soon",
+            onClick = { comingSoonTool = "Video Converter" }
         ),
         ToolGridItem(
             icon = Icons.Outlined.MusicNote,
             label = "Extract Audio",
             description = "Save audio track as M4A",
-            onClick = {
-                videoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly))
-            }
+            badge = "Coming Soon",
+            onClick = { comingSoonTool = "Extract Audio" }
         ),
         ToolGridItem(
             icon = Icons.AutoMirrored.Outlined.VolumeOff,
             label = "Remove Audio",
             description = "Silent video output",
-            onClick = {
-                videoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly))
-            }
+            badge = "Coming Soon",
+            onClick = { comingSoonTool = "Remove Audio" }
         ),
         ToolGridItem(
             icon = Icons.Outlined.DeleteSweep,
             label = "Remove Metadata",
             description = "Strip private GPS & device tags",
-            onClick = {
-                videoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly))
-            }
+            badge = "Coming Soon",
+            onClick = { comingSoonTool = "Remove Metadata" }
         )
     )
 
@@ -156,19 +169,40 @@ private fun ToolCard(tool: ToolGridItem) {
                 .padding(16.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Box(
-                modifier = Modifier
-                    .size(36.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(MaterialTheme.colorScheme.surfaceContainer),
-                contentAlignment = Alignment.Center
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = tool.icon,
-                    contentDescription = tool.label,
-                    modifier = Modifier.size(20.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(MaterialTheme.colorScheme.surfaceContainer),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = tool.icon,
+                        contentDescription = tool.label,
+                        modifier = Modifier.size(20.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+
+                if (tool.badge != null) {
+                    Surface(
+                        shape = RoundedCornerShape(4.dp),
+                        color = MaterialTheme.colorScheme.surfaceContainerHigh
+                    ) {
+                        Text(
+                            text = tool.badge,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.outline,
+                            fontSize = 10.sp,
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                        )
+                    }
+                }
             }
             Column {
                 Text(

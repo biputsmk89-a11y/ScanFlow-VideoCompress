@@ -1,6 +1,9 @@
 package com.compressflow.app.presentation.result
 
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
@@ -22,6 +25,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -51,6 +55,21 @@ fun ResultScreen(
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     var showDeleteDialog by remember { mutableStateOf(false) }
+
+    val deleteLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult()
+    ) { activityResult ->
+        val success = activityResult.resultCode == android.app.Activity.RESULT_OK
+        viewModel.onOriginalDeleted(success)
+    }
+
+    LaunchedEffect(uiState.deleteIntentSender) {
+        uiState.deleteIntentSender?.let { sender ->
+            deleteLauncher.launch(
+                IntentSenderRequest.Builder(sender).build()
+            )
+        }
+    }
 
     LaunchedEffect(uiState.message) {
         uiState.message?.let {
@@ -399,7 +418,7 @@ fun ResultScreen(
                         )
                     }
 
-                    // SSIM Visual Score Bar
+                    // Compression Quality Indicator
                     Surface(
                         shape = RoundedCornerShape(8.dp),
                         color = MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.6f),
@@ -423,30 +442,17 @@ fun ResultScreen(
                                     modifier = Modifier.size(16.dp)
                                 )
                                 Text(
-                                    text = "SSIM Visual Fidelity Score",
+                                    text = "Compression Quality",
                                     style = MaterialTheme.typography.labelMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                             }
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(4.dp)
-                            ) {
-                                repeat(5) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Star,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.secondary,
-                                        modifier = Modifier.size(14.dp)
-                                    )
-                                }
-                                Text(
-                                    text = "${uiState.ssimScore}%",
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.secondary,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
+                            Text(
+                                text = uiState.compressionQuality,
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.secondary,
+                                fontWeight = FontWeight.Bold
+                            )
                         }
                     }
                 }
@@ -479,19 +485,44 @@ fun ResultScreen(
                             }
                         }
 
-                        // Background: Original video frame
+                        // Background: Compressed video frame (right side)
+                        val compressedSource = uiState.outputFile ?: uiState.result?.outputUri
                         AsyncImage(
                             model = ImageRequest.Builder(context)
-                                .data(uiState.metadata?.uri)
+                                .data(compressedSource ?: uiState.metadata?.uri)
                                 .videoFrameMillis(1000)
                                 .crossfade(true)
                                 .build(),
-                            contentDescription = "Original frame",
+                            contentDescription = "Compressed frame",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
                         )
 
-                        // Top-left badge
+                        // Divider Handle Line calculation
+                        val dividerOffsetDp = with(LocalDensity.current) { (maxWidthPx * currentSplit).toDp() }
+
+                        // Left side: Original video frame clipped to divider
+                        Box(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .width(dividerOffsetDp)
+                                .clipToBounds()
+                        ) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(context)
+                                    .data(uiState.metadata?.uri)
+                                    .videoFrameMillis(1000)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = "Original frame",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .width(with(LocalDensity.current) { maxWidthPx.toDp() })
+                            )
+                        }
+
+                        // Top-left badge (Original)
                         Surface(
                             shape = RoundedCornerShape(4.dp),
                             color = Color.Black.copy(alpha = 0.7f),
@@ -500,14 +531,14 @@ fun ResultScreen(
                                 .padding(10.dp)
                         ) {
                             Text(
-                                text = "Original 4K",
+                                text = "Original ${uiState.metadata?.let { "${it.height}p" } ?: ""}",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = Color.White,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                             )
                         }
 
-                        // Top-right badge
+                        // Top-right badge (Compressed)
                         Surface(
                             shape = RoundedCornerShape(4.dp),
                             color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f),
@@ -516,7 +547,7 @@ fun ResultScreen(
                                 .padding(10.dp)
                         ) {
                             Text(
-                                text = "Compressed H.265",
+                                text = "Compressed ${uiState.plan?.videoCodec?.displayName ?: ""}",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = Color.White,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -524,7 +555,6 @@ fun ResultScreen(
                         }
 
                         // Divider Handle Line
-                        val dividerOffsetDp = with(LocalDensity.current) { (maxWidthPx * currentSplit).toDp() }
                         Box(
                             modifier = Modifier
                                 .fillMaxHeight()

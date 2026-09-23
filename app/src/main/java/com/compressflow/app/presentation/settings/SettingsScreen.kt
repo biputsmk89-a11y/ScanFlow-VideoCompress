@@ -20,19 +20,106 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(
+    viewModel: SettingsViewModel = viewModel()
+) {
     val context = LocalContext.current
+    val settings by viewModel.settings.collectAsState()
     var showPrivacyDialog by remember { mutableStateOf(false) }
+    var showQualityDialog by remember { mutableStateOf(false) }
+    var showCodecDialog by remember { mutableStateOf(false) }
 
     fun openPrivacyUrl() {
-        val url = "https://github.com/compressflow/privacy-policy"
+        val url = "https://github.com/biputsmk89-a11y/ScanFlow-VideoCompress#privacy"
         try {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             context.startActivity(intent)
         } catch (e: Exception) {
             Toast.makeText(context, "Cannot open browser: ${e.message}", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    if (showQualityDialog) {
+        val qualities = listOf("High Quality", "Balanced", "Maximum Space Saving")
+        AlertDialog(
+            onDismissRequest = { showQualityDialog = false },
+            title = { Text("Default Quality Preset") },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    qualities.forEach { q ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    viewModel.setDefaultQuality(q)
+                                    showQualityDialog = false
+                                }
+                                .padding(vertical = 12.dp, horizontal = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = settings.defaultQuality == q,
+                                onClick = {
+                                    viewModel.setDefaultQuality(q)
+                                    showQualityDialog = false
+                                }
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = q, style = MaterialTheme.typography.bodyLarge)
+                        }
+                    }
+                }
+            },
+            confirmButton = {},
+            dismissButton = {
+                TextButton(onClick = { showQualityDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
+    if (showCodecDialog) {
+        val codecs = listOf("Auto (best available)", "H.264 (Maximum compatibility)", "H.265 / HEVC (Best compression)", "AV1 (Next-gen)")
+        AlertDialog(
+            onDismissRequest = { showCodecDialog = false },
+            title = { Text("Default Codec") },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    codecs.forEach { c ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    viewModel.setDefaultCodec(c)
+                                    showCodecDialog = false
+                                }
+                                .padding(vertical = 12.dp, horizontal = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = settings.defaultCodec == c,
+                                onClick = {
+                                    viewModel.setDefaultCodec(c)
+                                    showCodecDialog = false
+                                }
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = c, style = MaterialTheme.typography.bodyLarge)
+                        }
+                    }
+                }
+            },
+            confirmButton = {},
+            dismissButton = {
+                TextButton(onClick = { showCodecDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
     }
 
     if (showPrivacyDialog) {
@@ -105,14 +192,14 @@ fun SettingsScreen() {
             SettingsItem(
                 icon = Icons.Outlined.Folder,
                 title = "Save Location",
-                subtitle = "Default • Movies/CompressFlow"
+                subtitle = "Default • ${settings.saveLocation}"
             )
         }
         item {
             SettingsItem(
                 icon = Icons.Outlined.TextFields,
                 title = "Filename Pattern",
-                subtitle = "{name}_compressed"
+                subtitle = settings.filenamePattern
             )
         }
 
@@ -124,24 +211,25 @@ fun SettingsScreen() {
             SettingsItem(
                 icon = Icons.Outlined.Speed,
                 title = "Default Quality",
-                subtitle = "Balanced"
+                subtitle = settings.defaultQuality,
+                onClick = { showQualityDialog = true }
             )
         }
         item {
             SettingsItem(
                 icon = Icons.Outlined.VideoSettings,
                 title = "Default Codec",
-                subtitle = "Auto (best available)"
+                subtitle = settings.defaultCodec,
+                onClick = { showCodecDialog = true }
             )
         }
         item {
-            var keepAudio by remember { mutableStateOf(true) }
             SettingsToggleItem(
                 icon = Icons.Outlined.MusicNote,
                 title = "Keep Audio",
                 subtitle = "Preserve audio track by default",
-                checked = keepAudio,
-                onCheckedChange = { keepAudio = it }
+                checked = settings.keepAudio,
+                onCheckedChange = { viewModel.toggleKeepAudio(it) }
             )
         }
 
@@ -150,23 +238,21 @@ fun SettingsScreen() {
             SettingsSectionHeader("App")
         }
         item {
-            var darkMode by remember { mutableStateOf(false) }
             SettingsToggleItem(
                 icon = Icons.Outlined.DarkMode,
                 title = "Dark Mode",
                 subtitle = "Follow system theme",
-                checked = darkMode,
-                onCheckedChange = { darkMode = it }
+                checked = settings.darkMode,
+                onCheckedChange = { viewModel.toggleDarkMode(it) }
             )
         }
         item {
-            var notifications by remember { mutableStateOf(true) }
             SettingsToggleItem(
                 icon = Icons.Outlined.Notifications,
                 title = "Notifications",
                 subtitle = "Show compression progress",
-                checked = notifications,
-                onCheckedChange = { notifications = it }
+                checked = settings.notifications,
+                onCheckedChange = { viewModel.toggleNotifications(it) }
             )
         }
 

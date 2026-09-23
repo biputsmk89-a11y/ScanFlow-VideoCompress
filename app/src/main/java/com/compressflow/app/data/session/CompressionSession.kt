@@ -14,14 +14,24 @@ object CompressionSession {
     var currentUri: Uri? = null
     var currentMetadata: VideoMetadata? = null
     var currentPlan: CompressionPlan? = null
+    var currentPreset: com.compressflow.app.domain.model.CompressionPreset = com.compressflow.app.domain.model.CompressionPreset.SOCIAL_MEDIA
+    var currentTargetSizeMb: Int = 25
     var outputFile: File? = null
     var lastResult: CompressionResult? = null
+
+    // Batch queue support
+    var batchUris: List<Uri> = emptyList()
+    val batchResults: MutableList<CompressionResult> = mutableListOf()
 
     fun reset() {
         currentUri = null
         currentMetadata = null
         currentPlan = null
+        currentPreset = com.compressflow.app.domain.model.CompressionPreset.SOCIAL_MEDIA
+        currentTargetSizeMb = 25
         outputFile = null
         lastResult = null
+        batchUris = emptyList()
+        batchResults.clear()
     }
 }

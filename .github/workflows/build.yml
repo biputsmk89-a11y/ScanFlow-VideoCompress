@@ -32,15 +32,18 @@ jobs:
       - name: Build Debug APK
         run: ./gradlew assembleDebug
 
+      - name: Build Release APK
+        run: ./gradlew assembleRelease
+
       - name: Build Release AAB (Play Store Bundle)
         run: ./gradlew bundleRelease
 
-      - name: Upload Debug APK Artifact
+      - name: Upload Release APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ScanFlow-Debug-APK
-          path: app/build/outputs/apk/debug/*.apk
-          retention-days: 14
+          name: ScanFlow-Release-APK
+          path: app/build/outputs/apk/release/*.apk
+          retention-days: 30
 
       - name: Upload Release AAB Artifact
         uses: actions/upload-artifact@v4

@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -95,7 +96,7 @@ fun QualityComparisonScreen(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            // Quality Assurance Pill
+            // Compression Summary Pill
             Surface(
                 shape = RoundedCornerShape(12.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerLow
@@ -118,19 +119,19 @@ fun QualityComparisonScreen(
                             modifier = Modifier.size(18.dp)
                         )
                         Text(
-                            text = "VMAF 96.8",
+                            text = "${result?.savedPercentage?.toInt() ?: 0}% Smaller",
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "• Visually Lossless",
+                            text = "• ${result?.let { if (it.compressionRatio >= 0.5f) "High Quality" else "Aggressive" } ?: "—"}",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.secondary
                         )
                     }
                     Text(
-                        text = "SSIM 0.992",
+                        text = "Ratio ${String.format("%.1f", (result?.compressionRatio ?: 0f) * 100)}%",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = FontWeight.SemiBold
@@ -191,98 +192,152 @@ fun QualityComparisonScreen(
                 ) {
                     val maxWidthPx = constraints.maxWidth.toFloat()
                     val dividerOffsetDp = with(LocalDensity.current) { (maxWidthPx * splitPosition).toDp() }
+                    val compressedSource = result?.outputUri ?: CompressionSession.outputFile
 
-                    // Base video frame
-                    AsyncImage(
-                        model = ImageRequest.Builder(context)
-                            .data(if (isHoldingOriginal) metadata?.uri else (result?.outputUri ?: metadata?.uri))
-                            .videoFrameMillis(1000)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = "Video comparison frame",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-
-                    // Delta Heatmap shader representation
-                    if (compareMode == CompareMode.DELTA) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(
-                                    Brush.radialGradient(
-                                        colors = listOf(
-                                            Color(0x77EF4444),
-                                            Color(0x55F59E0B),
-                                            Color(0x3306B6D4),
-                                            Color.Transparent
-                                        )
-                                    )
+                    if (compareMode == CompareMode.SIDE_BY_SIDE) {
+                        Row(modifier = Modifier.fillMaxSize()) {
+                            Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
+                                AsyncImage(
+                                    model = ImageRequest.Builder(context)
+                                        .data(metadata?.uri)
+                                        .videoFrameMillis(1000)
+                                        .crossfade(true)
+                                        .build(),
+                                    contentDescription = "Original frame",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
                                 )
-                        )
-                    }
-
-                    // Split Mode divider & handle
-                    if (compareMode == CompareMode.SPLIT) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .width(2.dp)
-                                .offset(x = dividerOffsetDp)
-                                .background(Color.White)
-                        )
-                        Box(
-                            modifier = Modifier
-                                .align(Alignment.CenterStart)
-                                .offset(x = dividerOffsetDp - 18.dp)
-                                .size(36.dp)
-                                .clip(CircleShape)
-                                .background(Color.White)
-                                .pointerInput(maxWidthPx) {
-                                    detectHorizontalDragGestures { change, dragAmount ->
-                                        change.consume()
-                                        splitPosition = (splitPosition + dragAmount / maxWidthPx).coerceIn(0.05f, 0.95f)
-                                    }
-                                },
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.DragIndicator,
-                                contentDescription = "Drag divider",
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(20.dp)
+                                Surface(
+                                    shape = RoundedCornerShape(4.dp),
+                                    color = Color.Black.copy(alpha = 0.7f),
+                                    modifier = Modifier
+                                        .align(Alignment.BottomStart)
+                                        .padding(6.dp)
+                                ) {
+                                    Text(
+                                        text = "Original",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = Color.White,
+                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                                    )
+                                }
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .width(2.dp)
+                                    .fillMaxHeight()
+                                    .background(Color.White)
                             )
+                            Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
+                                AsyncImage(
+                                    model = ImageRequest.Builder(context)
+                                        .data(compressedSource ?: metadata?.uri)
+                                        .videoFrameMillis(1000)
+                                        .crossfade(true)
+                                        .build(),
+                                    contentDescription = "Compressed frame",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                                Surface(
+                                    shape = RoundedCornerShape(4.dp),
+                                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f),
+                                    modifier = Modifier
+                                        .align(Alignment.BottomStart)
+                                        .padding(6.dp)
+                                ) {
+                                    Text(
+                                        text = "Compressed",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = Color.White,
+                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                                    )
+                                }
+                            }
                         }
-                    }
+                    } else {
+                        // Background frame: Compressed (or Original when holding toggle button)
+                        AsyncImage(
+                            model = ImageRequest.Builder(context)
+                                .data(if (isHoldingOriginal) metadata?.uri else (compressedSource ?: metadata?.uri))
+                                .videoFrameMillis(1000)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = "Video comparison frame",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
 
-                    // 400% Zoom Loupe floating in corner
-                    Surface(
-                        shape = RoundedCornerShape(8.dp),
-                        color = Color.Black.copy(alpha = 0.85f),
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(10.dp)
-                            .size(80.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(4.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.ZoomIn,
-                                contentDescription = null,
-                                tint = Color(0xFF6BFF8F),
-                                modifier = Modifier.size(28.dp)
-                            )
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
+                        // Split Mode: Original frame clipped from left to divider
+                        if (compareMode == CompareMode.SPLIT && !isHoldingOriginal) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .width(dividerOffsetDp)
+                                    .clipToBounds()
                             ) {
-                                Text(text = "400%", style = MaterialTheme.typography.labelSmall, color = Color.White, fontSize = 9.sp)
-                                Text(text = "0 Blocks", style = MaterialTheme.typography.labelSmall, color = Color(0xFF6BFF8F), fontSize = 9.sp)
+                                AsyncImage(
+                                    model = ImageRequest.Builder(context)
+                                        .data(metadata?.uri)
+                                        .videoFrameMillis(1000)
+                                        .crossfade(true)
+                                        .build(),
+                                    contentDescription = "Original video frame",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .fillMaxHeight()
+                                        .width(with(LocalDensity.current) { maxWidthPx.toDp() })
+                                )
+                            }
+                        }
+
+                        // Delta mode info overlay
+                        if (compareMode == CompareMode.DELTA) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(Color.Black.copy(alpha = 0.3f)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = if (isHoldingOriginal) "Showing: ORIGINAL" else "Showing: COMPRESSED\n(Hold button below to inspect original)",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = Color.White,
+                                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                                )
+                            }
+                        }
+
+                        // Split Mode divider & handle
+                        if (compareMode == CompareMode.SPLIT) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .width(2.dp)
+                                    .offset(x = dividerOffsetDp)
+                                    .background(Color.White)
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.CenterStart)
+                                    .offset(x = dividerOffsetDp - 18.dp)
+                                    .size(36.dp)
+                                    .clip(CircleShape)
+                                    .background(Color.White)
+                                    .pointerInput(maxWidthPx) {
+                                        detectHorizontalDragGestures { change, dragAmount ->
+                                            change.consume()
+                                            splitPosition = (splitPosition + dragAmount / maxWidthPx).coerceIn(0.05f, 0.95f)
+                                        }
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.DragIndicator,
+                                    contentDescription = "Drag divider",
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(20.dp)
+                                )
                             }
                         }
                     }
@@ -378,12 +433,13 @@ fun QualityComparisonScreen(
                         fontWeight = FontWeight.Bold
                     )
 
-                    MetricRow("File Size", metadata?.fileSize?.formatFileSize() ?: "1.82 GB", (result?.outputSize ?: 248_000_000L).formatFileSize())
-                    MetricRow("Bitrate", "48.2 Mbps", "11.2 Mbps")
-                    MetricRow("Resolution", "4K UHD (3840×2160)", "1080p FHD (1920×1080)")
-                    MetricRow("Framerate", "60 FPS", "30 FPS")
-                    MetricRow("Color Space", "10-bit Rec.709", "10-bit Rec.709")
-                    MetricRow("SSIM Fidelity", "1.000", "0.992")
+                    val plan = CompressionSession.currentPlan
+                    MetricRow("File Size", metadata?.fileSize?.formatFileSize() ?: "—", (result?.outputSize ?: 0L).formatFileSize())
+                    MetricRow("Bitrate", metadata?.videoBitrate?.let { "${it / 1_000_000f} Mbps" } ?: "—", plan?.targetVideoBitrate?.let { "${it / 1_000_000f} Mbps" } ?: "—")
+                    MetricRow("Resolution", "${metadata?.width ?: 0}×${metadata?.height ?: 0}", "${plan?.targetWidth ?: 0}×${plan?.targetHeight ?: 0}")
+                    MetricRow("Framerate", "${(metadata?.fps ?: 0f).toInt()} FPS", "${(plan?.targetFps ?: 0f).toInt()} FPS")
+                    MetricRow("Codec", metadata?.videoCodec ?: "—", plan?.videoCodec?.displayName ?: "—")
+                    MetricRow("Compression Ratio", "—", "${String.format("%.1f", (result?.compressionRatio ?: 0f) * 100)}%")
                 }
             }
         }

@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.compressflow.app.data.session.CompressionSession
 import com.compressflow.app.presentation.batch.BatchSelectScreen
 import com.compressflow.app.presentation.compression.AdvancedSettingsScreen
 import com.compressflow.app.presentation.compression.ChooseTargetSizeScreen
@@ -179,6 +180,8 @@ fun CompressFlowNavHost() {
                     onNavigateBack = { navController.popBackStack() },
                     onStartBatch = { uris ->
                         if (uris.isNotEmpty()) {
+                            CompressionSession.reset()
+                            CompressionSession.batchUris = uris
                             navController.navigate(Routes.videoDetail(uris.first().toString()))
                         }
                     }

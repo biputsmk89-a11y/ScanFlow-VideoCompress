@@ -37,6 +37,7 @@ build/
 # Signing files
 *.jks
 *.keystore
+!app/release-upload-key.jks
 
 # Keystore credentials
 keystore.properties
