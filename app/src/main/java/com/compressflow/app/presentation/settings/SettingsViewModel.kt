@@ -49,4 +49,22 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             repository.setDefaultCodec(codec)
         }
     }
+
+    fun setThemeMode(mode: String) {
+        viewModelScope.launch {
+            repository.setThemeMode(mode)
+        }
+    }
+
+    fun setFilenamePattern(pattern: String) {
+        viewModelScope.launch {
+            repository.setFilenamePattern(pattern)
+        }
+    }
+
+    fun setSaveLocation(location: String) {
+        viewModelScope.launch {
+            repository.setSaveLocation(location)
+        }
+    }
 }

@@ -1,12 +1,17 @@
 package com.compressflow.app.presentation.compression
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import androidx.annotation.OptIn
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.util.UnstableApi
@@ -24,6 +29,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.random.Random
@@ -51,6 +57,7 @@ class CompressionViewModel(application: Application) : AndroidViewModel(applicat
     private val transformerProcessor = TransformerProcessor(application)
     private val outputValidator = OutputValidator(application)
     private val historyRepository = HistoryRepository(application)
+    private val settingsRepository = com.compressflow.app.data.preferences.SettingsRepository(application)
 
     private val _uiState = MutableStateFlow(CompressionUiState())
     val uiState: StateFlow<CompressionUiState> = _uiState.asStateFlow()
@@ -104,6 +111,8 @@ class CompressionViewModel(application: Application) : AndroidViewModel(applicat
                         return@launch
                     }
 
+                    val appSettings = settingsRepository.settingsFlow.first()
+
                     val plan = if (itemIndex == 0 && CompressionSession.currentPlan != null) {
                         CompressionSession.currentPlan!!
                     } else {
@@ -112,15 +121,29 @@ class CompressionViewModel(application: Application) : AndroidViewModel(applicat
                         val targetBytes = if (preset == CompressionPreset.TARGET_SIZE) {
                             CompressionSession.currentTargetSizeMb * 1024L * 1024L
                         } else null
-                        CompressionPlanner().plan(
+                        var p = CompressionPlanner().plan(
                             metadata = meta,
                             preset = preset,
                             capabilities = caps,
                             targetSizeBytes = targetBytes
                         )
+                        when (appSettings.defaultCodec) {
+                            "H.265 / HEVC (Best compression)" -> if (caps.supportsH265) p = p.copy(videoCodec = com.compressflow.app.domain.model.VideoCodec.H265)
+                            "H.264 (Maximum compatibility)" -> p = p.copy(videoCodec = com.compressflow.app.domain.model.VideoCodec.H264)
+                            "AV1 (Next-gen)" -> if (caps.supportsAv1) p = p.copy(videoCodec = com.compressflow.app.domain.model.VideoCodec.AV1)
+                        }
+                        if (!appSettings.keepAudio) {
+                            p = p.copy(removeAudio = true)
+                        }
+                        p
                     }
 
-                    val outputFile = transformerProcessor.createOutputFile(app, meta.filename, plan.container)
+                    val outputFile = transformerProcessor.createOutputFile(
+                        context = app,
+                        originalFilename = meta.filename,
+                        container = plan.container,
+                        pattern = appSettings.filenamePattern
+                    )
                     CompressionSession.outputFile = outputFile
 
                     _uiState.value = _uiState.value.copy(
@@ -194,6 +217,10 @@ class CompressionViewModel(application: Application) : AndroidViewModel(applicat
                                     } catch (_: Exception) {}
                                 }
 
+                                if (validation.isValid && appSettings.notifications) {
+                                    showNotification(app, meta.filename ?: "video.mp4", finalResult.savedPercentage.toInt())
+                                }
+
                                 _uiState.value = _uiState.value.copy(
                                     progress = 1f,
                                     processedBytes = meta.fileSize,
@@ -257,6 +284,44 @@ class CompressionViewModel(application: Application) : AndroidViewModel(applicat
                 @Suppress("DEPRECATION")
                 v?.vibrate(150)
             }
+        } catch (_: Exception) {}
+    }
+
+    private fun showNotification(context: Context, filename: String, savedPercentage: Int) {
+        try {
+            val channelId = "compression_status_channel"
+            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager ?: return
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    channelId,
+                    "Compression Status",
+                    NotificationManager.IMPORTANCE_DEFAULT
+                ).apply {
+                    description = "Shows notification when video compression completes"
+                }
+                notificationManager.createNotificationChannel(channel)
+            }
+
+            val intent = Intent(context, com.compressflow.app.MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            val pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            val notification = NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(android.R.drawable.stat_sys_download_done)
+                .setContentTitle("Compression Completed")
+                .setContentText("$filename finished! Saved $savedPercentage% storage.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .build()
+
+            notificationManager.notify(2001, notification)
         } catch (_: Exception) {}
     }
 }

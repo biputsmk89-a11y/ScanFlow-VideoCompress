@@ -19,6 +19,7 @@ data class AppSettings(
     val defaultCodec: String = "Auto (best available)",
     val keepAudio: Boolean = true,
     val darkMode: Boolean = false,
+    val themeMode: String = "SYSTEM", // "SYSTEM", "LIGHT", "DARK"
     val notifications: Boolean = true
 )
 
@@ -31,6 +32,7 @@ class SettingsRepository(private val context: Context) {
         val DEFAULT_CODEC = stringPreferencesKey("default_codec")
         val KEEP_AUDIO = booleanPreferencesKey("keep_audio")
         val DARK_MODE = booleanPreferencesKey("dark_mode")
+        val THEME_MODE = stringPreferencesKey("theme_mode")
         val NOTIFICATIONS = booleanPreferencesKey("notifications")
     }
 
@@ -42,6 +44,7 @@ class SettingsRepository(private val context: Context) {
             defaultCodec = preferences[PreferencesKeys.DEFAULT_CODEC] ?: "Auto (best available)",
             keepAudio = preferences[PreferencesKeys.KEEP_AUDIO] ?: true,
             darkMode = preferences[PreferencesKeys.DARK_MODE] ?: false,
+            themeMode = preferences[PreferencesKeys.THEME_MODE] ?: "SYSTEM",
             notifications = preferences[PreferencesKeys.NOTIFICATIONS] ?: true
         )
     }
@@ -55,6 +58,20 @@ class SettingsRepository(private val context: Context) {
     suspend fun setDarkMode(enabled: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[PreferencesKeys.DARK_MODE] = enabled
+            preferences[PreferencesKeys.THEME_MODE] = if (enabled) "DARK" else "SYSTEM"
+        }
+    }
+
+    suspend fun setThemeMode(mode: String) {
+        context.dataStore.edit { preferences ->
+            preferences[PreferencesKeys.THEME_MODE] = mode
+            preferences[PreferencesKeys.DARK_MODE] = (mode == "DARK")
+        }
+    }
+
+    suspend fun setSaveLocation(location: String) {
+        context.dataStore.edit { preferences ->
+            preferences[PreferencesKeys.SAVE_LOCATION] = location
         }
     }
 

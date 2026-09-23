@@ -58,12 +58,24 @@ class VideoDetailViewModel(application: Application) : AndroidViewModel(applicat
                 CompressionSession.currentMetadata = meta
 
                 val appSettings = settingsRepository.settingsFlow.first()
-                val initialGoal = GoalType.entries.find { it.preset == CompressionSession.currentPreset } ?: GoalType.WHATSAPP
+                val defaultPresetFromSettings = when (appSettings.defaultQuality) {
+                    "High Quality" -> GoalType.SOCIAL_MEDIA
+                    "Maximum Space Saving" -> GoalType.STORAGE_SAVER
+                    else -> GoalType.WHATSAPP
+                }
+                val initialGoal = GoalType.entries.find { it.preset == CompressionSession.currentPreset } ?: defaultPresetFromSettings
                 var plan = compressionPlanner.plan(
                     metadata = meta,
                     preset = initialGoal.preset,
                     capabilities = capabilities
                 )
+
+                when (appSettings.defaultCodec) {
+                    "H.265 / HEVC (Best compression)" -> if (capabilities.supportsH265) plan = plan.copy(videoCodec = com.compressflow.app.domain.model.VideoCodec.H265)
+                    "H.264 (Maximum compatibility)" -> plan = plan.copy(videoCodec = com.compressflow.app.domain.model.VideoCodec.H264)
+                    "AV1 (Next-gen)" -> if (capabilities.supportsAv1) plan = plan.copy(videoCodec = com.compressflow.app.domain.model.VideoCodec.AV1)
+                }
+
                 if (!appSettings.keepAudio) {
                     plan = plan.copy(removeAudio = true)
                 }

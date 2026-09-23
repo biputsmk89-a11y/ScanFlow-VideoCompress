@@ -204,7 +204,8 @@ class TransformerProcessor(private val context: Context) {
     fun createOutputFile(
         context: Context,
         originalFilename: String?,
-        container: OutputContainer = OutputContainer.MP4
+        container: OutputContainer = OutputContainer.MP4,
+        pattern: String = "{name}_compressed"
     ): File {
         val timestamp = java.text.SimpleDateFormat(
             "yyyyMMdd_HHmmss",
@@ -217,7 +218,12 @@ class TransformerProcessor(private val context: Context) {
             ?: "video"
 
         val outputDir = File(context.cacheDir, "compressed").apply { mkdirs() }
-        val filename = "VID_${timestamp}_${baseName}_compressed.${container.extension}"
+        val filename = when (pattern) {
+            "VID_{date}_{name}" -> "VID_${timestamp}_${baseName}.${container.extension}"
+            "{name}_small" -> "${baseName}_small.${container.extension}"
+            "{name}_cf" -> "${baseName}_cf.${container.extension}"
+            else -> "${baseName}_compressed.${container.extension}"
+        }
 
         return File(outputDir, filename)
     }
