@@ -140,8 +140,20 @@ class TransformerProcessor(private val context: Context) {
 
         currentTransformer = transformer
 
-        // 5. Visual Effects Pipeline: Resolution Downscaling + Frame Rate Limiter
-        val mediaItem = MediaItem.fromUri(inputUri)
+        // 5. Visual Effects Pipeline: Resolution Downscaling + Frame Rate Limiter + Precise Clipping
+        val mediaItem = if (plan.trimEndMs > plan.trimStartMs) {
+            MediaItem.Builder()
+                .setUri(inputUri)
+                .setClippingConfiguration(
+                    MediaItem.ClippingConfiguration.Builder()
+                        .setStartPositionMs(plan.trimStartMs.coerceAtLeast(0L))
+                        .setEndPositionMs(plan.trimEndMs)
+                        .build()
+                )
+                .build()
+        } else {
+            MediaItem.fromUri(inputUri)
+        }
         val effectsList = mutableListOf<Effect>()
 
         if (plan.targetWidth > 0 && plan.targetHeight > 0) {

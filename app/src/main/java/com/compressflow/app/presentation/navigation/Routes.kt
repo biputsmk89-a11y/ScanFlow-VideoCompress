@@ -29,10 +29,17 @@ object Routes {
     const val STORAGE_ANALYZER = "storage_analyzer"
     const val CHOOSE_TARGET_SIZE = "choose_target_size"
     const val QUALITY_COMPARE = "quality_compare"
-    const val TRIM_VIDEO = "trim_video"
+    const val TRIM_VIDEO = "trim_video?videoUri={videoUri}"
 
     fun videoDetail(videoUri: String): String =
         "video_detail/${android.net.Uri.encode(videoUri)}"
+
+    fun trimVideo(videoUri: String? = null): String =
+        if (!videoUri.isNullOrBlank()) {
+            "trim_video?videoUri=${android.net.Uri.encode(videoUri)}"
+        } else {
+            "trim_video?videoUri="
+        }
 }
 
 /**

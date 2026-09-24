@@ -54,6 +54,9 @@ fun HomeScreen(
     onNavigateToVideoDetail: (String) -> Unit = {},
     onNavigateToBatchSelect: () -> Unit = {},
     onNavigateToStorageAnalyzer: () -> Unit = {},
+    onNavigateToQualityCompare: () -> Unit = {},
+    onNavigateToTrimVideo: () -> Unit = {},
+    onNavigateToTools: () -> Unit = {},
     onNavigateToHistory: () -> Unit = {},
     onNavigateToSettings: () -> Unit = {},
     viewModel: HomeViewModel = viewModel()
@@ -63,7 +66,6 @@ fun HomeScreen(
 
     var showHardwareDialog by remember { mutableStateOf(false) }
     var showPrivacyDialog by remember { mutableStateOf(false) }
-    var comingSoonToolName by remember { mutableStateOf<String?>(null) }
 
     val videoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
@@ -157,32 +159,6 @@ fun HomeScreen(
         )
     }
 
-    // ── Coming Soon Tool Modal ──
-    if (comingSoonToolName != null) {
-        AlertDialog(
-            onDismissRequest = { comingSoonToolName = null },
-            icon = {
-                Icon(
-                    imageVector = Icons.Outlined.Construction,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(28.dp)
-                )
-            },
-            title = { Text("$comingSoonToolName Tool") },
-            text = {
-                Text(
-                    "$comingSoonToolName is currently under development for the next update. In the meantime, use our high-speed video compression and storage analyzer features!"
-                )
-            },
-            confirmButton = {
-                TextButton(onClick = { comingSoonToolName = null }) {
-                    Text("OK")
-                }
-            }
-        )
-    }
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -251,9 +227,11 @@ fun HomeScreen(
         item {
             QuickToolsSection(
                 modifier = Modifier.padding(horizontal = 16.dp),
+                onTrimVideo = onNavigateToTrimVideo,
                 onBatchCompress = onNavigateToBatchSelect,
                 onStorageAnalyzer = onNavigateToStorageAnalyzer,
-                onToolClick = { comingSoonToolName = it }
+                onQualityCompare = onNavigateToQualityCompare,
+                onNavigateToTools = onNavigateToTools
             )
         }
 
@@ -801,8 +779,13 @@ private fun RecentHistoryCard(
                     .background(MaterialTheme.colorScheme.surfaceContainerHigh),
                 contentAlignment = Alignment.Center
             ) {
+                val imageModel: Any = if (item.outputPath.startsWith("content://")) {
+                    Uri.parse(item.outputPath)
+                } else {
+                    File(item.outputPath)
+                }
                 AsyncImage(
-                    model = File(item.outputPath),
+                    model = imageModel,
                     contentDescription = item.filename,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
@@ -885,16 +868,18 @@ data class ToolItem(
 @Composable
 private fun QuickToolsSection(
     modifier: Modifier = Modifier,
+    onTrimVideo: () -> Unit = {},
     onBatchCompress: () -> Unit = {},
     onStorageAnalyzer: () -> Unit = {},
-    onToolClick: (String) -> Unit = {}
+    onQualityCompare: () -> Unit = {},
+    onNavigateToTools: () -> Unit = {}
 ) {
     val tools = listOf(
+        ToolItem(Icons.Outlined.ContentCut, "Trim", onTrimVideo),
         ToolItem(Icons.Outlined.DynamicFeed, "Batch", onBatchCompress),
-        ToolItem(Icons.Outlined.ContentCut, "Trim", { onToolClick("Trim Video") }),
-        ToolItem(Icons.Outlined.SwapHoriz, "Convert", { onToolClick("Video Converter") }),
-        ToolItem(Icons.Outlined.MusicNote, "Audio", { onToolClick("Audio Extraction") }),
-        ToolItem(Icons.Outlined.Storage, "Storage", onStorageAnalyzer)
+        ToolItem(Icons.Outlined.Storage, "Storage", onStorageAnalyzer),
+        ToolItem(Icons.Outlined.Compare, "Compare", onQualityCompare),
+        ToolItem(Icons.Outlined.Build, "All Tools", onNavigateToTools)
     )
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {

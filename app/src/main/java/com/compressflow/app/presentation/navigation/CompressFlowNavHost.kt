@@ -37,6 +37,7 @@ import com.compressflow.app.presentation.result.ResultScreen
 import com.compressflow.app.presentation.settings.SettingsScreen
 import com.compressflow.app.presentation.tools.StorageAnalyzerScreen
 import com.compressflow.app.presentation.tools.ToolsScreen
+import com.compressflow.app.presentation.trim.TrimVideoScreen
 import com.compressflow.app.presentation.video_detail.VideoDetailScreen
 
 @Composable
@@ -115,6 +116,15 @@ fun CompressFlowNavHost() {
                     onNavigateToStorageAnalyzer = {
                         navController.navigate(Routes.STORAGE_ANALYZER)
                     },
+                    onNavigateToQualityCompare = {
+                        navController.navigate(Routes.QUALITY_COMPARE)
+                    },
+                    onNavigateToTrimVideo = {
+                        navController.navigate(Routes.trimVideo())
+                    },
+                    onNavigateToTools = {
+                        navController.navigate(Routes.TOOLS)
+                    },
                     onNavigateToHistory = {
                         navController.navigate(Routes.HISTORY)
                     },
@@ -177,7 +187,10 @@ fun CompressFlowNavHost() {
 
             composable(Routes.QUALITY_COMPARE) {
                 QualityComparisonScreen(
-                    onNavigateBack = { navController.popBackStack() }
+                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateToVideoDetail = { uri ->
+                        navController.navigate(Routes.videoDetail(uri))
+                    }
                 )
             }
 
@@ -223,8 +236,32 @@ fun CompressFlowNavHost() {
                     onNavigateToQualityCompare = {
                         navController.navigate(Routes.QUALITY_COMPARE)
                     },
+                    onNavigateToTrimVideo = {
+                        navController.navigate(Routes.trimVideo())
+                    },
                     onNavigateToVideoDetail = { uri ->
                         navController.navigate(Routes.videoDetail(uri))
+                    }
+                )
+            }
+
+            composable(
+                route = Routes.TRIM_VIDEO,
+                arguments = listOf(
+                    navArgument("videoUri") {
+                        type = NavType.StringType
+                        nullable = true
+                        defaultValue = null
+                    }
+                )
+            ) { backStackEntry ->
+                val videoUri = backStackEntry.arguments?.getString("videoUri")
+                val decodedUri = if (!videoUri.isNullOrBlank()) android.net.Uri.decode(videoUri) else null
+                TrimVideoScreen(
+                    initialVideoUri = decodedUri,
+                    onNavigateBack = { navController.popBackStack() },
+                    onContinueToCompress = { outputUri ->
+                        navController.navigate(Routes.videoDetail(outputUri))
                     }
                 )
             }

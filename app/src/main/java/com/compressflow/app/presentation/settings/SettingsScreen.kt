@@ -347,7 +347,7 @@ fun SettingsScreen(
             title = { Text("CompressFlow") },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text("Version: 1.0.0 (Production Release)", fontWeight = FontWeight.Bold)
+                    Text("Version: ${com.compressflow.app.BuildConfig.VERSION_NAME} (Production Release)", fontWeight = FontWeight.Bold)
                     Text("Engine: AndroidX Media3 Transformer")
                     Text("Hardware Acceleration: MediaCodec VBR")
                     Text("Database: Room Persistence + DataStore")
@@ -475,7 +475,7 @@ fun SettingsScreen(
             SettingsItem(
                 icon = Icons.Outlined.Info,
                 title = "Version",
-                subtitle = "1.0.0 (Build 1) • Hardware Engine",
+                subtitle = "${com.compressflow.app.BuildConfig.VERSION_NAME} (Build ${com.compressflow.app.BuildConfig.VERSION_CODE}) • Hardware Engine",
                 onClick = { showAboutDialog = true }
             )
         }

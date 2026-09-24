@@ -47,7 +47,9 @@ data class CompressionPlan(
     val videoCodec: VideoCodec = VideoCodec.H264,
     val container: OutputContainer = OutputContainer.MP4,
     val removeAudio: Boolean = false,
-    val estimatedOutputSize: Long = 0L
+    val estimatedOutputSize: Long = 0L,
+    val trimStartMs: Long = 0L,
+    val trimEndMs: Long = 0L
 )
 
 enum class VideoCodec(val displayName: String, val mimeType: String) {

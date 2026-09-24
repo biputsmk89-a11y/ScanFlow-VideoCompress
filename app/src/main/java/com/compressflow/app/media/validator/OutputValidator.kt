@@ -20,10 +20,16 @@ class OutputValidator(private val context: Context) {
         val hasVideoTrack: Boolean = false,
         val hasAudioTrack: Boolean = false,
         val hasDuration: Boolean = false,
+        val actualDurationMs: Long = 0L,
         val errorMessage: String? = null
     )
 
-    fun validate(outputFile: File, expectAudio: Boolean = true): ValidationResult {
+    fun validate(
+        outputFile: File,
+        expectAudio: Boolean = true,
+        expectedDurationMs: Long? = null,
+        toleranceMs: Long = 2000L
+    ): ValidationResult {
         // 1. File exists
         if (!outputFile.exists()) {
             return ValidationResult(
@@ -65,22 +71,29 @@ class OutputValidator(private val context: Context) {
             }
 
             val hasDuration = duration > 0
+            val durationOk = if (expectedDurationMs != null && expectedDurationMs > 0) {
+                hasDuration && kotlin.math.abs(duration - expectedDurationMs) <= toleranceMs
+            } else {
+                hasDuration
+            }
 
             // Audio check only if expected
             val audioOk = !expectAudio || hasAudio
 
             return ValidationResult(
-                isValid = hasVideo && audioOk && hasDuration,
+                isValid = hasVideo && audioOk && durationOk,
                 fileExists = true,
                 hasSize = true,
                 isReadable = true,
                 hasVideoTrack = hasVideo,
                 hasAudioTrack = hasAudio,
                 hasDuration = hasDuration,
+                actualDurationMs = duration,
                 errorMessage = when {
                     !hasVideo -> "No video track found in output"
                     expectAudio && !hasAudio -> "Expected audio track not found"
                     !hasDuration -> "Output has zero duration"
+                    expectedDurationMs != null && !durationOk -> "Output duration (${duration}ms) differs from expected (${expectedDurationMs}ms)"
                     else -> null
                 }
             )

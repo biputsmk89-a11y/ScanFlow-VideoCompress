@@ -2,6 +2,7 @@ package com.compressflow.app.presentation.home
 
 import android.app.Application
 import android.content.Intent
+import android.net.Uri
 import androidx.core.content.FileProvider
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,19 +38,32 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     fun playVideo(item: CompressionHistoryEntity) {
         val app = getApplication<Application>()
         try {
-            val file = File(item.outputPath)
-            if (!file.exists()) return
-            val uri = FileProvider.getUriForFile(
-                app,
-                "${app.packageName}.fileprovider",
-                file
-            )
+            val isAudio = item.filename.endsWith(".m4a", ignoreCase = true) ||
+                    item.filename.endsWith(".mp3", ignoreCase = true) ||
+                    item.codec.contains("audio", ignoreCase = true)
+            val uri = if (item.outputPath.startsWith("content://")) {
+                Uri.parse(item.outputPath)
+            } else {
+                val file = File(item.outputPath)
+                if (!file.exists()) {
+                    android.widget.Toast.makeText(app, "File tidak ditemukan di penyimpanan", android.widget.Toast.LENGTH_SHORT).show()
+                    return
+                }
+                FileProvider.getUriForFile(
+                    app,
+                    "${app.packageName}.fileprovider",
+                    file
+                )
+            }
+            val mimeType = if (isAudio) "audio/*" else "video/*"
             val intent = Intent(Intent.ACTION_VIEW).apply {
-                setDataAndType(uri, "video/*")
+                setDataAndType(uri, mimeType)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             app.startActivity(intent)
-        } catch (_: Exception) {}
+        } catch (_: Exception) {
+            android.widget.Toast.makeText(app, "Tidak dapat memutar file", android.widget.Toast.LENGTH_SHORT).show()
+        }
     }
 }
