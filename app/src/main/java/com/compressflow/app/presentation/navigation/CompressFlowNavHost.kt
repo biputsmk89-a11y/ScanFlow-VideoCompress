@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -34,6 +35,9 @@ import com.compressflow.app.presentation.history.HistoryScreen
 import com.compressflow.app.presentation.home.HomeScreen
 import com.compressflow.app.presentation.result.QualityComparisonScreen
 import com.compressflow.app.presentation.result.ResultScreen
+import androidx.compose.ui.platform.LocalContext
+import com.compressflow.app.data.preferences.IntroManager
+import com.compressflow.app.presentation.intro.SplashIntroScreen
 import com.compressflow.app.presentation.settings.SettingsScreen
 import com.compressflow.app.presentation.tools.StorageAnalyzerScreen
 import com.compressflow.app.presentation.tools.ToolsScreen
@@ -42,6 +46,12 @@ import com.compressflow.app.presentation.video_detail.VideoDetailScreen
 
 @Composable
 fun CompressFlowNavHost() {
+    val context = LocalContext.current
+    val introManager = remember { IntroManager(context) }
+    val startDestination = remember {
+        if (introManager.hasCompletedIntro()) Routes.HOME else Routes.SPLASH_INTRO
+    }
+
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -100,11 +110,21 @@ fun CompressFlowNavHost() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Routes.HOME,
+            startDestination = startDestination,
             modifier = Modifier.padding(innerPadding),
             enterTransition = { fadeIn(animationSpec = tween(300)) },
             exitTransition = { fadeOut(animationSpec = tween(300)) }
         ) {
+            composable(Routes.SPLASH_INTRO) {
+                SplashIntroScreen(
+                    onFinishIntro = {
+                        navController.navigate(Routes.HOME) {
+                            popUpTo(Routes.SPLASH_INTRO) { inclusive = true }
+                        }
+                    }
+                )
+            }
+
             composable(Routes.HOME) {
                 HomeScreen(
                     onNavigateToVideoDetail = { uri ->
@@ -267,7 +287,11 @@ fun CompressFlowNavHost() {
             }
 
             composable(Routes.SETTINGS) {
-                SettingsScreen()
+                SettingsScreen(
+                    onNavigateToIntro = {
+                        navController.navigate(Routes.SPLASH_INTRO)
+                    }
+                )
             }
         }
     }

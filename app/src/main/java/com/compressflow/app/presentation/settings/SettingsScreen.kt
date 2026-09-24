@@ -24,6 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun SettingsScreen(
+    onNavigateToIntro: () -> Unit = {},
     viewModel: SettingsViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -477,6 +478,14 @@ fun SettingsScreen(
                 title = "Version",
                 subtitle = "${com.compressflow.app.BuildConfig.VERSION_NAME} (Build ${com.compressflow.app.BuildConfig.VERSION_CODE}) • Hardware Engine",
                 onClick = { showAboutDialog = true }
+            )
+        }
+        item {
+            SettingsItem(
+                icon = Icons.Outlined.AutoAwesome,
+                title = "App Introduction & Tour",
+                subtitle = "Lihat kembali panduan fitur & perkenalan aplikasi",
+                onClick = onNavigateToIntro
             )
         }
         item {

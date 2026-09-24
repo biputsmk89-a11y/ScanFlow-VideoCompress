@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * Navigation route definitions for CompressFlow.
  */
 object Routes {
+    const val SPLASH_INTRO = "splash_intro"
     const val HOME = "home"
     const val HISTORY = "history"
     const val TOOLS = "tools"
