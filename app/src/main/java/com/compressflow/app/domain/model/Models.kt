@@ -26,7 +26,13 @@ data class VideoMetadata(
     val hasAudio: Boolean = true,
     val isHdr: Boolean = false,
     val orientation: VideoOrientation = VideoOrientation.LANDSCAPE
-)
+) {
+    val displayWidth: Int
+        get() = if (rotation == 90 || rotation == 270) height else width
+
+    val displayHeight: Int
+        get() = if (rotation == 90 || rotation == 270) width else height
+}
 
 enum class VideoOrientation {
     LANDSCAPE,

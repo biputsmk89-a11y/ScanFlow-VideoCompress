@@ -153,9 +153,77 @@ class CompressionPlannerTest {
         )
 
         // With rotation 90, effective width is 1080 and height is 1920.
-        // Target resolution should scale down effectively.
+        // Target resolution should scale down effectively to 720x1280 (portrait 720p), NOT 404x720!
         assertTrue("targetWidth must be even", plan.targetWidth % 2 == 0)
         assertTrue("targetHeight must be even", plan.targetHeight % 2 == 0)
-        assertTrue("targetHeight should be scaled down", plan.targetHeight <= 1280)
+        assertEquals(720, plan.targetWidth)
+        assertEquals(1280, plan.targetHeight)
+    }
+
+    @Test
+    fun `test Social Media preset preserves 1080x1920 portrait video without squashing`() {
+        val metadata = VideoMetadata(
+            uri = "content://media/video/5",
+            filename = "portrait_1080p.mp4",
+            fileSize = 80_000_000L,
+            duration = 15_000L,
+            width = 1920,
+            height = 1080,
+            rotation = 90, // Effective: 1080w x 1920h
+            fps = 30f
+        )
+
+        val plan = planner.plan(
+            metadata = metadata,
+            preset = CompressionPreset.SOCIAL_MEDIA, // maxWidth = 1920, maxHeight = 1080
+            capabilities = capabilities
+        )
+
+        // Must stay 1080x1920, never downscaled to 608x1080
+        assertEquals(1080, plan.targetWidth)
+        assertEquals(1920, plan.targetHeight)
+    }
+
+    @Test
+    fun `test square video scales symmetrically`() {
+        val metadata = VideoMetadata(
+            uri = "content://media/video/6",
+            filename = "square_video.mp4",
+            fileSize = 40_000_000L,
+            duration = 10_000L,
+            width = 1080,
+            height = 1080,
+            rotation = 0,
+            fps = 30f
+        )
+
+        val plan = planner.plan(
+            metadata = metadata,
+            preset = CompressionPreset.STORAGE_SAVER, // maxWidth = 1280, maxHeight = 720
+            capabilities = capabilities
+        )
+
+        // Square video must stay 1:1 aspect ratio: 720x720
+        assertEquals(720, plan.targetWidth)
+        assertEquals(720, plan.targetHeight)
+    }
+
+    @Test
+    fun `test VideoMetadata displayWidth and displayHeight across all rotation angles`() {
+        val landscape0 = VideoMetadata(uri = "test", width = 1920, height = 1080, rotation = 0)
+        assertEquals(1920, landscape0.displayWidth)
+        assertEquals(1080, landscape0.displayHeight)
+
+        val portrait90 = VideoMetadata(uri = "test", width = 1920, height = 1080, rotation = 90)
+        assertEquals(1080, portrait90.displayWidth)
+        assertEquals(1920, portrait90.displayHeight)
+
+        val landscape180 = VideoMetadata(uri = "test", width = 1920, height = 1080, rotation = 180)
+        assertEquals(1920, landscape180.displayWidth)
+        assertEquals(1080, landscape180.displayHeight)
+
+        val portrait270 = VideoMetadata(uri = "test", width = 1920, height = 1080, rotation = 270)
+        assertEquals(1080, portrait270.displayWidth)
+        assertEquals(1920, portrait270.displayHeight)
     }
 }

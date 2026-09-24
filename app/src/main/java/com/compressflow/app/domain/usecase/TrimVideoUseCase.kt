@@ -129,13 +129,16 @@ class TrimVideoUseCase(private val context: Context) {
                 videoCodec = targetCodec ?: basePlan.videoCodec
             )
         } else {
-            // Trim only: preserve original visual dimensions, fps, bitrate, codec
+            // Trim only: preserve original visual dimensions, fps, bitrate, codec.
+            // Setting targetWidth = 0 and targetHeight = 0 prevents TransformerProcessor
+            // from attaching Presentation effect, thereby preserving 100% of native aspect ratio,
+            // display orientation, and resolution without adding letterbox/pillarbox bars.
             val codec = targetCodec ?: detectCodec(meta, caps)
             CompressionPlan(
-                targetWidth = meta.width,
-                targetHeight = meta.height,
-                targetFps = meta.fps.takeIf { it > 0 } ?: 30f,
-                targetVideoBitrate = meta.videoBitrate.takeIf { it > 0 } ?: 6_000_000L,
+                targetWidth = 0,
+                targetHeight = 0,
+                targetFps = 0f,
+                targetVideoBitrate = meta.videoBitrate.takeIf { it > 0 } ?: 8_000_000L,
                 targetAudioBitrate = meta.audioBitrate.takeIf { it > 0 } ?: 128_000L,
                 videoCodec = codec,
                 container = OutputContainer.MP4,
@@ -195,6 +198,12 @@ class TrimVideoUseCase(private val context: Context) {
                             ((meta.fileSize - finalOutputSize).toFloat() / meta.fileSize * 100f).coerceAtLeast(0f)
                         } else 0f
 
+                        val outputRes = if (plan.targetWidth > 0 && plan.targetHeight > 0) {
+                            "${plan.targetWidth}×${plan.targetHeight}"
+                        } else {
+                            "${meta.displayWidth}×${meta.displayHeight}"
+                        }
+
                         historyRepository.insertHistory(
                             CompressionHistoryEntity(
                                 filename = displayName,
@@ -202,12 +211,18 @@ class TrimVideoUseCase(private val context: Context) {
                                 compressedSize = finalOutputSize,
                                 savedPercentage = savedPct,
                                 durationMs = actualDuration,
-                                resolution = "${meta.width}×${meta.height}",
+                                resolution = outputRes,
                                 codec = plan.videoCodec.displayName,
                                 outputPath = finalPath
                             )
                         )
                     } catch (_: Exception) {}
+
+                    val outputRes = if (plan.targetWidth > 0 && plan.targetHeight > 0) {
+                        "${plan.targetWidth}×${plan.targetHeight}"
+                    } else {
+                        "${meta.displayWidth}×${meta.displayHeight}"
+                    }
 
                     val trimResult = TrimExecutionResult(
                         success = true,
@@ -219,7 +234,7 @@ class TrimVideoUseCase(private val context: Context) {
                         trimmedDurationMs = actualDuration,
                         startMs = safeStartMs,
                         endMs = safeEndMs,
-                        resolution = "${meta.width}×${meta.height}",
+                        resolution = outputRes,
                         codec = plan.videoCodec.displayName
                     )
 

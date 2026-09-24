@@ -443,7 +443,7 @@ private fun VideoPreviewCard(metadata: VideoMetadata) {
                         isPrimary = true
                     )
                     SpecChip(
-                        label = "${formatResolution(metadata.width, metadata.height)} (${metadata.width}×${metadata.height})"
+                        label = "${formatResolution(metadata.displayWidth, metadata.displayHeight)} (${metadata.displayWidth}×${metadata.displayHeight})"
                     )
                     SpecChip(
                         label = "${metadata.fps.toInt()} FPS"

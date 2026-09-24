@@ -103,12 +103,19 @@ fun AdvancedSettingsScreen(
                 ) {
                     Button(
                         onClick = {
-                            val (w, h) = when (selectedResolution) {
+                            val basePair = when (selectedResolution) {
                                 "4K" -> 3840 to 2160
                                 "1440p" -> 2560 to 1440
                                 "1080p" -> 1920 to 1080
                                 "720p" -> 1280 to 720
                                 else -> 854 to 480
+                            }
+                            val meta = CompressionSession.currentMetadata
+                            val isPortrait = meta != null && meta.displayHeight > meta.displayWidth
+                            val (w, h) = if (isPortrait) {
+                                minOf(basePair.first, basePair.second) to maxOf(basePair.first, basePair.second)
+                            } else {
+                                maxOf(basePair.first, basePair.second) to minOf(basePair.first, basePair.second)
                             }
                             CompressionSession.currentPlan = CompressionPlan(
                                 targetWidth = w,

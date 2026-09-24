@@ -126,9 +126,9 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application) {
 
         val app = getApplication<Application>()
         val plan = CompressionPlan(
-            targetWidth = meta.width,
-            targetHeight = meta.height,
-            targetFps = meta.fps.takeIf { it > 0 } ?: 30f,
+            targetWidth = 0,
+            targetHeight = 0,
+            targetFps = 0f,
             targetVideoBitrate = meta.videoBitrate.takeIf { it > 0 } ?: 5_000_000L,
             targetAudioBitrate = 0L,
             videoCodec = detectOriginalCodec(meta),
@@ -305,6 +305,10 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application) {
                     return@withContext
                 }
 
+                if (meta.rotation != 0) {
+                    muxer.setOrientationHint(meta.rotation)
+                }
+
                 muxer.start()
 
                 val buffer = ByteBuffer.allocate(1024 * 1024)
@@ -355,7 +359,7 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application) {
                     originalSize = meta.fileSize,
                     compressedSize = finalOutputSize,
                     durationMs = meta.duration,
-                    resolution = "${meta.width}×${meta.height}",
+                    resolution = "${meta.displayWidth}×${meta.displayHeight}",
                     codec = meta.videoCodec ?: "H.264",
                     outputPath = finalPath
                 )
@@ -413,9 +417,9 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application) {
 
         val app = getApplication<Application>()
         val plan = CompressionPlan(
-            targetWidth = meta.width,
-            targetHeight = meta.height,
-            targetFps = meta.fps.takeIf { it > 0 } ?: 30f,
+            targetWidth = 0,
+            targetHeight = 0,
+            targetFps = 0f,
             targetVideoBitrate = meta.videoBitrate.takeIf { it > 0 } ?: 5_000_000L,
             targetAudioBitrate = meta.audioBitrate.takeIf { it > 0 } ?: 128_000L,
             videoCodec = targetCodec,
@@ -581,7 +585,11 @@ class ToolsViewModel(application: Application) : AndroidViewModel(application) {
                             originalSize = meta.fileSize,
                             compressedSize = outputSize,
                             durationMs = meta.duration,
-                            resolution = "${plan.targetWidth}×${plan.targetHeight}",
+                            resolution = if (plan.targetWidth > 0 && plan.targetHeight > 0) {
+                                "${plan.targetWidth}×${plan.targetHeight}"
+                            } else {
+                                "${meta.displayWidth}×${meta.displayHeight}"
+                            },
                             codec = plan.videoCodec.displayName,
                             outputPath = finalPath
                         )

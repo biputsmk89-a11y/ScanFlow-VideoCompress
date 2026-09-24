@@ -119,8 +119,29 @@ class CompressionPlanner {
         val effectiveWidth = if (rotation == 90 || rotation == 270) srcHeight else srcWidth
         val effectiveHeight = if (rotation == 90 || rotation == 270) srcWidth else srcHeight
 
-        val constrainedMaxW = min(maxWidth, maxDeviceWidth)
-        val constrainedMaxH = min(maxHeight, maxDeviceHeight)
+        val isPortrait = effectiveHeight > effectiveWidth
+        val isSquare = effectiveHeight == effectiveWidth
+
+        // Orient preset bounding box to match the video's aspect orientation
+        val presetMaxW = when {
+            isSquare -> minOf(maxWidth, maxHeight)
+            isPortrait -> minOf(maxWidth, maxHeight)
+            else -> maxOf(maxWidth, maxHeight)
+        }
+        val presetMaxH = when {
+            isSquare -> minOf(maxWidth, maxHeight)
+            isPortrait -> maxOf(maxWidth, maxHeight)
+            else -> minOf(maxWidth, maxHeight)
+        }
+
+        // Ensure device capability bounds adapt to orientation as well
+        val maxDevDim = maxOf(maxDeviceWidth, maxDeviceHeight)
+        val minDevDim = minOf(maxDeviceWidth, maxDeviceHeight)
+        val devMaxW = if (isPortrait) minDevDim else maxDevDim
+        val devMaxH = if (isPortrait) maxDevDim else minDevDim
+
+        val constrainedMaxW = minOf(presetMaxW, devMaxW)
+        val constrainedMaxH = minOf(presetMaxH, devMaxH)
 
         if (effectiveWidth <= constrainedMaxW && effectiveHeight <= constrainedMaxH) {
             // Already within limits — keep original but make even

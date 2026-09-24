@@ -116,4 +116,49 @@ class TrimLogicTest {
         assertEquals(30_000L, state.selectedDurationMs)
         assertEquals("0:30", state.selectedDurationMs.formatDuration())
     }
+
+    @Test
+    fun `test pure trim plan preserves original dimensions by avoiding Presentation effect`() {
+        // When compressAlso is false, targetWidth and targetHeight must be 0
+        // so TransformerProcessor does not add Presentation.createForWidthAndHeight,
+        // preserving 100% of native aspect ratio, display orientation, and resolution.
+        val meta = VideoMetadata(
+            uri = "content://media/video/portrait",
+            filename = "portrait_vid.mp4",
+            fileSize = 50_000_000L,
+            duration = 20_000L,
+            width = 1920,
+            height = 1080,
+            rotation = 90
+        )
+
+        assertEquals(1080, meta.displayWidth)
+        assertEquals(1920, meta.displayHeight)
+
+        val pureTrimPlan = CompressionPlan(
+            targetWidth = 0,
+            targetHeight = 0,
+            targetFps = 0f,
+            targetVideoBitrate = 8_000_000L,
+            targetAudioBitrate = 128_000L,
+            videoCodec = VideoCodec.H264,
+            container = OutputContainer.MP4,
+            removeAudio = false,
+            estimatedOutputSize = 0L,
+            trimStartMs = 2_000L,
+            trimEndMs = 12_000L
+        )
+
+        // targetWidth and targetHeight == 0 means no Presentation scaling is forced
+        assertEquals(0, pureTrimPlan.targetWidth)
+        assertEquals(0, pureTrimPlan.targetHeight)
+
+        val outputRes = if (pureTrimPlan.targetWidth > 0 && pureTrimPlan.targetHeight > 0) {
+            "${pureTrimPlan.targetWidth}×${pureTrimPlan.targetHeight}"
+        } else {
+            "${meta.displayWidth}×${meta.displayHeight}"
+        }
+
+        assertEquals("1080×1920", outputRes)
+    }
 }

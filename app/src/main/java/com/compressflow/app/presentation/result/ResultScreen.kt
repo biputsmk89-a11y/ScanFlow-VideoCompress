@@ -56,6 +56,8 @@ fun ResultScreen(
     val context = LocalContext.current
     var showDeleteDialog by remember { mutableStateOf(false) }
 
+    androidx.activity.compose.BackHandler(onBack = onNavigateHome)
+
     val deleteLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult()
     ) { activityResult ->

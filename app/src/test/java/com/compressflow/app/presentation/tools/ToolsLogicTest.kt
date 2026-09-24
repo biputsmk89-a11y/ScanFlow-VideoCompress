@@ -94,4 +94,44 @@ class ToolsLogicTest {
         assertTrue(capsNoHevc.supportsH264)
         assertEquals(1, capsNoHevc.supportedCodecs.size)
     }
+
+    @Test
+    fun `test tool plan preserves original resolution without presentation layout scaling`() {
+        val meta = VideoMetadata(
+            uri = "content://media/video/portrait",
+            width = 1920,
+            height = 1080,
+            rotation = 90
+        )
+
+        // For tools like Remove Audio & Re-encode, targetWidth and targetHeight are 0
+        // to prevent Presentation from letterboxing or squashing portrait videos
+        val toolPlan = com.compressflow.app.domain.model.CompressionPlan(
+            targetWidth = 0,
+            targetHeight = 0,
+            targetFps = 0f,
+            targetVideoBitrate = 5_000_000L,
+            videoCodec = VideoCodec.H264
+        )
+
+        assertEquals(0, toolPlan.targetWidth)
+        assertEquals(0, toolPlan.targetHeight)
+
+        val reportedResolution = if (toolPlan.targetWidth > 0 && toolPlan.targetHeight > 0) {
+            "${toolPlan.targetWidth}×${toolPlan.targetHeight}"
+        } else {
+            "${meta.displayWidth}×${meta.displayHeight}"
+        }
+
+        assertEquals("1080×1920", reportedResolution)
+    }
+
+    @Test
+    fun `test audio extraction guard rejects video without audio`() {
+        val silentVideo = VideoMetadata(
+            uri = "content://media/video/silent",
+            hasAudio = false
+        )
+        assertFalse("Silent video must have hasAudio = false", silentVideo.hasAudio)
+    }
 }

@@ -10,6 +10,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -374,10 +375,12 @@ private fun TrimEditorContent(
         // ── 3. Pipeline Option: Trim + Compress ──
         Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(18.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
-            )
+            ),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
+            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
         ) {
             Row(
                 modifier = Modifier
@@ -390,8 +393,10 @@ private fun TrimEditorContent(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = "Trim & Compress (Single Pass)",
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.SemiBold
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
                     )
                     Text(
                         text = "Cuts duration and optimizes bitrate simultaneously",
@@ -409,41 +414,49 @@ private fun TrimEditorContent(
         // ── 4. Action Buttons ──
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             OutlinedButton(
                 onClick = onPreviewSelection,
                 modifier = Modifier
                     .weight(1f)
-                    .height(50.dp),
-                shape = RoundedCornerShape(12.dp)
+                    .height(52.dp),
+                shape = RoundedCornerShape(16.dp),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
             ) {
                 Icon(
                     imageVector = Icons.Outlined.PlayCircleOutline,
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text("Preview Cut")
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    "Preview Cut",
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold)
+                )
             }
 
             Button(
                 onClick = onTrimClick,
                 modifier = Modifier
                     .weight(1f)
-                    .height(50.dp),
-                shape = RoundedCornerShape(12.dp),
+                    .height(52.dp),
+                shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary
-                )
+                ),
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp, pressedElevation = 4.dp)
             ) {
                 Icon(
                     imageVector = Icons.Outlined.ContentCut,
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(if (uiState.compressAlso) "Trim & Compress" else "Trim Video")
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    if (uiState.compressAlso) "Trim & Compress" else "Trim Video",
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold)
+                )
             }
         }
     }
@@ -687,6 +700,7 @@ private fun TrimResultDialog(
 
                 ResultRow("Original Size:", result.originalSize.formatFileSize())
                 ResultRow("Output Size:", result.outputSize.formatFileSize())
+                ResultRow("Resolution:", result.resolution)
 
                 if (result.originalSize > result.outputSize) {
                     val saved = ((result.originalSize - result.outputSize).toFloat() / result.originalSize * 100).toInt()

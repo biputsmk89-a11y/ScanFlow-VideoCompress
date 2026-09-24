@@ -4,7 +4,9 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,6 +29,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -34,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.compressflow.app.core.extensions.formatDuration
 import com.compressflow.app.core.extensions.formatFileSize
 import com.compressflow.app.data.local.database.CompressionHistoryEntity
@@ -63,9 +67,11 @@ fun HomeScreen(
 ) {
     val recentHistory by viewModel.recentHistory.collectAsState()
     val capabilities = viewModel.capabilities
+    val profilePhotoPath by viewModel.profilePhotoPath.collectAsState()
+    val profilePhotoVersion by viewModel.profilePhotoVersion.collectAsState()
 
     var showHardwareDialog by remember { mutableStateOf(false) }
-    var showPrivacyDialog by remember { mutableStateOf(false) }
+    var showProfileDialog by remember { mutableStateOf(false) }
 
     val videoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
@@ -75,36 +81,31 @@ fun HomeScreen(
         }
     }
 
-    // ── Privacy & Offline Engine Info Modal ──
-    if (showPrivacyDialog) {
-        AlertDialog(
-            onDismissRequest = { showPrivacyDialog = false },
-            icon = {
-                Icon(
-                    imageVector = Icons.Outlined.Shield,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.size(32.dp)
+    val profilePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri: Uri? ->
+        uri?.let {
+            viewModel.saveProfilePhoto(it)
+        }
+    }
+
+    // ── User Profile Photo Dialog ──
+    if (showProfileDialog) {
+        UserProfileDialog(
+            profilePhotoPath = profilePhotoPath,
+            profilePhotoVersion = profilePhotoVersion,
+            onDismiss = { showProfileDialog = false },
+            onPickPhoto = {
+                profilePhotoPickerLauncher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                 )
             },
-            title = {
-                Text(
-                    text = "100% Offline & Private",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
+            onRemovePhoto = {
+                viewModel.removeProfilePhoto()
             },
-            text = {
-                Text(
-                    text = "CompressFlow runs entirely on your phone using native Android MediaCodec hardware encoders. No videos, metadata, or telemetry are ever uploaded to cloud servers. No internet connection is used or required.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            },
-            confirmButton = {
-                TextButton(onClick = { showPrivacyDialog = false }) {
-                    Text("Understood")
-                }
+            onNavigateToSettings = {
+                showProfileDialog = false
+                onNavigateToSettings()
             }
         )
     }
@@ -168,23 +169,21 @@ fun HomeScreen(
         // ── App Header ──
         item {
             HomeHeader(
-                onAvatarClick = onNavigateToSettings,
-                onLocalBadgeClick = { showPrivacyDialog = true }
-            )
-        }
-
-        // ── Privacy Badge ──
-        item {
-            PrivacyBadge(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                onClick = { showPrivacyDialog = true }
+                profilePhotoPath = profilePhotoPath,
+                profilePhotoVersion = profilePhotoVersion,
+                onAvatarClick = { showProfileDialog = true },
+                onDirectPickPhoto = {
+                    profilePhotoPickerLauncher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
+                }
             )
         }
 
         // ── Hero Tagline ──
         item {
             HeroSection(
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)
             )
         }
 
@@ -250,121 +249,340 @@ fun HomeScreen(
 
 @Composable
 private fun HomeHeader(
-    onAvatarClick: () -> Unit = {},
-    onLocalBadgeClick: () -> Unit = {}
+    profilePhotoPath: String?,
+    profilePhotoVersion: Long,
+    onAvatarClick: () -> Unit,
+    onDirectPickPhoto: () -> Unit
 ) {
+    val goldBrush = remember {
+        Brush.sweepGradient(
+            listOf(
+                Color(0xFFFFE57F),
+                Color(0xFFD4AF37),
+                Color(0xFFFFF6B8),
+                Color(0xFFB8860B),
+                Color(0xFFFFD700),
+                Color(0xFFFBF0B9),
+                Color(0xFFC59B27),
+                Color(0xFFFFE57F)
+            )
+        )
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .padding(top = 16.dp, bottom = 8.dp),
+            .padding(horizontal = 20.dp)
+            .padding(top = 18.dp, bottom = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+        // App Logo & Brand Name (52dp Logo - Perfectly Symmetrical with Avatar)
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            horizontalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            com.compressflow.app.presentation.components.CompressFlowLogo(size = 36.dp)
+            com.compressflow.app.presentation.components.CompressFlowLogo(size = 52.dp)
 
-            Column {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    Text(
-                        text = "CompressFlow",
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        letterSpacing = (-0.3).sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    // 100% Local badge (clickable)
-                    Surface(
-                        shape = CircleShape,
-                        color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                        modifier = Modifier
-                            .height(20.dp)
-                            .clickable(onClick = onLocalBadgeClick)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp)
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(6.dp)
-                                    .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.secondary)
-                            )
-                            Text(
-                                text = "100% Local",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.secondary,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
-                    }
-                }
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(
-                    text = "Home",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    text = "CompressFlow",
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.Black,
+                        letterSpacing = (-0.6).sp
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = "SMART OFFLINE ENGINE",
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 0.8.sp
+                    ),
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }
 
-        // Profile avatar (clickable -> Settings)
+        // Circular User Profile Avatar with Sparkling Luxury Gold Border (52dp - Exact Match with Logo)
         Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary)
-                .clickable(onClick = onAvatarClick),
-            contentAlignment = Alignment.Center
+            modifier = Modifier.wrapContentSize(),
+            contentAlignment = Alignment.BottomEnd
         ) {
-            Icon(
-                imageVector = Icons.Filled.Person,
-                contentDescription = "Settings Profile",
-                tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.size(20.dp)
-            )
+            Box(
+                modifier = Modifier
+                    .size(52.dp)
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = CircleShape,
+                        ambientColor = Color(0xFFFFD700).copy(alpha = 0.45f),
+                        spotColor = Color(0xFFD4AF37).copy(alpha = 0.65f)
+                    )
+                    .border(
+                        width = 2.5.dp,
+                        brush = goldBrush,
+                        shape = CircleShape
+                    )
+                    .clip(CircleShape)
+                    .background(Color(0xFF0F172A))
+                    .clickable {
+                        if (profilePhotoPath == null) {
+                            onDirectPickPhoto()
+                        } else {
+                            onAvatarClick()
+                        }
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                if (profilePhotoPath != null) {
+                    key(profilePhotoVersion) {
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(File(profilePhotoPath))
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = "User Profile Photo",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape)
+                        )
+                    }
+                } else {
+                    Icon(
+                        imageVector = Icons.Filled.Person,
+                        contentDescription = "User Avatar",
+                        tint = Color(0xFFFFD700),
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
+            }
+
+            // Glistening gold badge for photo upload indicator (direct to gallery)
+            Box(
+                modifier = Modifier
+                    .size(19.dp)
+                    .offset(x = 1.dp, y = 1.dp)
+                    .shadow(elevation = 4.dp, shape = CircleShape)
+                    .background(
+                        brush = Brush.linearGradient(
+                            listOf(Color(0xFFFFE57F), Color(0xFFD4AF37))
+                        ),
+                        shape = CircleShape
+                    )
+                    .border(1.5.dp, MaterialTheme.colorScheme.surface, CircleShape)
+                    .clip(CircleShape)
+                    .clickable(onClick = onDirectPickPhoto),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.AddPhotoAlternate,
+                    contentDescription = "Buka Galeri Foto",
+                    tint = Color(0xFF1E1B00),
+                    modifier = Modifier.size(11.dp)
+                )
+            }
         }
     }
 }
 
-// ── Privacy Badge ───────────────────────────────────────────
+// ── User Profile Photo Dialog ───────────────────────────────
 
 @Composable
-private fun PrivacyBadge(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
+private fun UserProfileDialog(
+    profilePhotoPath: String?,
+    profilePhotoVersion: Long,
+    onDismiss: () -> Unit,
+    onPickPhoto: () -> Unit,
+    onRemovePhoto: () -> Unit,
+    onNavigateToSettings: () -> Unit
 ) {
-    Surface(
-        modifier = modifier.clickable(onClick = onClick),
-        shape = CircleShape,
-        color = MaterialTheme.colorScheme.surfaceContainerHigh
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(8.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.secondary)
+    val goldBrush = remember {
+        Brush.sweepGradient(
+            listOf(
+                Color(0xFFFFE57F),
+                Color(0xFFD4AF37),
+                Color(0xFFFFF6B8),
+                Color(0xFFB8860B),
+                Color(0xFFFFD700),
+                Color(0xFFFBF0B9),
+                Color(0xFFC59B27),
+                Color(0xFFFFE57F)
             )
-            Text(
-                text = "Offline & Private • On-device engine",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.secondary,
-                fontWeight = FontWeight.Medium
-            )
-        }
+        )
     }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "Profil Pengguna",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                // Large luxury gold circular preview (104dp)
+                Box(
+                    modifier = Modifier
+                        .size(104.dp)
+                        .shadow(
+                            elevation = 12.dp,
+                            shape = CircleShape,
+                            ambientColor = Color(0xFFFFD700).copy(alpha = 0.5f),
+                            spotColor = Color(0xFFD4AF37).copy(alpha = 0.8f)
+                        )
+                        .border(
+                            width = 3.5.dp,
+                            brush = goldBrush,
+                            shape = CircleShape
+                        )
+                        .clip(CircleShape)
+                        .background(Color(0xFF0F172A)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (profilePhotoPath != null) {
+                        key(profilePhotoVersion) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(File(profilePhotoPath))
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = "Foto Profil Pengguna",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(CircleShape)
+                            )
+                        }
+                    } else {
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = "Default Avatar",
+                            tint = Color(0xFFFFD700),
+                            modifier = Modifier.size(54.dp)
+                        )
+                    }
+                }
+
+                Text(
+                    text = if (profilePhotoPath != null) 
+                        "Foto profil aktif dan terpasang rapi dengan bingkai gold mewah." 
+                    else 
+                        "Belum ada foto profil. Unggah foto favorit Anda.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Surface(
+                    shape = RoundedCornerShape(10.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier.padding(10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.VerifiedUser,
+                            contentDescription = null,
+                            tint = Color(0xFF10B981),
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Text(
+                            text = "100% Privat & Tersimpan di perangkat (Zero Cloud)",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Button(
+                        onClick = onPickPhoto,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        ),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.AddPhotoAlternate,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = if (profilePhotoPath != null) "Buka Galeri (Ganti Foto)" else "Buka Galeri (Pilih Foto)",
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+
+                    Text(
+                        text = "Pengambilan foto langsung terhubung ke Galeri perangkat (100% Offline & Aman).",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    if (profilePhotoPath != null) {
+                        OutlinedButton(
+                            onClick = onRemovePhoto,
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = MaterialTheme.colorScheme.error
+                            ),
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.5f)),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Delete,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Hapus Foto Profil", fontWeight = FontWeight.SemiBold)
+                        }
+                    }
+
+                    TextButton(
+                        onClick = onNavigateToSettings,
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Settings,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Buka Pengaturan Aplikasi")
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Tutup", fontWeight = FontWeight.Bold)
+            }
+        }
+    )
 }
 
 // ── Hero Section ────────────────────────────────────────────
@@ -372,15 +590,18 @@ private fun PrivacyBadge(
 @Composable
 private fun HeroSection(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier.padding(top = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        modifier = modifier.padding(vertical = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         Text(
             text = "Make videos smaller.\nKeep them better.",
-            style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onSurface,
-            letterSpacing = (-0.3).sp,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.headlineMedium.copy(
+                fontSize = 26.sp,
+                lineHeight = 32.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = (-0.3).sp
+            ),
+            color = MaterialTheme.colorScheme.onSurface
         )
         Text(
             text = "Hardware-accelerated processing entirely on this phone.",
@@ -401,49 +622,57 @@ private fun PrimaryCTACard(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onBrowseVideos),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(22.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
         ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.45f)),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Box(
                 modifier = Modifier
-                    .size(128.dp)
-                    .offset(x = 220.dp, y = (-48).dp)
+                    .size(136.dp)
+                    .offset(x = 210.dp, y = (-40).dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.05f))
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.08f))
                     .blur(40.dp)
             )
             Box(
                 modifier = Modifier
-                    .size(112.dp)
-                    .offset(x = (-40).dp, y = 120.dp)
+                    .size(120.dp)
+                    .offset(x = (-30).dp, y = 110.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.05f))
+                    .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.08f))
                     .blur(40.dp)
             )
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(24.dp),
+                    .padding(horizontal = 24.dp, vertical = 26.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(
                     modifier = Modifier
-                        .size(64.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary)
-                        .shadow(4.dp, CircleShape),
+                        .size(68.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(
+                            Brush.linearGradient(
+                                listOf(
+                                    MaterialTheme.colorScheme.primary,
+                                    MaterialTheme.colorScheme.primary.copy(alpha = 0.85f)
+                                )
+                            )
+                        )
+                        .shadow(8.dp, RoundedCornerShape(20.dp), spotColor = MaterialTheme.colorScheme.primary),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.VideoFile,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(34.dp)
                     )
                 }
 
@@ -451,10 +680,12 @@ private fun PrimaryCTACard(
 
                 Text(
                     text = "Select Video",
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold
+                    ),
                     color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold
+                    textAlign = TextAlign.Center
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -466,14 +697,15 @@ private fun PrimaryCTACard(
                     textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 Surface(
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.surfaceContainer
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.8f),
+                    border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                 ) {
                     Row(
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        modifier = Modifier.padding(horizontal = 14.dp, vertical = 6.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
@@ -481,27 +713,29 @@ private fun PrimaryCTACard(
                             imageVector = Icons.Outlined.Tune,
                             contentDescription = null,
                             modifier = Modifier.size(14.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            tint = MaterialTheme.colorScheme.primary
                         )
                         Text(
                             text = "MP4, MOV, MKV up to 4K",
-                            style = MaterialTheme.typography.labelSmall,
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(22.dp))
 
                 Button(
                     onClick = onBrowseVideos,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp),
-                    shape = RoundedCornerShape(12.dp),
+                        .height(52.dp),
+                    shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
-                    )
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp, pressedElevation = 4.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.AddCircleOutline,
@@ -511,8 +745,10 @@ private fun PrimaryCTACard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Browse Videos",
-                        style = MaterialTheme.typography.labelLarge,
-                        fontWeight = FontWeight.SemiBold
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
                     )
                 }
             }
@@ -527,7 +763,7 @@ data class PresetItem(
     val label: String,
     val description: String,
     val targetPreset: CompressionPreset,
-    val iconTint: @Composable () -> Color = { MaterialTheme.colorScheme.primary }
+    val accentColor: Color
 )
 
 @Composable
@@ -540,30 +776,33 @@ private fun QuickPresetsSection(
             Icons.AutoMirrored.Outlined.Chat,
             "WhatsApp",
             "< 16 MB or 64 MB",
-            CompressionPreset.WHATSAPP
+            CompressionPreset.WHATSAPP,
+            Color(0xFF10B981)
         ),
         PresetItem(
             Icons.Outlined.Share,
             "Social Media",
             "1080p • 30fps Crisp",
-            CompressionPreset.SOCIAL_MEDIA
+            CompressionPreset.SOCIAL_MEDIA,
+            Color(0xFF3B82F6)
         ),
         PresetItem(
             Icons.Outlined.Inventory2,
             "Storage Saver",
             "~70% space saved",
             CompressionPreset.STORAGE_SAVER,
-            iconTint = { MaterialTheme.colorScheme.secondary }
+            Color(0xFFF59E0B)
         ),
         PresetItem(
             Icons.Outlined.Email,
             "Email Friendly",
             "< 25 MB • Fast",
-            CompressionPreset.EMAIL
+            CompressionPreset.EMAIL,
+            Color(0xFF8B5CF6)
         )
     )
 
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -571,9 +810,11 @@ private fun QuickPresetsSection(
         ) {
             Text(
                 text = "Quick Presets",
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 text = "One-tap profiles",
@@ -582,8 +823,8 @@ private fun QuickPresetsSection(
             )
         }
 
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 presets.take(2).forEach { preset ->
                     PresetCard(
                         preset = preset,
@@ -592,7 +833,7 @@ private fun QuickPresetsSection(
                     )
                 }
             }
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 presets.drop(2).forEach { preset ->
                     PresetCard(
                         preset = preset,
@@ -613,12 +854,13 @@ private fun PresetCard(
 ) {
     Card(
         modifier = modifier
-            .height(128.dp)
+            .height(130.dp)
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
         ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(
@@ -634,36 +876,38 @@ private fun PresetCard(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(36.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(MaterialTheme.colorScheme.surfaceContainer),
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(preset.accentColor.copy(alpha = 0.14f)),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = preset.icon,
                         contentDescription = preset.label,
-                        modifier = Modifier.size(20.dp),
-                        tint = preset.iconTint()
+                        modifier = Modifier.size(22.dp),
+                        tint = preset.accentColor
                     )
                 }
                 Icon(
                     imageVector = Icons.Outlined.ChevronRight,
                     contentDescription = null,
                     modifier = Modifier.size(18.dp),
-                    tint = MaterialTheme.colorScheme.outline
+                    tint = MaterialTheme.colorScheme.outline.copy(alpha = 0.7f)
                 )
             }
 
-            Column {
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(
                     text = preset.label,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.SemiBold
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = preset.description,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -906,29 +1150,36 @@ private fun ToolChip(tool: ToolItem) {
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
             .clickable(onClick = tool.onClick)
-            .padding(8.dp),
+            .padding(horizontal = 4.dp, vertical = 6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(6.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .clip(RoundedCornerShape(14.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh),
-            contentAlignment = Alignment.Center
+        Surface(
+            modifier = Modifier.size(54.dp),
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
+            shadowElevation = 1.dp
         ) {
-            Icon(
-                imageVector = tool.icon,
-                contentDescription = tool.label,
-                modifier = Modifier.size(22.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = tool.icon,
+                    contentDescription = tool.label,
+                    modifier = Modifier.size(24.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         }
         Text(
             text = tool.label,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontWeight = FontWeight.Medium
+            style = MaterialTheme.typography.labelMedium.copy(
+                fontSize = 12.sp,
+                fontWeight = FontWeight.SemiBold
+            ),
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }
@@ -952,10 +1203,11 @@ private fun DeviceInfoCard(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onCardClick),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
         ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Row(

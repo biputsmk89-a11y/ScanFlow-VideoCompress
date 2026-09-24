@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -21,8 +22,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -41,6 +44,7 @@ data class ToolGridItem(
     val label: String,
     val description: String,
     val badge: String? = null,
+    val accentColor: Color = Color(0xFF2563EB),
     val onClick: () -> Unit = {}
 )
 
@@ -143,49 +147,57 @@ fun ToolsScreen(
         ToolGridItem(
             icon = Icons.Outlined.DynamicFeed,
             label = "Batch Compress",
-            description = "Compress multiple videos",
+            description = "Compress multiple videos together",
+            accentColor = Color(0xFF2563EB),
             onClick = onNavigateToBatchSelect
         ),
         ToolGridItem(
             icon = Icons.Outlined.Storage,
             label = "Storage Analyzer",
-            description = "Find large videos & reclaim",
+            description = "Find large videos & reclaim disk",
+            accentColor = Color(0xFF0D9488),
             onClick = onNavigateToStorageAnalyzer
         ),
         ToolGridItem(
             icon = Icons.Outlined.Compare,
             label = "Quality Compare",
             description = "Interactive before vs after slider",
+            accentColor = Color(0xFF0284C7),
             onClick = onNavigateToQualityCompare
         ),
         ToolGridItem(
             icon = Icons.Outlined.ContentCut,
             label = "Trim Video",
             description = "Cut start/end frame-accurately",
+            accentColor = Color(0xFFD97706),
             onClick = onNavigateToTrimVideo
         ),
         ToolGridItem(
             icon = Icons.Outlined.SwapHoriz,
             label = "Re-encode",
             description = "Change codec (H.264/H.265/AV1)",
+            accentColor = Color(0xFF4F46E5),
             onClick = { launchTool(ToolType.RE_ENCODE) }
         ),
         ToolGridItem(
             icon = Icons.Outlined.MusicNote,
             label = "Extract Audio",
-            description = "Save audio track as M4A",
+            description = "Save audio track as pristine M4A",
+            accentColor = Color(0xFF7C3AED),
             onClick = { launchTool(ToolType.EXTRACT_AUDIO) }
         ),
         ToolGridItem(
             icon = Icons.AutoMirrored.Outlined.VolumeOff,
             label = "Remove Audio",
-            description = "Silent video output",
+            description = "Silent video output with no track",
+            accentColor = Color(0xFFE11D48),
             onClick = { launchTool(ToolType.REMOVE_AUDIO) }
         ),
         ToolGridItem(
             icon = Icons.Outlined.DeleteSweep,
             label = "Remove Metadata",
             description = "Strip private GPS & device tags",
+            accentColor = Color(0xFF64748B),
             onClick = { launchTool(ToolType.REMOVE_METADATA) }
         )
     )
@@ -198,15 +210,19 @@ fun ToolsScreen(
     ) {
         Text(
             text = "Tools",
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.headlineLarge.copy(
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = (-0.5).sp
+            ),
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+            modifier = Modifier.padding(top = 18.dp, bottom = 4.dp)
         )
         Text(
-            text = "Video utilities & size optimization",
+            text = "Video utilities & on-device optimization",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = 20.dp)
+            modifier = Modifier.padding(bottom = 18.dp)
         )
 
         LazyVerticalGrid(
@@ -228,17 +244,18 @@ private fun ToolCard(tool: ToolGridItem) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(120.dp),
-        shape = RoundedCornerShape(16.dp),
+            .height(138.dp)
+            .clickable(onClick = tool.onClick),
+        shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
         ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .clickable { tool.onClick() }
                 .padding(16.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -249,22 +266,22 @@ private fun ToolCard(tool: ToolGridItem) {
             ) {
                 Box(
                     modifier = Modifier
-                        .size(36.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(MaterialTheme.colorScheme.surfaceContainer),
+                        .size(42.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(tool.accentColor.copy(alpha = 0.14f)),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = tool.icon,
                         contentDescription = tool.label,
-                        modifier = Modifier.size(20.dp),
-                        tint = MaterialTheme.colorScheme.primary
+                        modifier = Modifier.size(22.dp),
+                        tint = tool.accentColor
                     )
                 }
 
                 if (tool.badge != null) {
                     Surface(
-                        shape = RoundedCornerShape(4.dp),
+                        shape = RoundedCornerShape(6.dp),
                         color = MaterialTheme.colorScheme.surfaceContainerHigh
                     ) {
                         Text(
@@ -275,19 +292,36 @@ private fun ToolCard(tool: ToolGridItem) {
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                         )
                     }
+                } else {
+                    Icon(
+                        imageVector = Icons.Outlined.ChevronRight,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+                    )
                 }
             }
-            Column {
+
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(
                     text = tool.label,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onSurface
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = tool.description,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontSize = 11.5.sp,
+                        lineHeight = 15.sp
+                    ),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
@@ -512,7 +546,7 @@ private fun VideoInfoDialog(
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold
                 )
-                InfoRow("Resolution", "${metadata.width}×${metadata.height}")
+                InfoRow("Resolution", "${metadata.displayWidth}×${metadata.displayHeight}")
                 InfoRow("Duration", metadata.duration.formatDuration())
                 InfoRow("File Size", metadata.fileSize.formatFileSize())
                 if (metadata.fps > 0) {

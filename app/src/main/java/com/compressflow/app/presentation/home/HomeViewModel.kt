@@ -11,16 +11,55 @@ import com.compressflow.app.data.repository.HistoryRepository
 import com.compressflow.app.data.session.CompressionSession
 import com.compressflow.app.domain.model.CompressionPreset
 import com.compressflow.app.media.capability.CapabilityDetector
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import java.io.File
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val historyRepository = HistoryRepository(application)
     val capabilities = CapabilityDetector().detect()
+
+    // Profile photo persistence
+    private val profilePhotoFile = File(getApplication<Application>().filesDir, "user_profile_photo.jpg")
+
+    private val _profilePhotoPath = MutableStateFlow<String?>(
+        if (profilePhotoFile.exists()) profilePhotoFile.absolutePath else null
+    )
+    val profilePhotoPath: StateFlow<String?> = _profilePhotoPath.asStateFlow()
+
+    private val _profilePhotoVersion = MutableStateFlow(System.currentTimeMillis())
+    val profilePhotoVersion: StateFlow<Long> = _profilePhotoVersion.asStateFlow()
+
+    fun saveProfilePhoto(uri: Uri) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val app = getApplication<Application>()
+            try {
+                app.contentResolver.openInputStream(uri)?.use { input ->
+                    profilePhotoFile.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+                _profilePhotoPath.value = profilePhotoFile.absolutePath
+                _profilePhotoVersion.value = System.currentTimeMillis()
+            } catch (_: Exception) {
+            }
+        }
+    }
+
+    fun removeProfilePhoto() {
+        if (profilePhotoFile.exists()) {
+            profilePhotoFile.delete()
+        }
+        _profilePhotoPath.value = null
+        _profilePhotoVersion.value = System.currentTimeMillis()
+    }
 
     // Observe latest 3 compression history items
     val recentHistory: StateFlow<List<CompressionHistoryEntity>> = historyRepository.allHistory

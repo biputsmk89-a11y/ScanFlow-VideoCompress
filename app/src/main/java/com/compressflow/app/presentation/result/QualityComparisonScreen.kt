@@ -550,7 +550,7 @@ fun QualityComparisonScreen(
                     val plan = CompressionSession.currentPlan
                     MetricRow("File Size", metadata?.fileSize?.formatFileSize() ?: "—", (result?.outputSize ?: 0L).formatFileSize())
                     MetricRow("Bitrate", metadata?.videoBitrate?.let { "${it / 1_000_000f} Mbps" } ?: "—", plan?.targetVideoBitrate?.let { "${it / 1_000_000f} Mbps" } ?: "—")
-                    MetricRow("Resolution", "${metadata?.width ?: 0}×${metadata?.height ?: 0}", "${plan?.targetWidth ?: 0}×${plan?.targetHeight ?: 0}")
+                    MetricRow("Resolution", "${metadata?.displayWidth ?: 0}×${metadata?.displayHeight ?: 0}", "${plan?.targetWidth ?: 0}×${plan?.targetHeight ?: 0}")
                     MetricRow("Framerate", "${(metadata?.fps ?: 0f).toInt()} FPS", "${(plan?.targetFps ?: 0f).toInt()} FPS")
                     MetricRow("Codec", metadata?.videoCodec ?: "—", plan?.videoCodec?.displayName ?: "—")
                     MetricRow("Compression Ratio", "—", "${String.format("%.1f", (result?.compressionRatio ?: 0f) * 100)}%")

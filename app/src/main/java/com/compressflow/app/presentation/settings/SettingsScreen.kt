@@ -3,6 +3,7 @@ package com.compressflow.app.presentation.settings
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
@@ -30,23 +32,12 @@ fun SettingsScreen(
     val context = LocalContext.current
     val settings by viewModel.settings.collectAsState()
 
-    var showPrivacyDialog by remember { mutableStateOf(false) }
     var showQualityDialog by remember { mutableStateOf(false) }
     var showCodecDialog by remember { mutableStateOf(false) }
     var showThemeDialog by remember { mutableStateOf(false) }
     var showPatternDialog by remember { mutableStateOf(false) }
     var showLocationDialog by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
-
-    fun openPrivacyUrl() {
-        val url = "https://github.com/biputsmk89-a11y/ScanFlow-VideoCompress#privacy"
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            Toast.makeText(context, "Cannot open browser: ${e.message}", Toast.LENGTH_SHORT).show()
-        }
-    }
 
     // ── Theme Selection Dialog (Light Mode, Dark Mode, System) ──
     if (showThemeDialog) {
@@ -289,55 +280,6 @@ fun SettingsScreen(
         )
     }
 
-    // ── Privacy Policy Dialog ──
-    if (showPrivacyDialog) {
-        AlertDialog(
-            onDismissRequest = { showPrivacyDialog = false },
-            title = {
-                Text(text = "Privacy Policy", style = MaterialTheme.typography.titleLarge)
-            },
-            text = {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(
-                        text = "100% On-Device & Offline:",
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = "CompressFlow processes and compresses your videos entirely on your local hardware. None of your media files, metadata, or personal information are ever uploaded to any cloud server or third party.",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Text(
-                        text = "Permissions:",
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = "Media access permissions are only used to let you select source videos and save the compressed outputs to your gallery.",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        showPrivacyDialog = false
-                        openPrivacyUrl()
-                    }
-                ) {
-                    Text("Open Web Policy")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showPrivacyDialog = false }) {
-                    Text("Close")
-                }
-            }
-        )
-    }
-
     // ── About App Dialog ──
     if (showAboutDialog) {
         AlertDialog(
@@ -345,7 +287,7 @@ fun SettingsScreen(
             icon = {
                 com.compressflow.app.presentation.components.CompressFlowLogo(size = 48.dp)
             },
-            title = { Text("CompressFlow") },
+            title = { Text("CompressFlow", fontWeight = FontWeight.Bold) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Text("Version: ${com.compressflow.app.BuildConfig.VERSION_NAME} (Production Release)", fontWeight = FontWeight.Bold)
@@ -373,74 +315,101 @@ fun SettingsScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
             .padding(horizontal = 16.dp),
-        contentPadding = PaddingValues(bottom = 24.dp)
+        contentPadding = PaddingValues(bottom = 28.dp)
     ) {
         item {
             Text(
                 text = "Settings",
-                style = MaterialTheme.typography.headlineLarge,
+                style = MaterialTheme.typography.headlineLarge.copy(
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = (-0.5).sp
+                ),
                 color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(top = 16.dp, bottom = 24.dp)
+                modifier = Modifier.padding(top = 18.dp, bottom = 16.dp)
             )
         }
 
         // ── Output Section ──
         item {
             SettingsSectionHeader("Output")
-        }
-        item {
-            SettingsItem(
-                icon = Icons.Outlined.Folder,
-                title = "Save Location",
-                subtitle = "Default • ${settings.saveLocation}",
-                onClick = { showLocationDialog = true }
-            )
-        }
-        item {
-            SettingsItem(
-                icon = Icons.Outlined.TextFields,
-                title = "Filename Pattern",
-                subtitle = settings.filenamePattern,
-                onClick = { showPatternDialog = true }
-            )
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
+                ),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            ) {
+                Column {
+                    SettingsItem(
+                        icon = Icons.Outlined.Folder,
+                        title = "Save Location",
+                        subtitle = "Default • ${settings.saveLocation}",
+                        onClick = { showLocationDialog = true }
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+                    )
+                    SettingsItem(
+                        icon = Icons.Outlined.TextFields,
+                        title = "Filename Pattern",
+                        subtitle = settings.filenamePattern,
+                        onClick = { showPatternDialog = true }
+                    )
+                }
+            }
         }
 
         // ── Compression Section ──
         item {
             SettingsSectionHeader("Compression")
-        }
-        item {
-            SettingsItem(
-                icon = Icons.Outlined.Speed,
-                title = "Default Quality",
-                subtitle = settings.defaultQuality,
-                onClick = { showQualityDialog = true }
-            )
-        }
-        item {
-            SettingsItem(
-                icon = Icons.Outlined.VideoSettings,
-                title = "Default Codec",
-                subtitle = settings.defaultCodec,
-                onClick = { showCodecDialog = true }
-            )
-        }
-        item {
-            SettingsToggleItem(
-                icon = Icons.Outlined.MusicNote,
-                title = "Keep Audio",
-                subtitle = "Preserve audio track by default",
-                checked = settings.keepAudio,
-                onCheckedChange = { viewModel.toggleKeepAudio(it) }
-            )
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
+                ),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            ) {
+                Column {
+                    SettingsItem(
+                        icon = Icons.Outlined.Speed,
+                        title = "Default Quality",
+                        subtitle = settings.defaultQuality,
+                        onClick = { showQualityDialog = true }
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+                    )
+                    SettingsItem(
+                        icon = Icons.Outlined.VideoSettings,
+                        title = "Default Codec",
+                        subtitle = settings.defaultCodec,
+                        onClick = { showCodecDialog = true }
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+                    )
+                    SettingsToggleItem(
+                        icon = Icons.Outlined.MusicNote,
+                        title = "Keep Audio",
+                        subtitle = "Preserve audio track by default",
+                        checked = settings.keepAudio,
+                        onCheckedChange = { viewModel.toggleKeepAudio(it) }
+                    )
+                }
+            }
         }
 
         // ── App & Theme Section ──
         item {
-            SettingsSectionHeader("App")
-        }
-        item {
+            SettingsSectionHeader("Appearance & Alerts")
             val themeSubtitle = when (settings.themeMode) {
                 "LIGHT" -> "Light Mode (Active)"
                 "DARK" -> "Dark Mode (Active)"
@@ -451,50 +420,68 @@ fun SettingsScreen(
                 "DARK" -> Icons.Outlined.DarkMode
                 else -> Icons.Outlined.BrightnessAuto
             }
-            SettingsItem(
-                icon = themeIcon,
-                title = "Theme / Dark Mode",
-                subtitle = themeSubtitle,
-                onClick = { showThemeDialog = true }
-            )
-        }
-        item {
-            SettingsToggleItem(
-                icon = Icons.Outlined.Notifications,
-                title = "Notifications",
-                subtitle = "Show compression progress",
-                checked = settings.notifications,
-                onCheckedChange = { viewModel.toggleNotifications(it) }
-            )
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
+                ),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            ) {
+                Column {
+                    SettingsItem(
+                        icon = themeIcon,
+                        title = "Theme / Dark Mode",
+                        subtitle = themeSubtitle,
+                        onClick = { showThemeDialog = true }
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+                    )
+                    SettingsToggleItem(
+                        icon = Icons.Outlined.Notifications,
+                        title = "Notifications",
+                        subtitle = "Show compression progress alerts",
+                        checked = settings.notifications,
+                        onCheckedChange = { viewModel.toggleNotifications(it) }
+                    )
+                }
+            }
         }
 
         // ── About Section ──
         item {
-            SettingsSectionHeader("About")
-        }
-        item {
-            SettingsItem(
-                icon = Icons.Outlined.Info,
-                title = "Version",
-                subtitle = "${com.compressflow.app.BuildConfig.VERSION_NAME} (Build ${com.compressflow.app.BuildConfig.VERSION_CODE}) • Hardware Engine",
-                onClick = { showAboutDialog = true }
-            )
-        }
-        item {
-            SettingsItem(
-                icon = Icons.Outlined.AutoAwesome,
-                title = "App Introduction & Tour",
-                subtitle = "Lihat kembali panduan fitur & perkenalan aplikasi",
-                onClick = onNavigateToIntro
-            )
-        }
-        item {
-            SettingsItem(
-                icon = Icons.Outlined.PrivacyTip,
-                title = "Privacy Policy",
-                subtitle = "100% offline • No data collected",
-                onClick = { showPrivacyDialog = true }
-            )
+            SettingsSectionHeader("About & Help")
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
+                ),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            ) {
+                Column {
+                    SettingsItem(
+                        icon = Icons.Outlined.Info,
+                        title = "Version",
+                        subtitle = "${com.compressflow.app.BuildConfig.VERSION_NAME} (Build ${com.compressflow.app.BuildConfig.VERSION_CODE}) • Hardware Engine",
+                        onClick = { showAboutDialog = true }
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+                    )
+                    SettingsItem(
+                        icon = Icons.Outlined.AutoAwesome,
+                        title = "App Introduction & Tour",
+                        subtitle = "Lihat kembali panduan fitur & perkenalan aplikasi",
+                        onClick = onNavigateToIntro
+                    )
+                }
+            }
         }
     }
 }
@@ -503,10 +490,12 @@ fun SettingsScreen(
 private fun SettingsSectionHeader(title: String) {
     Text(
         text = title,
-        style = MaterialTheme.typography.labelLarge,
+        style = MaterialTheme.typography.titleSmall.copy(
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
+        ),
         color = MaterialTheme.colorScheme.primary,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier.padding(top = 20.dp, bottom = 8.dp)
+        modifier = Modifier.padding(top = 20.dp, bottom = 8.dp, start = 4.dp)
     )
 }
 
@@ -520,36 +509,40 @@ private fun SettingsItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
             .clickable(onClick = onClick)
-            .padding(vertical = 12.dp, horizontal = 4.dp),
+            .padding(vertical = 14.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh),
-            contentAlignment = Alignment.Center
+        Surface(
+            modifier = Modifier.size(42.dp),
+            shape = RoundedCornerShape(12.dp),
+            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.25f)
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = title,
-                modifier = Modifier.size(20.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = title,
+                    modifier = Modifier.size(22.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         }
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.SemiBold
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold
+                ),
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 text = subtitle,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -557,7 +550,7 @@ private fun SettingsItem(
             imageVector = Icons.Outlined.ChevronRight,
             contentDescription = null,
             modifier = Modifier.size(20.dp),
-            tint = MaterialTheme.colorScheme.outline
+            tint = MaterialTheme.colorScheme.outline.copy(alpha = 0.7f)
         )
     }
 }
@@ -573,36 +566,40 @@ private fun SettingsToggleItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
             .clickable { onCheckedChange(!checked) }
-            .padding(vertical = 12.dp, horizontal = 4.dp),
+            .padding(vertical = 14.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh),
-            contentAlignment = Alignment.Center
+        Surface(
+            modifier = Modifier.size(42.dp),
+            shape = RoundedCornerShape(12.dp),
+            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.25f)
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = title,
-                modifier = Modifier.size(20.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = title,
+                    modifier = Modifier.size(22.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         }
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.SemiBold
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold
+                ),
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 text = subtitle,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
