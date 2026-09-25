@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - CompressFlow</title>
+    <style>
+        :root {
+            --bg-color: #0b0f17;
+            --surface-color: #131b2e;
+            --surface-card: #1c263e;
+            --primary: #3b82f6;
+            --primary-accent: #60a5fa;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #2e3c5a;
+            --badge-bg: rgba(59, 130, 246, 0.15);
+            --badge-color: #60a5fa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.7;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 840px;
+            margin: 0 auto;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 48px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 24px;
+            margin-bottom: 32px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--badge-bg);
+            color: var(--badge-color);
+            padding: 4px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-top: 36px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        p, li {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 14px;
+        }
+
+        ul {
+            padding-left: 24px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: #ffffff;
+        }
+
+        .highlight-box {
+            background: var(--surface-card);
+            border-left: 4px solid var(--primary);
+            padding: 18px 22px;
+            border-radius: 0 12px 12px 0;
+            margin: 24px 0;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+        }
+
+        .contact-box {
+            background: var(--surface-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .footer {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        a {
+            color: var(--primary-accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 24px 18px;
+            }
+            h1 {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="badge">100% On-Device & Private</span>
+            <h1>Privacy Policy</h1>
+            <p class="subtitle">Effective Date: September 25, 2026 | Last Updated: September 25, 2026</p>
+        </div>
+
+        <p>This Privacy Policy explains how <strong>CompressFlow</strong> ("we", "our", or "the app") handles user data and permissions. CompressFlow is designed with privacy at its core: all video compression, trimming, and audio processing occur <strong>100% locally on your device</strong>.</p>
+
+        <div class="highlight-box">
+            <p><strong>Core Guarantee:</strong> CompressFlow does NOT collect, upload, store on remote servers, sell, or share your personal videos, photos, or files. Everything stays on your phone.</p>
+        </div>
+
+        <h2>1. Information We Do NOT Collect</h2>
+        <p>Unlike cloud-based conversion utilities, CompressFlow operates completely offline:</p>
+        <ul>
+            <li><strong>No User Account:</strong> You do not need to register, log in, or provide an email, phone number, or name to use the app.</li>
+            <li><strong>No Video/Media Collection:</strong> Your original videos, processed videos, and extracted audio are never transmitted to any external server or cloud storage.</li>
+            <li><strong>No Personal Identifiers:</strong> We do not track or store your device identifiers (IMEI, advertising ID, MAC address).</li>
+            <li><strong>No Location Data:</strong> The app does not access, collect, or store your GPS or network location.</li>
+        </ul>
+
+        <h2>2. Device Permissions Used and Purpose</h2>
+        <p>CompressFlow requests only the minimum necessary permissions strictly required to perform video processing functions:</p>
+        <ul>
+            <li><strong>Photos and Videos / Media Access (<code>READ_MEDIA_VIDEO</code> / <code>READ_EXTERNAL_STORAGE</code>):</strong> Required solely to allow you to select videos from your gallery for compression and save the resulting compressed videos to your device storage.</li>
+            <li><strong>Foreground Service (<code>FOREGROUND_SERVICE_MEDIA_PROCESSING</code>):</strong> Allows the compression engine to continue processing your video reliably in the background without being terminated by Android's battery optimizer.</li>
+            <li><strong>Notifications (<code>POST_NOTIFICATIONS</code>):</strong> Optional on Android 13+. Used solely to display real-time compression progress and notify you when your video is ready.</li>
+        </ul>
+
+        <h2>3. Third-Party Services and SDKs</h2>
+        <p>CompressFlow does not incorporate third-party analytics trackers, advertising networks, or data brokers. All video encoding and decoding are powered by local Android Media3 / MediaCodec hardware accelerators.</p>
+
+        <h2>4. Data Storage and Retention</h2>
+        <p>All compression history entries and user settings (such as compression presets, dark mode preferences) are stored strictly locally on your device using a private SQLite/Room database. You can clear this data at any time from within the app settings or by clearing the app's storage in Android settings.</p>
+
+        <h2>5. Children's Privacy</h2>
+        <p>CompressFlow does not knowingly collect any personal identifiable information from children under the age of 13. Since no personal data is collected from any user, CompressFlow complies with COPPA and global child privacy regulations.</p>
+
+        <h2>6. Security</h2>
+        <p>Because your videos never leave your device, your files are protected by your operating system's built-in sandbox security. We do not maintain any cloud databases that could be breached or compromised.</p>
+
+        <h2>7. Changes to This Privacy Policy</h2>
+        <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated revision date.</p>
+
+        <h2>8. Contact Us</h2>
+        <p>If you have any questions, feedback, or concerns regarding this Privacy Policy, please feel free to reach out to us:</p>
+        <div class="contact-box">
+            <p><strong>App:</strong> CompressFlow</p>
+            <p><strong>Developer:</strong> biputsmk89-a11y</p>
+            <p><strong>Repository:</strong> <a href="https://github.com/biputsmk89-a11y/ScanFlow-VideoCompress" target="_blank" rel="noopener">https://github.com/biputsmk89-a11y/ScanFlow-VideoCompress</a></p>
+        </div>
+
+        <div class="footer">
+            &copy; 2026 CompressFlow. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
